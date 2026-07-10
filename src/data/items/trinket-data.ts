@@ -124,7 +124,7 @@ export class TrinketData {
 							name: 'Use Cloak',
 							type: FactoryLogic.type.createTrigger('You are targeted by any effect that deals lightning damage'),
 							sections: [
-								FactoryLogic.createAbilitySectionText('The next damage-dealing ability you use to deal extra lightning damage equal to your level. The lightning immunity granted by the cloak becomes ightning immunity equal to your level until the end of the next round. You can\'t use this triggered action again until this weakness ends.')
+								FactoryLogic.createAbilitySectionText('The next damage-dealing ability you use to deal extra lightning damage equal to your level. The lightning immunity granted by the cloak becomes lightning weakness equal to your level until the end of the next round. You can\'t use this triggered action again until this weakness ends.')
 							]
 						})
 					})

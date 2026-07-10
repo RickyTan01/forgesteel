@@ -630,7 +630,7 @@ Primordial power remains until you spend it.`
 			id: 'fury-ability-18',
 			name: 'My Turn!',
 			description: 'You quickly strike back at a foe.',
-			type: FactoryLogic.type.createTrigger('A creature causes you to be winded or dying, or damages you while you are winded or dying.'),
+			type: FactoryLogic.type.createTrigger('A creature causes you to be winded or dying, or damages you while you are winded or dying.', { free: true }),
 			keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ],
 			distance: [ FactoryLogic.distance.createMelee() ],
 			target: 'The triggering creature',
