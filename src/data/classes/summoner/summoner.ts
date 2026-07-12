@@ -338,7 +338,7 @@ You can shift into squares that contain one of your minions, even if they occupy
 							feature: FactoryLogic.feature.createAbility({
 								ability: FactoryLogic.createAbility({
 									id: 'summoner-1-8d',
-									name: 'Take the Hit!',
+									name: 'Shield!',
 									description: 'You call upon a minion to use their body to dampen the blow.',
 									type: FactoryLogic.type.createTrigger('The target is targeted by a strike.'),
 									distance: [ FactoryLogic.distance.createSummoner() ],
