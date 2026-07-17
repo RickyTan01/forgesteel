@@ -72,6 +72,10 @@ export class MonsterUpdateLogic {
 			monster.freeStrikeType = DamageType.Damage;
 		}
 
+		if (monster.retainer) {
+			monster.retainer.level = monster.level;
+		}
+
 		if (typeof monster.speed.modes === 'string') {
 			monster.speed.modes = monster.speed.modes ? [ monster.speed.modes ] : [];
 		}

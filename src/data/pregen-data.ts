@@ -3,7 +3,7 @@ import { FactoryLogic } from '@/logic/factory-logic';
 import { Pregen } from '@/models/pregen';
 
 const dwarfFuryPregen: Pregen = {
-	id: 'AkKRH-90Rou-1f2K7-yHZqO-eLUJM-Q1Dll',
+	id: 'dwarf-fury-pregen-keth',
 	name: 'Keth',
 	description: 'Level 1 Dwarf Fury',
 	sourcebookIDs: [ '', 'orden' ],
@@ -133,7 +133,7 @@ const dwarfFuryPregen: Pregen = {
 };
 
 const highElfTacticianPregen: Pregen = {
-	id: 's7NJS-H09JA-pUTrY-d9Yni-BhYHn-IQCPL',
+	id: 'high-elf-tactician-pregen-the-earth-cries-the-skies-divide',
 	name: 'The Earth Cries The Skies Divide',
 	description: 'Level 1 Elf (high) Tactician',
 	sourcebookIDs: [ '', 'orden' ],
@@ -253,7 +253,7 @@ const highElfTacticianPregen: Pregen = {
 };
 
 const humanCensorPregen: Pregen = {
-	id: 'xD4WN-g9hyI-avTXz-mALVl-fl4HL-ENpgD',
+	id: 'human-censor-pregen-jennet',
 	name: 'Jennet',
 	description: 'Level 1 Human Censor',
 	sourcebookIDs: [ '', 'orden' ],
@@ -391,7 +391,7 @@ const humanCensorPregen: Pregen = {
 };
 
 const humanNullPregen: Pregen = {
-	id: 'uZsUf-WAKiH-uoY6z-7TDMk-JTK72-8Pu38',
+	id: 'human-null-pregen-ashley',
 	name: 'Ashley',
 	description: 'Level 1 Human Null',
 	sourcebookIDs: [ '', 'orden' ],
@@ -517,7 +517,7 @@ const humanNullPregen: Pregen = {
 };
 
 const humanTalentPregen: Pregen = {
-	id: 'wt04z-EkqhA-sY1I9-Dw5wU-bpqHl-aYq9E',
+	id: 'human-talent-pregen-garrick',
 	name: 'Garrick',
 	description: 'Level 1 Human Talent',
 	sourcebookIDs: [ '', 'orden' ],
@@ -661,7 +661,7 @@ const humanTalentPregen: Pregen = {
 };
 
 const orcConduitPregen: Pregen = {
-	id: 'PZcgI-IA0LT-qprwH-9FNCX-IhUdq-40QkW',
+	id: 'orc-conduit-pregen-khettovek',
 	name: 'Khettovek',
 	description: 'Level 1 Orc Conduit',
 	sourcebookIDs: [ '', 'orden' ],
@@ -798,7 +798,7 @@ const orcConduitPregen: Pregen = {
 };
 
 const polderElementalistPregen: Pregen = {
-	id: 'YDBa2-Y6Kem-6pMRx-cMn3c-DYNI8-S9sOb',
+	id: 'polder-elementalist-pregen-bethell',
 	name: 'Bethell',
 	description: 'Level 1 Polder Elementalist',
 	sourcebookIDs: [ '', 'orden' ],
@@ -926,7 +926,7 @@ const polderElementalistPregen: Pregen = {
 };
 
 const polderShadowPregen: Pregen = {
-	id: 'nZOww-Rv9L6-gzX61-UYLIJ-PlpcB-mTXKs',
+	id: 'polder-shadow-pregen-bellamy',
 	name: 'Bellamy',
 	description: 'Level 1 Polder Shadow',
 	sourcebookIDs: [ '', 'orden' ],
@@ -1056,7 +1056,7 @@ const polderShadowPregen: Pregen = {
 };
 
 const wodeElfTroubadourPregen: Pregen = {
-	id: 'VSLoV-HXFkr-mMquU-5YLvW-CxLEm-4TIyG',
+	id: 'wode-elf-troubadour-pregen-lliarion',
 	name: 'Lliarion',
 	description: 'Level 1 Elf (wode) Troubadour',
 	sourcebookIDs: [ '', 'orden' ],

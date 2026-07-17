@@ -187,6 +187,7 @@ export const MonsterEditPanel = (props: Props) => {
 			const copy = Utils.copy(monster);
 			copy.level = value;
 			if (copy.retainer) {
+				copy.retainer.level = copy.level;
 				if (copy.level >= 4) {
 					copy.retainer.level4 = undefined;
 					copy.retainer.featuresByLevel = RetainerLogic.getRetainerAdvancementFeatures(copy.level, copy.role.type, copy.retainer.level4, copy.retainer.level7, copy.retainer.level10);

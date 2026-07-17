@@ -681,7 +681,7 @@ For each condition the target suffers from, treat the thirst spent on this abili
 			level: 3,
 			features: [
 				FactoryLogic.feature.create({
-					id: 'vampire-class-3-',
+					id: 'vampire-class-3-1',
 					name: 'Predatory Senses',
 					description: 'Your heightened senses of sight, smell, and hearing make you excellent at finding hidden prey. You gain a double edge on tests made to search for hidden creatures. Once on each of your turns, you can Search for Hidden Creatures as a free maneuver. You ignore concealment and creatures that are bleeding, winded, or dying can\'t be hidden from you.'
 				}),

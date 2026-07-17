@@ -85,7 +85,7 @@ If the ability has multiple targets, the cost is reduced even if the ability has
 					})
 				}),
 				FactoryLogic.feature.createKitChoice({
-					id: 'shadow-1-5.5'
+					id: 'shadow-1-5a'
 				}),
 				FactoryLogic.feature.createClassAbilityChoice({
 					id: 'shadow-1-6',
