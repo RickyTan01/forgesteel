@@ -1,7 +1,7 @@
 {
 	"name": "forgesteel",
 	"private": true,
-	"version": "14.118.0",
+	"version": "14.119.0",
 	"type": "module",
 	"repository": "https://github.com/andyaiken/forgesteel.git",
 	"homepage": "https://forgesteel.net/",
@@ -43,7 +43,7 @@
 		"@vitest/coverage-v8": "^4.1.10",
 		"axios-mock-adapter": "^2.1.0",
 		"esbuild": "^0.28.1",
-		"eslint": "^10.6.0",
+		"eslint": "^10.7.0",
 		"globals": "^17.7.0",
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.63.0",

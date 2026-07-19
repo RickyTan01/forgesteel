@@ -1,4 +1,5 @@
 import { community, communityPrerelease } from '@/data/sourcebooks/community/community';
+import { ageOfSecrets } from '@/data/sourcebooks/community/age-of-secrets';
 import { beastheartSourcebook } from './sourcebooks/official/beastheart';
 import { blacksmith } from '@/data/sourcebooks/third-party/magazine-blacksmith';
 import { core } from '@/data/sourcebooks/official/core';
@@ -20,6 +21,7 @@ export class SourcebookData {
 	static summoner = summonerSourcebook;
 
 	// Third Party
+	static ageOfSecrets = ageOfSecrets;
 	static lookOut = lookOut;
 	static magazineBlacksmith = blacksmith;
 	static magazineRatcatcher = ratcatcher;

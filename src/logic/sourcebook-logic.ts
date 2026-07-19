@@ -63,6 +63,10 @@ export class SourcebookLogic {
 			list.push(SourcebookData.communityPrerelease);
 		}
 
+		if (FeatureFlags.hasFlag(FeatureFlags.ageOfSecrets.code)) {
+			list.push(SourcebookData.ageOfSecrets);
+		}
+
 		list.forEach(SourcebookUpdateLogic.updateSourcebook);
 
 		list.push(...homebrew);
