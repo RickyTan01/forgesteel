@@ -13,9 +13,9 @@ const thaumaturge: HeroClass = {
 	id: 'class-thaumaturge',
 	name: 'Thaumaturge',
 	description: `
-Where the Elementalist channels a substance—fire, earth, void—the Thaumaturge is defined by how and why they channel: the learned, academic magic of Vara's institutions, organised not by what it's made of but by what it's for. A Thaumaturge is a graduate of the Magisterium or the Cavendish Institute, a Sanctioner of the Dashin Hagwan, a fire-scholar of the Collegium—a person who has studied magic as a discipline and can bend it to a purpose.
+Where the Elementalist channels a substance - fire, earth, void - the Thaumaturge is defined by how and why they channel: the learned, academic magic of Vara's institutions, organised not by what it's made of but by what it's for. A Thaumaturge is a graduate of the Magisterium or the Cavendish Institute, a Sanctioner of the Dashin Hagwan, a fire-scholar of the Collegium - a person who has studied magic as a discipline and can bend it to a purpose.
 
-Their power is broad, precise, and a little dangerous, because the surest way to cast more than you've prepared is to reach through the thinning Veil and pull—and the Veil does not always give you only what you asked for.`,
+Their power is broad, precise, and a little dangerous, because the surest way to cast more than you've prepared is to reach through the thinning Veil and pull - and the Veil does not always give you only what you asked for.`,
 	type: 'standard',
 	subclassName: 'School',
 	subclassCount: 1,
@@ -59,21 +59,23 @@ Their power is broad, precise, and a little dangerous, because the surest way to
 						}
 					],
 					details: `
-**Overchannel.** When the prepared reserve isn't enough, a Thaumaturge reaches through the Veil for more. When you use an ability that costs Essence, you may pay part of the cost with Essence you don't have—drawing the difference straight through the Veil. Resolve the ability as though you'd paid in full. Your Essence becomes negative (to a deficit no greater than your Reason score), and before you resolve the ability you're paying for, roll on the Overchannel table.
+**Overchannel.** When the prepared reserve isn't enough, a Thaumaturge reaches through the Veil for more. When you use an ability that costs Essence, you may pay part of the cost with Essence you don't have - drawing the difference straight through the Veil. Resolve the ability as though you'd paid in full. Your Essence becomes negative (to a deficit no greater than your Reason score), and before you resolve the ability you're paying for, roll on the Overchannel table.
 
 While your Essence is negative you can't Overchannel; you climb back to positive through your normal gains.
 
-**Overchannel table (d10), rolled before the paid-for ability resolves:**
-1 — Flux. Roll again; if you get another 1, there is no effect.
-2 — Burnout. Your Essence drops to -2 x your Reason.
-3 — Backlash. You take damage equal to twice your Reason times your Essence debt; it can't be reduced.
-4 — Spillover. Each creature within a number of squares equal to your Essence debt (allies included) takes damage equal to twice your Reason (cold, fire, lightning, or sonic; your choice).
-5 — Feedback. You are dazed until the end of your next turn.
-6 — Interference. You are weakened (save ends).
-7 — Influx. A 1 cube within 5 squares becomes magic-thick difficult terrain until the end of the round; the first creature to enter it takes damage equal to your Reason times your Essence debt.
-8 — Flicker. You teleport to a random unoccupied square within 5.
-9 — Surge. One creature the ability affected takes extra damage equal to twice your Reason; if it imposed a condition, that condition's potency was 1 higher.
-10 — The Veil opens. Your Essence becomes 0 and you gain 1 surge, but the Director gains Malice equal to your Essence debt.`,
+| d10 | Effect                                                                                                                                                                                        |
+|:====|:==============================================================================================================================================================================================|
+| 1   | Flux. Roll again; if you get another 1, there is no effect.                                                                                                                                   |
+| 2   | Burnout. Your Essence drops to -2 x your Reason.                                                                                                                                              |
+| 3   | Backlash. You take damage equal to twice your Reason times your Essence debt; it can't be reduced.                                                                                            |
+| 4   | Spillover. Each creature within a number of squares equal to your Essence debt (allies included) takes damage equal to twice your Reason (cold, fire, lightning, or sonic; your choice).      |
+| 5   | Feedback. You are dazed until the end of your next turn.                                                                                                                                      |
+| 6   | Interference. You are weakened (save ends).                                                                                                                                                   |
+| 7   | Influx. A 1 cube within 5 squares becomes magic-thick difficult terrain until the end of the round; the first creature to enter it takes damage equal to your Reason times your Essence debt. |
+| 8   | Flicker. You teleport to a random unoccupied square within 5.                                                                                                                                 |
+| 9   | Surge. One creature the ability affected takes extra damage equal to twice your Reason; if it imposed a condition, that condition's potency was 1 higher.                                     |
+| 10  | The Veil opens. Your Essence becomes 0 and you gain 1 surge, but the Director gains Malice equal to your Essence debt.                                                                        |
+`,
 					canBeNegative: true
 				}),
 				FactoryLogic.feature.createSkillChoice({
@@ -179,7 +181,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 						distance: [ FactoryLogic.distance.create({ type: AbilityDistanceType.Burst, value: 5 }) ],
 						target: 'Special',
 						sections: [
-							FactoryLogic.createAbilitySectionText('You reveal each hidden or concealed creature. Spend 1: You learn one resistance or weakness of each creature you sense.')
+							FactoryLogic.createAbilitySectionText('You reveal each hidden or concealed creature.'),
+							FactoryLogic.createAbilitySectionSpend({
+								value: 1,
+								effect: 'You learn one immunity or weakness of each creature you sense.'
+							})
 						]
 					})
 				}),
@@ -280,7 +286,7 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 				FactoryLogic.feature.create({
 					id: 'thaumaturge-greater-overchannel',
 					name: 'Greater Overchannel',
-					description: 'Your reach through the Veil deepens: your Overchannel deficit can now run as deep as your Reason score + 2, and once per encounter you may Overchannel without rolling on the Overchannel table—a single, perfectly controlled draw.'
+					description: 'Your reach through the Veil deepens: your Overchannel deficit can now run as deep as your Reason score + 2, and once per encounter you may Overchannel without rolling on the Overchannel table - a single, perfectly controlled draw.'
 				}),
 				FactoryLogic.feature.createPerk({
 					id: 'thaumaturge-6-perk',
@@ -340,7 +346,7 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 				FactoryLogic.feature.create({
 					id: 'thaumaturge-master-of-the-veil',
 					name: 'Master of the Veil',
-					description: 'When you Overchannel, your Essence deficit has no limit—you have mastered the draw that destroys lesser casters.'
+					description: 'When you Overchannel, your Essence deficit has no limit - you have mastered the draw that destroys lesser casters.'
 				}),
 				FactoryLogic.feature.createHeroicResource({
 					id: 'thaumaturge-epic-resource',
@@ -408,14 +414,18 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					tier2: '5 + R damage',
 					tier3: '8 + R damage'
 				})),
-				FactoryLogic.createAbilitySectionText('This ability can deal your choice of cold, fire, lightning, or sonic damage. Spend 1: Enlarge the cube by 1.')
+				FactoryLogic.createAbilitySectionText('This ability can deal your choice of cold, fire, lightning, or sonic damage.'),
+				FactoryLogic.createAbilitySectionSpend({
+					value: 1,
+					effect: 'Enlarge the cube by 1.'
+				})
 			]
 		}),
 		FactoryLogic.createAbility({
 			id: 'thaum-force-dart',
 			name: 'Force Dart',
 			description: 'A small, exact unkindness, repeated as often as you please.',
-			type: FactoryLogic.type.createMain(),
+			type: FactoryLogic.type.createMain({ freeStrike: true }),
 			keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged, AbilityKeyword.Strike ],
 			distance: [ FactoryLogic.distance.createRanged(10) ],
 			target: 'One enemy',
@@ -427,7 +437,7 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					tier2: '6 + R damage',
 					tier3: '8 + R damage; slide 1'
 				})),
-				FactoryLogic.createAbilitySectionText('This ability deals double damage to objects. Spend 1+: You deal additional damage equal to your Reason for each point you spend. Special: This ability can be used as a ranged free strike.')
+				FactoryLogic.createAbilitySectionText('This ability deals double damage to objects. Spend 1+: You deal additional damage equal to your Reason for each point you spend.')
 			]
 		}),
 		FactoryLogic.createAbility({
@@ -538,7 +548,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					tier2: '8 + R damage; M<v restrained (save ends)',
 					tier3: '11 + R damage; M<s restrained (save ends)'
 				})),
-				FactoryLogic.createAbilitySectionText('Until the start of your next turn the area is difficult terrain, and a restrained creature takes R damage at the start of its turn as the sphere tightens. Spend 1: the sphere also pulls each creature in the area 2 squares toward its centre.')
+				FactoryLogic.createAbilitySectionText('Until the start of your next turn the area is difficult terrain, and a restrained creature takes R damage at the start of its turn as the sphere tightens.'),
+				FactoryLogic.createAbilitySectionSpend({
+					value: 1,
+					effect: 'The sphere also pulls each creature in the area 2 squares toward its centre.'
+				})
 			]
 		}),
 		FactoryLogic.createAbility({
@@ -570,8 +584,8 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 			target: 'One creature',
 			cost: 11,
 			sections: [
-				FactoryLogic.createAbilitySectionText('11 or lower: A leader, elite, or solo takes 20 damage and is dazed (save ends). Any other creature is destroyed and removed from the encounter  12-16: 15 damage; dazed (EoT)  17+: 10 damage'),
-				FactoryLogic.createAbilitySectionText('The target makes a Might test:')
+				FactoryLogic.createAbilitySectionText('The target makes a Might test:'),
+				FactoryLogic.createAbilitySectionText('11 or lower: A leader, elite, or solo takes 20 damage and is dazed (save ends). Any other creature is destroyed and removed from the encounter  12-16: 15 damage; dazed (EoT)  17+: 10 damage')
 			]
 		})
 	],
@@ -607,7 +621,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 								distance: [ FactoryLogic.distance.createRanged(10) ],
 								target: 'One creature',
 								sections: [
-									FactoryLogic.createAbilitySectionText('The target takes a bane on its next power roll. Spend 1: The target takes a bane on all power rolls (save ends).')
+									FactoryLogic.createAbilitySectionText('The target takes a bane on its next power roll.'),
+									FactoryLogic.createAbilitySectionSpend({
+										value: 1,
+										effect: 'The target takes a bane on all power rolls (save ends).'
+									})
 								]
 							})
 						}),
@@ -663,7 +681,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'One enemy',
 					cost: 3,
 					sections: [
-						FactoryLogic.createAbilitySectionText('The target takes a bane on its next power roll. Spend 2: The target also can\'t achieve a tier 3 result on that roll.')
+						FactoryLogic.createAbilitySectionText('The target takes a bane on its next power roll.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 2,
+							effect: 'The target also can\'t achieve a tier 3 result on that roll.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -702,7 +724,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'Each ally in the area',
 					cost: 5,
 					sections: [
-						FactoryLogic.createAbilitySectionText('Until the start of your next turn, each affected ally gains an edge on their next power roll, and the first time each is targeted by a strike they may shift 1 as a free triggered action. Spend 1: Grant each ally 1 Augury, which lasts until the end of the encounter.')
+						FactoryLogic.createAbilitySectionText('Until the start of your next turn, each affected ally gains an edge on their next power roll, and the first time each is targeted by a strike they may shift 1 as a free triggered action.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 1,
+							effect: 'Grant each ally 1 Augury, which lasts until the end of the encounter.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -786,7 +812,10 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 							tier2: '12 + R damage; I<v the target cannot achieve a tier 3 result on a power roll (save ends)',
 							tier3: '16 + R damage; I<s the target can only achieve a tier 1 result on a power roll (save ends)'
 						})),
-						FactoryLogic.createAbilitySectionText('Spend 1: if the target is marked by your Foreseen Demise, it can\'t roll to end this effect on its first attempt.')
+						FactoryLogic.createAbilitySectionSpend({
+							value: 1,
+							effect: 'If the target is marked by your Foreseen Demise, it can\'t roll to end this effect on its first attempt.'
+						})
 					]
 				})
 			],
@@ -829,7 +858,10 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 										tier2: '6 + R fire damage',
 										tier3: '9 + R fire damage'
 									})),
-									FactoryLogic.createAbilitySectionText('Spend 1: The line becomes 8x1.')
+									FactoryLogic.createAbilitySectionSpend({
+										value: 1,
+										effect: 'The line becomes 8x1.'
+									})
 								]
 							})
 						}),
@@ -890,7 +922,22 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 							tier2: '6 + R fire damage',
 							tier3: '9 + R fire damage'
 						})),
-						FactoryLogic.createAbilitySectionText('Spend 1: The line becomes 8x1. Backlash: You gain the following ability: Backlash Touch the fire and the fire answers. Magic, Melee Triggered action The triggering enemy takes fire or force damage equal to twice your Reason')
+						FactoryLogic.createAbilitySectionSpend({
+							value: 1,
+							effect: 'The line becomes 8x1.'
+						})
+					]
+				}),
+				FactoryLogic.createAbility({
+					id: 'collegium-backlash',
+					name: 'Backlash',
+					description: 'Touch the fire and the fire answers.',
+					type: FactoryLogic.type.createTrigger('An enemy hits you with a strike'),
+					keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ],
+					distance: [ FactoryLogic.distance.createMelee() ],
+					target: 'The attacker',
+					sections: [
+						FactoryLogic.createAbilitySectionText('The triggering enemy takes fire or force damage equal to twice your Reason.')
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -964,7 +1011,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 							tier2: '9 + R fire damage',
 							tier3: '12 + R fire damage;'
 						})),
-						FactoryLogic.createAbilitySectionText('The area becomes a burning field until the end of your next turn: it is difficult terrain, and a creature that enters or starts its turn there takes R fire damage. Spend 3: The burning field lasts until the end of the encounter instead.')
+						FactoryLogic.createAbilitySectionText('The area becomes a burning field until the end of your next turn: it is difficult terrain, and a creature that enters or starts its turn there takes R fire damage.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 3,
+							effect: 'The burning field lasts until the end of the encounter instead.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1072,7 +1123,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 							tier2: '16 + R fire damage; prone',
 							tier3: '22 + R fire damage; prone'
 						})),
-						FactoryLogic.createAbilitySectionText('If you Overchannelled this turn, for each point of Essence you are in debt increase the burst size by 1 and add R damage. This damage can\'t be reduced by temporary Stamina. Spend 3: The area becomes burning difficult terrain until the end of the encounter. Any creature entering or starting their turn in the area suffers 5 x R fire damage.')
+						FactoryLogic.createAbilitySectionText('If you Overchannelled this turn, for each point of Essence you are in debt increase the burst size by 1 and add R damage. This damage can\'t be reduced by temporary Stamina.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 3,
+							effect: 'The area becomes burning difficult terrain until the end of the encounter. Any creature entering or starting their turn in the area suffers 5 x R fire damage.'
+						})
 					]
 				})
 			],
@@ -1230,7 +1285,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'Each ally in the area',
 					cost: 7,
 					sections: [
-						FactoryLogic.createAbilitySectionText('Until the start of your next turn, each affected ally reduces all damage it takes by R, and any creature that hits a target with a strike takes force damage equal to 2 × R. Spend 3: The first time each target would be reduced to winded, it is instead left at 1 above winded.')
+						FactoryLogic.createAbilitySectionText('Until the start of your next turn, each affected ally reduces all damage it takes by R, and any creature that hits a target with a strike takes force damage equal to 2 × R.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 3,
+							effect: 'The first time each target would be reduced to winded, it is instead left at 1 above winded.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1288,7 +1347,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'Each ally in the area',
 					cost: 11,
 					sections: [
-						FactoryLogic.createAbilitySectionText('Until the end of your next turn, the target can\'t be reduced below 1 Stamina, and can\'t be subjected to conditions or forced movement by magic or psionic abilities. Spend 3: Each target can also end one condition currently affecting them.')
+						FactoryLogic.createAbilitySectionText('Until the end of your next turn, the target can\'t be reduced below 1 Stamina, and can\'t be subjected to conditions or forced movement by magic or psionic abilities.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 3,
+							effect: 'Each target can also end one condition currently affecting them.'
+						})
 					]
 				})
 			],
@@ -1400,7 +1463,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'Self or one ally',
 					cost: 3,
 					sections: [
-						FactoryLogic.createAbilitySectionText('Until the start of your next turn, the target gains concealment, and the first time each round a creature strikes the target, that creature takes a bane on the power roll. Spend 1: When an attacker makes a strike against the target, the attacker takes psychic damage equal to R.')
+						FactoryLogic.createAbilitySectionText('Until the start of your next turn, the target gains concealment, and the first time each round a creature strikes the target, that creature takes a bane on the power roll.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 1,
+							effect: 'When an attacker makes a strike against the target, the attacker takes psychic damage equal to R.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1413,7 +1480,14 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'Each enemy in the area',
 					cost: 5,
 					sections: [
-						FactoryLogic.createAbilitySectionText('11 or lower: p<w frightened (EoT)  12-16: p<v frightened (save ends)  17+: p<s frightened (save ends), and the target must move away from you on its next turn')
+						FactoryLogic.createAbilitySectionRoll(
+							FactoryLogic.createPowerRoll({
+								characteristic: Characteristic.Reason,
+								tier1: 'P < [weak] frightened (EoT)',
+								tier2: 'P < [average] frightened (save ends)',
+								tier3: 'P < [strong] frightened (save ends), and the target must move away from you on its next turn'
+							})
+						)
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1428,11 +1502,15 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					sections: [
 						FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({
 							characteristic: Characteristic.Reason,
-							tier1: '4 + R psychic damage; i<w dazed (EoT)',
-							tier2: '6 + R psychic damage; i<v dazed (save ends)',
-							tier3: '9 + R psychic damage; i<s dazed (save ends)'
+							tier1: '4 + R psychic damage; I < [weak] dazed (EoT)',
+							tier2: '6 + R psychic damage; I < [average] dazed (save ends)',
+							tier3: '9 + R psychic damage; I < [strong] dazed (save ends)'
 						})),
-						FactoryLogic.createAbilitySectionText('While dazed in this way, the target treats one creature of your choice as its enemy. Spend 1: The target cannot make opportunity attacks while dazed.')
+						FactoryLogic.createAbilitySectionText('While dazed in this way, the target treats one creature of your choice as its enemy.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 1,
+							effect: 'The target cannot make opportunity attacks while dazed.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1445,7 +1523,14 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'Each enemy in the area',
 					cost: 7,
 					sections: [
-						FactoryLogic.createAbilitySectionText('11 or lower: i<w dazed (EoT)  12-16: i<v dazed (EoT)  17+: i<s dazed (save ends)'),
+						FactoryLogic.createAbilitySectionRoll(
+							FactoryLogic.createPowerRoll({
+								characteristic: Characteristic.Reason,
+								tier1: 'I < [weak] dazed (EoT)',
+								tier2: 'I < [average] dazed (EoT)',
+								tier3: 'I < [strong] dazed (save ends)'
+							})
+						),
 						FactoryLogic.createAbilitySectionText('On a tier 2 or 3 result, the target perceives its allies as enemies - on its turn, you can have it use its action to make a strike against the nearest creature of your choice.')
 					]
 				}),
@@ -1459,7 +1544,14 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'One creature',
 					cost: 7,
 					sections: [
-						FactoryLogic.createAbilitySectionText('11 or lower: i<w dazed (save ends)  12-16: i<v dominated (EoT)  17+: i<s dominated (save ends)'),
+						FactoryLogic.createAbilitySectionRoll(
+							FactoryLogic.createPowerRoll({
+								characteristic: Characteristic.Reason,
+								tier1: 'I < [weak] dazed (save ends)',
+								tier2: 'I < [average] dominated (EoT)',
+								tier3: 'I < [strong] dominated (save ends)'
+							})
+						),
 						FactoryLogic.createAbilitySectionText('While the target is dominated, you spend its actions as your own. You cannot direct it to spend Malice. This ability cannot target leaders, elites, or solos.')
 					]
 				}),
@@ -1492,7 +1584,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'The area',
 					cost: 9,
 					sections: [
-						FactoryLogic.createAbilitySectionText('You raise a persistent illusion until the end of the encounter. While an enemy is in the area it is frightened (P<v, save ends) and perceives its allies as enemies. An enemy that enters or starts its turn in the area is subjected to this effect anew. Spend 1: The first time each enemy fails a save here, it also takes psychic damage equal to 2 × R.')
+						FactoryLogic.createAbilitySectionText('You raise a persistent illusion until the end of the encounter. While an enemy is in the area it is frightened (P<v, save ends) and perceives its allies as enemies. An enemy that enters or starts its turn in the area is subjected to this effect anew.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 1,
+							effect: 'The first time each enemy fails a save here, it also takes psychic damage equal to 2 × R.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1511,7 +1607,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 							tier2: 'P<v the target is either charmed or frightened (its choice) (save ends)',
 							tier3: 'P<s the target is either charmed or frightened (its choice) (save ends)'
 						})),
-						FactoryLogic.createAbilitySectionText('If charmed, a target can\'t include you or your allies as targets. A leader, elite, or solo gains a +2 bonus to saving throws to end this effect. Spend 1: A creature that saves is then dazed until the end of its next turn.')
+						FactoryLogic.createAbilitySectionText('If charmed, a target can\'t include you or your allies as targets. A leader, elite, or solo gains a +2 bonus to saving throws to end this effect.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 1,
+							effect: 'A creature that saves is then dazed until the end of its next turn.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1567,13 +1667,17 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 								distance: [ FactoryLogic.distance.createMelee(1) ],
 								target: 'One creature or object',
 								sections: [
+									FactoryLogic.createAbilitySectionText('You conjure a weapon and teleport up to 3 squares, then make a power roll.'),
 									FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({
 										characteristic: Characteristic.Reason,
 										tier1: '2 + R damage',
 										tier2: '4 + R damage',
 										tier3: '6 + R damage'
 									})),
-									FactoryLogic.createAbilitySectionText('You conjure a weapon and teleport up to 3 squares, then make a power roll. Spend 1: Your next weapon strike this turn deals an extra 2 x Reason damage and can be made at Ranged 5.')
+									FactoryLogic.createAbilitySectionSpend({
+										value: 1,
+										effect: 'Your next weapon strike this turn deals an extra 2 x Reason damage and can be made at Ranged 5.'
+									})
 								]
 							})
 						}),
@@ -1629,8 +1733,8 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'One enemy',
 					cost: 3,
 					sections: [
-						FactoryLogic.createAbilitySectionText('11 or lower: The target is teleported up to twice your Reason  12-16: The target is teleported up to your Reason  17+: No effect'),
-						FactoryLogic.createAbilitySectionText('The target makes a Might test:')
+						FactoryLogic.createAbilitySectionText('The target makes a Might test:'),
+						FactoryLogic.createAbilitySectionText('11 or lower: The target is teleported up to twice your Reason  12-16: The target is teleported up to your Reason  17+: No effect')
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1643,7 +1747,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'One creature',
 					cost: 3,
 					sections: [
-						FactoryLogic.createAbilitySectionText('You swap places with the target. Spend 1: You can also teleport one adjacent creature; it must end adjacent to you.')
+						FactoryLogic.createAbilitySectionText('You swap places with the target.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 1,
+							effect: 'You can also teleport one adjacent creature; it must end adjacent to you.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1656,7 +1764,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'The area',
 					cost: 5,
 					sections: [
-						FactoryLogic.createAbilitySectionText('Conjure a wall up to 5 squares long that blocks movement until the end of your next turn. Spend 2: The wall also blocks line of effect.')
+						FactoryLogic.createAbilitySectionText('Conjure a wall up to 5 squares long that blocks movement until the end of your next turn.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 2,
+							effect: 'The wall also blocks line of effect.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1688,8 +1800,8 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'Each enemy in the area',
 					cost: 7,
 					sections: [
-						FactoryLogic.createAbilitySectionText('11 or lower: The target is teleported up to twice your Reason, and takes R force damage  12-16: The target is teleported up to your Reason  17+: No effect'),
-						FactoryLogic.createAbilitySectionText('Each enemy makes a Might test:')
+						FactoryLogic.createAbilitySectionText('Each enemy makes a Might test:'),
+						FactoryLogic.createAbilitySectionText('11 or lower: The target is teleported up to twice your Reason, and takes R force damage  12-16: The target is teleported up to your Reason  17+: No effect')
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1715,8 +1827,12 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'Each creature in the area',
 					cost: 9,
 					sections: [
+						FactoryLogic.createAbilitySectionText('The spell creates an area of storm which lasts until the end of your next turn; each creature who enters or starts their turn in the area must make a Might test:'),
 						FactoryLogic.createAbilitySectionText('11 or lower: 12 damage; pull 4 toward the centre of the area  12-16: 7 damage; pull 2 toward the centre of the area  17+: 4 damage'),
-						FactoryLogic.createAbilitySectionText('The spell creates an area of storm which lasts until the end of your next turn; each creature who enters or starts their turn in the area must make a Might test: Special: As a manoeuvre on your next turn, you can spend 3 essence to maintain the gyre for an additional round.')
+						FactoryLogic.createAbilitySectionField({
+							name: 'Special',
+							effect: 'As a manoeuvre on your next turn, you can spend 3 essence to maintain the gyre for an additional round.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1729,7 +1845,14 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'Each enemy in the area',
 					cost: 9,
 					sections: [
-						FactoryLogic.createAbilitySectionText('11 or lower: M<w slide 3 toward the rift\'s centre  12-16: M<v banished (EoT)  17+: M<s banished (save ends)'),
+						FactoryLogic.createAbilitySectionRoll(
+							FactoryLogic.createPowerRoll({
+								characteristic: Characteristic.Reason,
+								tier1: 'M<w slide 3 toward the rift\'s centre',
+								tier2: 'M<v banished (EoT)',
+								tier3: 'M<s banished (save ends)'
+							})
+						),
 						FactoryLogic.createAbilitySectionText('A banished creature is removed from the encounter, returning dazed in the space it left when the effect ends. The rift remains until the end of the encounter: its area is difficult terrain, and an enemy that enters it takes force damage equal to twice your Reason.')
 					]
 				}),
@@ -1743,7 +1866,14 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'Each enemy in the area',
 					cost: 11,
 					sections: [
-						FactoryLogic.createAbilitySectionText('11 or lower: M<w banished (EoT)  12-16: M<v banished (save ends)  17+: M<s banished (save ends), and each time the target fails the saving throw it takes damage equal to twice your Reason as it falls'),
+						FactoryLogic.createAbilitySectionRoll(
+							FactoryLogic.createPowerRoll({
+								characteristic: Characteristic.Reason,
+								tier1: 'M<w banished (EoT)',
+								tier2: 'M<v banished (save ends)',
+								tier3: 'M<s banished (save ends), and each time the target fails the saving throw it takes damage equal to twice your Reason as it falls'
+							})
+						),
 						FactoryLogic.createAbilitySectionText('A banished creature is removed from the encounter and returns prone in the space it left when the effect ends. A leader, elite, or solo gains a +2 bonus to saving throws to end this effect.')
 					]
 				}),
@@ -1757,7 +1887,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'Special',
 					cost: 11,
 					sections: [
-						FactoryLogic.createAbilitySectionText('You may swap the positions of any number of pairs of creatures within the area, then place a number of gates equal to your Reason in unoccupied squares in the area. Spend 5: Each enemy you moved this way takes force damage equal to 2 × R on arrival.')
+						FactoryLogic.createAbilitySectionText('You may swap the positions of any number of pairs of creatures within the area, then place a number of gates equal to your Reason in unoccupied squares in the area.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 5,
+							effect: 'Each enemy you moved this way takes force damage equal to 2 × R on arrival.'
+						})
 					]
 				})
 			],
@@ -1854,8 +1988,18 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'One or two creatures',
 					cost: 3,
 					sections: [
-						FactoryLogic.createAbilitySectionText('11 or lower: a<w slowed (EoT)  12-16: a<v slowed (save ends)  17+: a<s slowed and weakened (save ends)'),
-						FactoryLogic.createAbilitySectionText('Spend 1: The target can\'t shift or stand from prone while slowed this way.')
+						FactoryLogic.createAbilitySectionRoll(
+							FactoryLogic.createPowerRoll({
+								characteristic: Characteristic.Reason,
+								tier1: 'A < [weak] slowed (EoT)',
+								tier2: 'A < [average] slowed (save ends)',
+								tier3: 'A < [strong] slowed and weakened (save ends)'
+							})
+						),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 1,
+							effect: 'The target can\'t shift or stand from prone while slowed this way.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1868,7 +2012,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'One ally',
 					cost: 3,
 					sections: [
-						FactoryLogic.createAbilitySectionText('Choose one, until the start of your next turn: •	The target gains +2 Speed and ignores difficult terrain. •	The target gains temporary Stamina equal to your Reason and immunity equal to your Reason to one damage type of your choice. Spend 1: Grant both benefits.')
+						FactoryLogic.createAbilitySectionText('Choose one, until the start of your next turn: •	The target gains +2 Speed and ignores difficult terrain. •	The target gains temporary Stamina equal to your Reason and immunity equal to your Reason to one damage type of your choice.'),
+						FactoryLogic.createAbilitySectionSpend({
+							value: 1,
+							effect: 'Grant both benefits.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1881,7 +2029,14 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'One creature',
 					cost: 5,
 					sections: [
-						FactoryLogic.createAbilitySectionText('11 or lower: a<w slowed (save ends)  12-16: a<v transformed (EoT)  17+: a<s transformed (save ends)'),
+						FactoryLogic.createAbilitySectionRoll(
+							FactoryLogic.createPowerRoll({
+								characteristic: Characteristic.Reason,
+								tier1: 'A < [weak] slowed (save ends)',
+								tier2: 'A < [average] transformed (EoT)',
+								tier3: 'A < [strong] transformed (save ends)'
+							})
+						),
 						FactoryLogic.createAbilitySectionText('A transformed target becomes a harmless critter: it loses all abilities and can only move. This ability cannot target leaders, elites, or solos.')
 					]
 				}),
@@ -1895,7 +2050,7 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'The area',
 					cost: 5,
 					sections: [
-						FactoryLogic.createAbilitySectionText('Until the end of the encounter, you can use a maneuver to do any of the following: •	Target a 5x1 line within 10 and either raise or lower it by one square •	Target a 5x1 line within 10 and make it difficult terrain •	Target a square within 10 and make it grasping ground: a creature that enters or starts its turn there is restrained (EoT) if it has a<w.')
+						FactoryLogic.createAbilitySectionText('Until the end of the encounter, you can use a maneuver to do any of the following: •	Target a 5x1 line within 10 and either raise or lower it by one square •	Target a 5x1 line within 10 and make it difficult terrain •	Target a square within 10 and make it grasping ground: a creature that enters or starts its turn there is restrained (EoT) if it has A < [weak] .')
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1940,7 +2095,11 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'Each ally in the area',
 					cost: 9,
 					sections: [
-						FactoryLogic.createAbilitySectionText('The target gains temporary Stamina equal to twice your Reason. Until the end of your next turn, the target gains +1 Speed, +1 Stability, and an edge on power rolls. Special: On each of your turns, you can spend 3 essence as a maneuver to sustain this effect until the end of your following turn.')
+						FactoryLogic.createAbilitySectionText('The target gains temporary Stamina equal to twice your Reason. Until the end of your next turn, the target gains +1 Speed, +1 Stability, and an edge on power rolls.'),
+						FactoryLogic.createAbilitySectionField({
+							name: 'Special',
+							effect: 'On each of your turns, you can spend 3 essence as a maneuver to sustain this effect until the end of your following turn.'
+						})
 					]
 				}),
 				FactoryLogic.createAbility({
@@ -1953,7 +2112,14 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'One creature',
 					cost: 9,
 					sections: [
-						FactoryLogic.createAbilitySectionText('11 or lower: M<w restrained (EoT)  12-16: M<v suspended (save ends)  17+: M<s suspended (save ends)'),
+						FactoryLogic.createAbilitySectionRoll(
+							FactoryLogic.createPowerRoll({
+								characteristic: Characteristic.Reason,
+								tier1: 'M<w restrained (EoT)',
+								tier2: 'M<v suspended (save ends)',
+								tier3: 'M<s suspended (save ends)'
+							})
+						),
 						FactoryLogic.createAbilitySectionText('While restrained by this ability, a target that fails three saving throws can\'t take actions and is treated as an object. A leader, elite, or solo gains a +2 bonus to saving throws to end this effect.')
 					]
 				}),
@@ -1986,8 +2152,12 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 					target: 'The area',
 					cost: 11,
 					sections: [
+						FactoryLogic.createAbilitySectionText('The area is reshaped until the end of the encounter. Each enemy that enters the area or starts its turn there makes a Might test:'),
 						FactoryLogic.createAbilitySectionText('11 or lower: restrained (EoT)  12-16: slowed (save ends)  17+: unaffected'),
-						FactoryLogic.createAbilitySectionText('The area is reshaped until the end of the encounter. Each enemy that enters the area or starts its turn there makes a Might test: Spend 2: Each enemy that enters or starts its turn in the area takes damage equal to your Reason.')
+						FactoryLogic.createAbilitySectionSpend({
+							value: 2,
+							effect: 'Each enemy that enters or starts its turn in the area takes damage equal to your Reason.'
+						})
 					]
 				})
 			],
