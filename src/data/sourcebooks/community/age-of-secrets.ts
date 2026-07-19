@@ -1,6 +1,8 @@
+import { EnvironmentData, OrganizationData, UpbringingData } from '@/data/culture-data';
 import { AbilityDistanceType } from '@/enums/ability-distance-type';
 import { AbilityKeyword } from '@/enums/ability-keyword';
 import { Characteristic } from '@/enums/characteristic';
+import { CultureType } from '@/enums/culture-type';
 import { FactoryLogic } from '@/logic/factory-logic';
 import { FeatureField } from '@/enums/feature-field';
 import { HeroClass } from '@/models/class';
@@ -8,6 +10,7 @@ import { PerkList } from '@/enums/perk-list';
 import { SkillList } from '@/enums/skill-list';
 import { Sourcebook } from '@/models/sourcebook';
 import { SourcebookType } from '@/enums/sourcebook-type';
+import { FeatureType } from '@/enums/feature-type';
 
 const thaumaturge: HeroClass = {
 	id: 'class-thaumaturge',
@@ -2175,26 +2178,397 @@ export const ageOfSecrets: Sourcebook = {
 	type: SourcebookType.Community,
 	adventures: [],
 	ancestries: [],
-	careers: [],
+	careers: [
+		{
+			id: 'career-age-of-secrets-archaeologist',
+			name: 'Archaeologist',
+			description: 'You explored the ruins of lost civilizations, seeking knowledge, treasure, or both.',
+			features: [
+				FactoryLogic.feature.createSkillChoice({
+					id: 'career-age-of-secrets-archaeologist-feature-1',
+					selected: [ 'History' ]
+				}),
+				FactoryLogic.feature.createSkillChoice({
+					id: 'career-age-of-secrets-archaeologist-feature-2',
+					listOptions: [ SkillList.Exploration, SkillList.Lore ],
+					count: 2
+				}),
+				FactoryLogic.feature.createLanguageChoice({
+					id: 'career-age-of-secrets-archaeologist-feature-3',
+					count: 2
+				}),
+				FactoryLogic.feature.createPerk({
+					id: 'career-age-of-secrets-archaeologist-feature-4',
+					lists: [ PerkList.Lore ]
+				})
+			],
+			incitingIncidents: {
+				options: [
+					{ id: 'career-age-of-secrets-archaeologist-ii-1', name: 'The Wrong Door', description: 'You opened a sealed chamber that should have remained closed. Something escaped - and it’s still out there.' },
+					{ id: 'career-age-of-secrets-archaeologist-ii-2', name: 'Buried Truth', description: 'You uncovered evidence that powerful people wanted hidden. They made sure you wouldn’t publish it.' },
+					{ id: 'career-age-of-secrets-archaeologist-ii-3', name: 'Cursed Find', description: 'An artifact you recovered brought ruin to you or someone you loved.' },
+					{ id: 'career-age-of-secrets-archaeologist-ii-4', name: 'Lost Expedition', description: 'You were the only survivor of a doomed dig. No one believes your account of what happened.' },
+					{ id: 'career-age-of-secrets-archaeologist-ii-5', name: 'Stolen Discovery', description: 'Your greatest find was taken from you and credited to someone else.' },
+					{ id: 'career-age-of-secrets-archaeologist-ii-6', name: 'Ancient Calling', description: 'Something in the ruins spoke to you - and you’ve been chasing that voice ever since.' }
+				],
+				selected: null
+			}
+		},
+		{
+			id: 'career-age-of-secrets-crew',
+			name: 'Crew',
+			description: 'You served aboard a skyship, working as part of a crew that lived and died by coordination and skill.',
+			features: [
+				FactoryLogic.feature.createSkillChoice({
+					id: 'career-age-of-secrets-crew-feature-1',
+					selected: [ 'Mechanics' ]
+				}),
+				FactoryLogic.feature.createSkillChoice({
+					id: 'career-age-of-secrets-crew-feature-2',
+					listOptions: [ SkillList.Exploration, SkillList.Interpersonal ],
+					count: 2
+				}),
+				FactoryLogic.feature.createLanguageChoice({
+					id: 'career-age-of-secrets-crew-feature-3',
+					count: 2
+				}),
+				FactoryLogic.feature.createPerk({
+					id: 'career-age-of-secrets-crew-feature-4',
+					lists: [ PerkList.Exploration ]
+				})
+			],
+			incitingIncidents: {
+				options: [
+					{ id: 'career-age-of-secrets-crew-ii-1', name: 'Crash Landing', description: 'Your ship went down. You survived - but not everyone did.' },
+					{ id: 'career-age-of-secrets-crew-ii-2', name: 'Mutiny', description: 'Your crew turned on itself, and you had to choose a side.' },
+					{ id: 'career-age-of-secrets-crew-ii-3', name: 'Lost in the Storm', description: 'You encountered something unnatural in the skies.' },
+					{ id: 'career-age-of-secrets-crew-ii-4', name: 'Sabotage', description: 'Someone brought your ship down - and you intend to find out who.' },
+					{ id: 'career-age-of-secrets-crew-ii-5', name: 'Abandoned', description: 'You were left behind during a mission gone wrong.' },
+					{ id: 'career-age-of-secrets-crew-ii-6', name: 'Forbidden Cargo', description: 'You transported something you shouldn’t have. Now others are hunting it.' }
+				],
+				selected: null
+			}
+		},
+		{
+			id: 'career-age-of-secrets-diplomat',
+			name: 'Diplomat',
+			description: 'You represented a faction, nation, or cause, navigating delicate negotiations and dangerous politics.',
+			features: [
+				FactoryLogic.feature.createSkillChoice({
+					id: 'career-age-of-secrets-diplomat-feature-1',
+					listOptions: [ SkillList.Interpersonal, SkillList.Intrigue ],
+					count: 2
+				}),
+				FactoryLogic.feature.createLanguageChoice({
+					id: 'career-age-of-secrets-diplomat-feature-2',
+					count: 2
+				}),
+				FactoryLogic.feature.createBonus({
+					id: 'career-age-of-secrets-diplomat-feature-3',
+					field: FeatureField.Renown,
+					value: 1
+				}),
+				FactoryLogic.feature.createPerk({
+					id: 'career-age-of-secrets-diplomat-feature-4',
+					lists: [ PerkList.Interpersonal ]
+				})
+			],
+			incitingIncidents: {
+				options: [
+					{ id: 'career-age-of-secrets-diplomat-ii-1', name: 'Broken Treaty', description: 'A deal you brokered collapsed, leading to bloodshed.' },
+					{ id: 'career-age-of-secrets-diplomat-ii-2', name: 'Assassination Attempt', description: 'Someone tried to kill you during negotiations - and nearly succeeded.' },
+					{ id: 'career-age-of-secrets-diplomat-ii-3', name: 'Betrayal', description: 'Your own faction undermined you.' },
+					{ id: 'career-age-of-secrets-diplomat-ii-4', name: 'Impossible Peace', description: 'You failed to stop a war that still haunts you.' },
+					{ id: 'career-age-of-secrets-diplomat-ii-5', name: 'Secret Clause', description: 'You made a deal with hidden consequences.' },
+					{ id: 'career-age-of-secrets-diplomat-ii-6', name: 'Exile', description: 'You were cast out after a diplomatic disaster.' }
+				],
+				selected: null
+			}
+		},
+		{
+			id: 'career-age-of-secrets-journalist',
+			name: 'Journalist',
+			description: 'You documented events, uncovered secrets, and told stories others wanted buried.',
+			features: [
+				FactoryLogic.feature.createSkillChoice({
+					id: 'career-age-of-secrets-journalist-feature-1',
+					selected: [ 'Interrogate' ]
+				}),
+				FactoryLogic.feature.createSkillChoice({
+					id: 'career-age-of-secrets-journalist-feature-2',
+					listOptions: [ SkillList.Interpersonal, SkillList.Intrigue ],
+					count: 2
+				}),
+				FactoryLogic.feature.createLanguageChoice({
+					id: 'career-age-of-secrets-journalist-feature-3',
+					count: 1
+				}),
+				FactoryLogic.feature.createBonus({
+					id: 'career-age-of-secrets-journalist-feature-4',
+					field: FeatureField.Renown,
+					value: 1
+				}),
+				FactoryLogic.feature.createPerk({
+					id: 'career-age-of-secrets-journalist-feature-5',
+					lists: [ PerkList.Intrigue ]
+				})
+			],
+			incitingIncidents: {
+				options: [
+					{ id: 'career-age-of-secrets-journalist-ii-1', name: 'Silenced Story', description: 'Your investigation was shut down - and those responsible came after you.' },
+					{ id: 'career-age-of-secrets-journalist-ii-2', name: 'Witness to Horror', description: 'You recorded something no one else survived. You can’t forget it.' },
+					{ id: 'career-age-of-secrets-journalist-ii-3', name: 'Public Enemy', description: 'Your work exposed powerful figures. Now you’re the target.' },
+					{ id: 'career-age-of-secrets-journalist-ii-4', name: 'Fabricated Truth', description: 'You were forced to publish a lie - and it cost lives.' },
+					{ id: 'career-age-of-secrets-journalist-ii-5', name: 'Disappearing Sources', description: 'Your contacts began vanishing one by one.' },
+					{ id: 'career-age-of-secrets-journalist-ii-6', name: 'The Big One', description: 'You found the story that changes everything. Now you have to survive long enough to tell it.' }
+				],
+				selected: null
+			}
+		},
+		{
+			id: 'career-age-of-secrets-salvager',
+			name: 'Salvager',
+			description: 'You made a living recovering valuables from ruins, battlefields, and disasters.',
+			features: [
+				FactoryLogic.feature.createSkillChoice({
+					id: 'career-age-of-secrets-salvager-feature-1',
+					selected: [ 'Endurance' ]
+				}),
+				FactoryLogic.feature.createSkillChoice({
+					id: 'career-age-of-secrets-salvager-feature-2',
+					listOptions: [ SkillList.Exploration ],
+					count: 2
+				}),
+				FactoryLogic.feature.createBonus({
+					id: 'career-age-of-secrets-salvager-feature-3',
+					field: FeatureField.ProjectPoints,
+					value: 240
+				}),
+				FactoryLogic.feature.createPerk({
+					id: 'career-age-of-secrets-salvager-feature-4',
+					lists: [ PerkList.Exploration ]
+				})
+			],
+			incitingIncidents: {
+				options: [
+					{ id: 'career-age-of-secrets-salvager-ii-1', name: 'Too Late', description: 'You arrived at a site after someone else - and found only bodies.' },
+					{ id: 'career-age-of-secrets-salvager-ii-2', name: 'Unstable Ground', description: 'A collapse or explosion nearly killed you.' },
+					{ id: 'career-age-of-secrets-salvager-ii-3', name: 'Claim Jumped', description: 'A rival stole your haul - and your reputation.' },
+					{ id: 'career-age-of-secrets-salvager-ii-4', name: 'Living Ruin', description: 'Something in the wreckage fought back.' },
+					{ id: 'career-age-of-secrets-salvager-ii-5', name: 'Moral Line', description: 'You took something you shouldn’t have.' },
+					{ id: 'career-age-of-secrets-salvager-ii-6', name: 'Last Job', description: 'A salvage operation went so wrong you walked away from the life - for now.' }
+				],
+				selected: null
+			}
+		}
+	],
 	classes: [
 		thaumaturge
 	],
-	complications: [],
-	cultures: [],
+	complications: [
+		{
+			id: 'comp-creature-of-masks',
+			name: 'Creature of Masks',
+			description: `
+Regardless of your apparent ancestry, you are a síabhra underneath – one who has adopted so many identities over the years that they have lost contact with their original form.
+
+**Note**: You can’t take this complication if you’re a síabhra.
+
+**Note**: This complication can be chaotic. Be sure you know what you’re doing before you choose it.`,
+			features: [
+				FactoryLogic.feature.create({
+					id: 'comp-creature-of-masks-bd',
+					name: 'Creature of Masks',
+					description: 'If you take psychic damage, during your next respite you must change your ancestry. You should select your new ancestry, and its purchased traits, at random.'
+				})
+			]
+		},
+		{
+			id: 'comp-elemental-resonance',
+			name: 'Elemental Resonance',
+			description: 'One elemental force answers you a little too eagerly.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'comp-elemental-resonance-b',
+					name: 'Elemental Resonance Benefit',
+					description: 'Choose fire, lightning, cold, poison, corruption, or psychic damage. You gain immunity to that damage type equal to your echelon.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'comp-elemental-resonance-d',
+					name: 'Elemental Resonance Drawback',
+					description: 'When you take damage of that type, your presence becomes obvious and unstable; you take a bane on tests to hide, lie low, or avoid notice.'
+				})
+			]
+		},
+		{
+			id: 'comp-instinctive-aggression',
+			name: 'Instinctive Aggression',
+			description: 'Something in you answers danger before your mind does.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'comp-instinctive-aggression-b',
+					name: 'Instinctive Aggression Benefit',
+					description: 'You gain an edge on Brag and Intimidate tests.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'comp-instinctive-aggression-d',
+					name: 'Instinctive Aggression Drawback',
+					description: 'When a creature openly challenges your claim, authority, or place in a scene, you take a double bane on tests to withdraw, surrender, or accept humiliation until the end of the scene.'
+				})
+			]
+		},
+		{
+			id: 'comp-scent-memory',
+			name: 'Scent-Memory',
+			description: 'You remember people and places by scent, vibration, or some other almost-animal cue.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'comp-scent-memory-b',
+					name: 'Scent-Memory Benefit',
+					description: 'You gain an edge on tests to identify whether you’ve encountered a creature, object, or place before.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'comp-scent-memory-d',
+					name: 'Scent-Memory Drawback',
+					description: 'Strong smells (like blood, rot, smoke, or fear) can overwhelm you; in a scene dominated by one of those sensations, you take a bane on tests requiring concentration or delicate social reading.'
+				})
+			]
+		},
+		{
+			id: 'comp-volatile-core',
+			name: 'Volatile Core',
+			description: 'Power builds in you and escapes when pressed.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'comp-volatile-core-b',
+					name: 'Volatile Core Benefit',
+					description: 'Choose fire, lightning, cold, poison, corruption, or psychic damage. The first time each encounter you roll a tier 3 result on a strike, one creature adjacent to the target takes damage of that type equal to your echelon.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'comp-volatile-core-d',
+					name: 'Volatile Core Drawback',
+					description: 'The first time each encounter you become winded, each adjacent ally or object takes damage of that type equal to your echelon.'
+				})
+			]
+		}
+	],
+	cultures: [
+		FactoryLogic.createCulture('Serne', 'Urban / Bureaucratic / Martial.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.martial, 'Serne'),
+		FactoryLogic.createCulture('Eravian Imperium', 'Urban / Bureaucratic / Noble.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.noble, 'Eravian'),
+		FactoryLogic.createCulture('Sirovya', 'Rural / Bureaucratic / Martial.', CultureType.Ancestral, EnvironmentData.rural, OrganizationData.bureaucratic, UpbringingData.martial, 'Sirovy'),
+		FactoryLogic.createCulture('Svelland', 'Wilderness / Communal / Martial.', CultureType.Ancestral, EnvironmentData.wilderness, OrganizationData.communal, UpbringingData.martial, 'Svellese'),
+		FactoryLogic.createCulture('Telos', 'Urban / Bureaucratic / Creative.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.creative, 'Telosi'),
+		FactoryLogic.createCulture('Valedier', 'Urban / Bureaucratic / Noble.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.noble, 'Valedien'),
+		FactoryLogic.createCulture('Free State of Miris', 'Urban / Communal / Academic.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.communal, UpbringingData.academic, 'Valedien'),
+		FactoryLogic.createCulture('The Dwarfholds', 'Secluded / Bureaucratic / Labor.', CultureType.Ancestral, EnvironmentData.secluded, OrganizationData.bureaucratic, UpbringingData.labor, 'Khezdath'),
+		FactoryLogic.createCulture('Ithyr', 'Secluded / Bureaucratic / Noble.', CultureType.Ancestral, EnvironmentData.secluded, OrganizationData.bureaucratic, UpbringingData.noble, 'Eladrith'),
+		FactoryLogic.createCulture('Icewell', 'Urban / Bureaucratic / (any upbringing).', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, undefined, 'Serne'),
+		FactoryLogic.createCulture('Dejim', 'Rural / Communal / Martial.', CultureType.Ancestral, EnvironmentData.rural, OrganizationData.communal, UpbringingData.martial, 'Dejiman'),
+		FactoryLogic.createCulture('Jhazren', 'Wilderness / Communal / Creative.', CultureType.Ancestral, EnvironmentData.wilderness, OrganizationData.communal, UpbringingData.creative, 'Jhazrendish'),
+		FactoryLogic.createCulture('Ryvos', 'Nomadic / Bureaucratic / Martial.', CultureType.Ancestral, EnvironmentData.nomadic, OrganizationData.bureaucratic, UpbringingData.martial, 'Ryvian'),
+		FactoryLogic.createCulture('Kalai', 'Rural / Bureaucratic / Martial.', CultureType.Ancestral, EnvironmentData.rural, OrganizationData.bureaucratic, UpbringingData.martial, 'Kalish'),
+		FactoryLogic.createCulture('Gauthek', 'Urban / Bureaucratic / Martial.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.martial, 'Gaureth'),
+		FactoryLogic.createCulture('The Rookery', 'Urban / Anarchic / Illegal.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.communal, UpbringingData.lawless, 'Serne'),
+		FactoryLogic.createCulture('The Mistrunners', 'Wilderness / Anarchic / Labor.', CultureType.Ancestral, EnvironmentData.wilderness, OrganizationData.communal, UpbringingData.labor, 'Lirian'),
+		FactoryLogic.createCulture('The Water Folk', 'Nomadic / Communal / Labor.', CultureType.Ancestral, EnvironmentData.nomadic, OrganizationData.communal, UpbringingData.labor, 'Serne'),
+		FactoryLogic.createCulture('Bhawarans', 'Nomadic / Communal / Martial.', CultureType.Ancestral, EnvironmentData.nomadic, OrganizationData.communal, UpbringingData.martial, 'Bhawaran'),
+		FactoryLogic.createCulture('The Kaza', 'Nomadic / Communal / Martial.', CultureType.Ancestral, EnvironmentData.nomadic, OrganizationData.communal, UpbringingData.martial, 'Azhari'),
+		FactoryLogic.createCulture('Lowai Pora (Polders)', 'Secluded / Communal / Labor.', CultureType.Ancestral, EnvironmentData.secluded, OrganizationData.communal, UpbringingData.labor, 'Lowai'),
+		FactoryLogic.createCulture('Stormwrack', 'Urban / Anarchic / (any upbringing).', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.communal, undefined, 'Serne'),
+		FactoryLogic.createCulture('Wolkenritter', 'Urban / Anarchic / Martial.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.communal, UpbringingData.martial)
+	],
 	domains: [],
 	encounters: [],
 	imbuements: [],
 	items: [],
-	kits: [],
-	monsterGroups: [],
+	kits: [
+		// TODO: Blademaster of the Guild
+		// TODO: Outrider
+	],
+	monsterGroups: [
+		// TODO: Beastfolk
+		// TODO: Celestials
+		// TODO: Devas
+		// TODO: Ironbound
+		// TODO: Orians
+		// TODO: Siabhra
+	],
 	montages: [],
 	negotiations: [],
-	perks: [],
+	perks: [
+		{
+			id: 'perk-awoken',
+			name: 'Awoken',
+			description: 'The rethite woke a mind that runs a half-second ahead of itself - the gift of the Wasteland-runners, who survive the worst ground on Vara because they flinch before the danger lands, not after. You can\'t be surprised, and gain an edge on tests to notice, avoid, or escape traps, hazards, or ambushes.',
+			type: FeatureType.Text,
+			data: null,
+			list: PerkList.Supernatural
+		},
+		{
+			id: 'perk-keeper-of-the-undying-flame',
+			name: 'Keeper of the Undying Flame',
+			description: 'You are a Flamebearer, and carry a portion of Solan\'s flame. You can kindle a sacred light that never gutters in wind or water, and you see clearly by its glow in any darkness. You gain a +2 bonus to saving throws to end the Frightened condition.',
+			type: FeatureType.Text,
+			data: null,
+			list: PerkList.Supernatural
+		},
+		{
+			id: 'perk-magefinders-eye',
+			name: 'Magefinder’s Eye',
+			description: 'You are an Arbiter, and are trained to find the gifted by the traces they leave. By studying a place for a minute, make an Intuition test: on a 12+ you learn whether a magic or psionic ability was used there within the past hour; on a 17+ you glean something of its nature.',
+			type: FeatureType.Text,
+			data: null,
+			list: PerkList.Supernatural
+		},
+		{
+			id: 'perk-mercy',
+			name: 'Mercy',
+			description: `
+You are a member of the Hospitallers, and are trained in the field medicine of Tonaris. You gain the following benefits:
+
+* You can stabilise an adjacent dying creature (main action; no test required)
+* You can remove the bleeding condition from an adjacent creature (main action, no test required)
+* You gain an edge on tests to treat wounds, disease, and poison.`,
+			type: FeatureType.Text,
+			data: null,
+			list: PerkList.Lore
+		},
+		{
+			id: 'perk-writ-of-the-greencoats',
+			name: 'Writ of the Greatcoats',
+			description: 'You hold a Greencoat Marshal\'s warrant. Throughout Kaemius and Aetius, lawmen and common folk recognise your authority to question, detain, search, and requisition lodging, transport, or aid in the Concordat\'s name, and you gain an edge on tests to invoke it. You recognise on sight any person whose warrant, notice, or case-file you have studied.',
+			type: FeatureType.Text,
+			data: null,
+			list: PerkList.Intrigue
+		}
+	],
 	projects: [],
-	subclasses: [],
+	subclasses: [
+		// TODO: Aether elementalist
+		// TODO: Hexbreaker tactician
+		// TODO: Kaza null
+		// TODO: Mnemopath talent
+		// TODO: Watchful Host shadow
+		// TODO: Winnower censor
+	],
 	tacticalMaps: [],
 	terrain: [],
-	titles: [],
+	titles: [
+		// TODO: Almoner
+		// TODO: Commander
+		// TODO: Constable
+		// TODO: Faithkeeper
+		// TODO: Faithkeeper Ascendant
+		// TODO: High Inquisitor
+		// TODO: Inquisitor
+		// TODO: Knight of the Hidden City
+		// TODO: Preceptor
+		// TODO: Rider of the Mjoll
+		// TODO: Seeker of the Keening Lament
+		// TODO: Storm of Valhaven
+	],
 	skills: [],
-	languages: []
+	languages: [
+		// TODO: Languages
+	]
 };

@@ -1436,6 +1436,127 @@ You continue to observe your surroundings, but you can’t speak, take main acti
 	culture: FactoryLogic.createCulture('Ironbound', 'Urban, bureaucratic, martial.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.martial, 'Rallarian')
 };
 
+export const orian: Ancestry = {
+	id: 'ancestry-orian',
+	name: 'Orian',
+	description: `
+*By Andy Aiken*
+
+Orians hold the Orian Sea the way a backwater clan holds its hollow: subjects of the crown in Oria City in principle, and in practice as families, each with its own water. Every reef, every trench, every cold green current is claimed and bounded and known, and the boundaries are taught to a pup before it can hunt. Stray across them uninvited and you are not a guest - you are prey that hasn't been dealt with yet.`,
+	features: [
+		FactoryLogic.feature.createMultiple({
+			id: 'orian-1',
+			name: 'Amphibious',
+			description: 'You are at home in the water.',
+			features: [
+				FactoryLogic.feature.createMovementMode({
+					id: 'orian-1a',
+					mode: 'Swim'
+				}),
+				FactoryLogic.feature.create({
+					id: 'orian-1b',
+					name: 'Amphibious',
+					description: 'You can breathe water as easily as air.'
+				})
+			]
+		}),
+		FactoryLogic.feature.createMultiple({
+			id: 'orian-2',
+			name: 'Child of the Deep',
+			features: [
+				FactoryLogic.feature.createSkillChoice({
+					id: 'orian-2a',
+					selected: [ 'Swim' ]
+				}),
+				FactoryLogic.feature.create({
+					id: 'orian-2b',
+					name: 'Child of the Deep',
+					description: `
+You have an edge on any tests using the Swim skill.
+
+Deep, cold, or turbulent water never slows or hampers your movement, and you see clearly in murky or lightless water.`
+				})
+			]
+		}),
+		FactoryLogic.feature.createChoice({
+			id: 'orian-3',
+			name: 'Purchased Traits',
+			options: [
+				{
+					feature: FactoryLogic.feature.createDamageModifier({
+						id: 'orian-3a',
+						name: 'Abyssal Chill',
+						modifiers: [
+							FactoryLogic.damageModifier.createPerEchelon({
+								damageType: DamageType.Cold,
+								modifierType: DamageModifierType.Immunity,
+								value: 5
+							})
+						]
+					}),
+					value: 1
+				},
+				{
+					feature: FactoryLogic.feature.create({
+						id: 'orian-3b',
+						name: 'Breaching Leap',
+						description: 'When you move out of water, you can long jump or high jump as though your Speed were doubled, and you don\'t need a running start to do so.'
+					}),
+					value: 1
+				},
+				{
+					feature: FactoryLogic.feature.create({
+						id: 'orian-3c',
+						name: 'Current Sense',
+						description: 'While you are in water, you know the location of any creature in the same body of water within 10 squares, even if it is unseen, and creatures gain no benefit from concealment against you while in the water with you.'
+					}),
+					value: 1
+				},
+				{
+					feature: FactoryLogic.feature.createBonus({
+						id: 'orian-3d',
+						name: 'Deep-Pressured Frame',
+						description: 'A lifetime beneath crushing pressure has left you dense and hard to break.',
+						field: FeatureField.Stamina,
+						valuePerEchelon: 3
+					}),
+					value: 1
+				},
+				{
+					feature: FactoryLogic.feature.create({
+						id: 'orian-3e',
+						name: 'Drowning Grip',
+						description: 'A creature grabbed by you can\'t breathe, and takes damage equal to your level at the start of each of its turns until the grab ends.'
+					}),
+					value: 2
+				},
+				{
+					feature: FactoryLogic.feature.createMultiple({
+						id: 'orian-3f',
+						name: 'Mariner\'s Lore',
+						description: 'No one reads the sea like one born to it.',
+						features: [
+							FactoryLogic.feature.createSkillChoice({
+								id: 'orian-3f-1',
+								selected: [ 'Navigate' ]
+							}),
+							FactoryLogic.feature.create({
+								id: 'orian-3f-2',
+								name: 'Mariner\'s Lore',
+								description: 'You gain an edge on tests to pilot a vessel, predict the weather, or find your way at sea.'
+							})
+						]
+					}),
+					value: 1
+				}
+			],
+			count: 'ancestry'
+		})
+	],
+	ancestryPoints: 3,
+	culture: FactoryLogic.createCulture('Orian', 'Urban, bureaucratic, martial.', CultureType.Ancestral, EnvironmentData.secluded, OrganizationData.communal, UpbringingData.martial, 'Orian')
+};
+
 export const siabhra: Ancestry = {
 	id: 'ancestry-siabhra',
 	name: 'Síabhra',

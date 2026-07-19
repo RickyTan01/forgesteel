@@ -1,5 +1,5 @@
 import { EnvironmentData, OrganizationData, UpbringingData } from '@/data/culture-data';
-import { ace, beastfolk, deva, heavyGunner, ironbound, ironsight, pistolier, siabhra } from '@/data/sourcebooks/community/andy';
+import { ace, beastfolk, deva, heavyGunner, ironbound, ironsight, orian, pistolier, siabhra } from '@/data/sourcebooks/community/andy';
 import { AbilityDistanceType } from '@/enums/ability-distance-type';
 import { AbilityKeyword } from '@/enums/ability-keyword';
 import { Ancestry } from '@/models/ancestry';
@@ -4236,6 +4236,7 @@ export const community: Sourcebook = {
 		gallGuardian,
 		ironbound,
 		oakling,
+		orian,
 		siabhra,
 		solar
 	],
