@@ -5,12 +5,16 @@ import { Characteristic } from '@/enums/characteristic';
 import { CultureType } from '@/enums/culture-type';
 import { FactoryLogic } from '@/logic/factory-logic';
 import { FeatureField } from '@/enums/feature-field';
+import { FeatureType } from '@/enums/feature-type';
 import { HeroClass } from '@/models/class';
+import { ItemType } from '@/enums/item-type';
+import { KitArmor } from '@/enums/kit-armor';
+import { KitWeapon } from '@/enums/kit-weapon';
+import { LanguageType } from '@/enums/language-type';
 import { PerkList } from '@/enums/perk-list';
 import { SkillList } from '@/enums/skill-list';
 import { Sourcebook } from '@/models/sourcebook';
 import { SourcebookType } from '@/enums/sourcebook-type';
-import { FeatureType } from '@/enums/feature-type';
 
 const thaumaturge: HeroClass = {
 	id: 'class-thaumaturge',
@@ -2480,10 +2484,180 @@ Regardless of your apparent ancestry, you are a síabhra underneath – one who 
 	domains: [],
 	encounters: [],
 	imbuements: [],
-	items: [],
+	items: [
+		FactoryLogic.createItem({
+			id: 'item-aos-cinderwake-dust',
+			name: 'Cinderwake Dust',
+			description: 'A packet of metallic powder warm to the touch.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A jar of lava.',
+				source: 'Texts or lore in Elemental',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'As a maneuver, scatter the dust in a 3 cube within 10. Each enemy in the area takes 1 fire damage, and the area is lightly obscured by ash until the end of your next turn.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-horn-of-the-chase',
+			name: 'Horn of the Chase',
+			description: 'A small polished horn banded in leather.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'The horn of a devil that was killed by a beast',
+				source: 'Texts or lore in Fae',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'As a maneuver, sound the horn. Choose up to three allies within 10 squares. Each target can shift 2 toward the same enemy, objective, or exit.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-prowlers-resin',
+			name: 'Prowler\'s Resin',
+			description: 'A clay pot of dark resin mixed with ash and crushed leaves.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'The corpse of a lightbender',
+				source: 'Texts or lore in Fae',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'As a maneuver, smear the resin across your armor, clothing, or skin. Until the end of the encounter, you gain an edge on Hide tests, and the first time you become hidden this encounter, you can shift 2.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-siege-blessed-rivets',
+			name: 'Siege-Blessed Rivets',
+			description: 'A packet of rune-marked rivets, seals, and metal patches.',
+			type: ItemType.Consumable1st,
+			keywords: [ AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A piece of metal armor stolen during a battle',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Might, Characteristic.Reason ],
+				goal: 45
+			}),
+			effect: 'Apply these during a respite to one piece of armor, a shield, or a worn item. Until your next respite, the next forced movement that would move you is negated.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-repair-spider',
+			name: 'Repair Spider',
+			description: 'A tiny clockwork construct folded into a brass capsule.',
+			type: ItemType.Consumable1st,
+			keywords: [ AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A fragment of brass from an animated statue',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason ],
+				goal: 45
+			}),
+			effect: 'As a maneuver, release the spider onto an ironbound or an object within 1 square. If the target has Stamina, it regains Stamina equal to your recovery value; otherwise, one broken mundane feature of it is repaired.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-stormglass-vial',
+			name: 'Stormglass Vial',
+			description: 'A sealed glass tube containing a captive spark.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'The breath of a lightning elemental',
+				source: 'Texts or lore in Elemental',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'As a maneuver, break the vial. Until the end of your turn, your movement ignores difficult terrain, and your next strike this turn deals an additional 1d6 fire, lightning, or cold damage.'
+		})
+		// TODO: 1st-echelon trinkets
+		// TODO: 2nd-echelon trinkets
+		// TODO: Ammunition
+		// TODO: Explosives
+		// TODO: Orcsteel
+		// TODO: Aether
+		// TODO: Brights
+		// TODO: Bionics
+		// TODO: Narcotics
+	],
 	kits: [
-		// TODO: Blademaster of the Guild
-		// TODO: Outrider
+		{
+			id: 'aos-kit-blademaster',
+			name: 'Blademaster of the Guild',
+			description: 'The blade as an art, not a trade. A member of the Blademaster\'s Guild carries one elegant sword and a lifetime of drill: the lunge, the parry-riposte, the balestra, footwork like a dance. No armour to hide behind, no mysticism; only the precision of distance, timing, and a faster, sharper point than yours.',
+			type: '',
+			armor: [],
+			weapon: [ KitWeapon.Medium ],
+			stamina: 6,
+			speed: 2,
+			stability: 0,
+			disengage: 1,
+			meleeDamage: FactoryLogic.createKitDamageBonus(2, 2, 2),
+			rangedDamage: null,
+			meleeDistance: 0,
+			rangedDistance: 0,
+			features: [
+				FactoryLogic.feature.createAbility({
+					ability: FactoryLogic.createAbility({
+						id: 'kit-blademaster-signature',
+						name: 'Balestra, Lunge, Recover',
+						description: 'Distance, tempo, and a faster point than yours - the whole art in three steps.',
+						type: FactoryLogic.type.createMain(),
+						keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ],
+						distance: [ FactoryLogic.distance.createMelee(2) ],
+						target: 'One creature',
+						cost: 'signature',
+						sections: [
+							FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({
+								characteristic: [ Characteristic.Might, Characteristic.Agility ],
+								tier1: '3 + M or A damage',
+								tier2: '6 + M or A damage',
+								tier3: '9 + M or A damage; you can shift 1 square'
+							})),
+							FactoryLogic.createAbilitySectionText('The first time the target makes a strike against you, you can make a free strike against it.')
+						]
+					})
+				})
+			]
+		},
+		{
+			id: 'aos-kit-outrider',
+			name: 'Outrider',
+			description: 'An Einherjar on a war moose, a Sipahi on a war rhino, a Courser on a displacing coirig. A kit built to be ridden with. It assumes a mount beneath you, and makes the two of you one weapon - the long reach of a couched lance, the crushing arithmetic of a charge.',
+			type: '',
+			armor: [ KitArmor.Medium ],
+			weapon: [ KitWeapon.Polearm ],
+			stamina: 6,
+			speed: 0,
+			stability: 1,
+			disengage: 0,
+			meleeDamage: FactoryLogic.createKitDamageBonus(2, 2, 2),
+			rangedDamage: null,
+			meleeDistance: 1,
+			rangedDistance: 0,
+			features: [
+				FactoryLogic.feature.createAbility({
+					ability: FactoryLogic.createAbility({
+						id: 'kit-outrider-signature',
+						name: 'Lancer\'s Charge',
+						description: 'Momentum, delivered onto a single point.',
+						type: FactoryLogic.type.createMain(),
+						keywords: [ AbilityKeyword.Charge, AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ],
+						distance: [ FactoryLogic.distance.createMelee(2) ],
+						target: 'One creature',
+						cost: 'signature',
+						sections: [
+							FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({
+								characteristic: [ Characteristic.Might, Characteristic.Agility ],
+								tier1: '3 + M or A damage; push 1',
+								tier2: '6 + M or A damage; push 2',
+								tier3: '9 + M or A damage; push 4, the target is knocked prone'
+							})),
+							FactoryLogic.createAbilitySectionText('Move at least 4 squares in a straight line towards the target. Special: You must be riding a mount to use this ability.')
+						]
+					})
+				})
+			]
+		}
 	],
 	monsterGroups: [
 		// TODO: Beastfolk
@@ -2544,31 +2718,785 @@ You are a member of the Hospitallers, and are trained in the field medicine of T
 	],
 	projects: [],
 	subclasses: [
-		// TODO: Aether elementalist
-		// TODO: Hexbreaker tactician
-		// TODO: Kaza null
-		// TODO: Mnemopath talent
-		// TODO: Watchful Host shadow
-		// TODO: Winnower censor
+		{
+			id: 'aos-sub-aether-elementalist',
+			name: 'Aether Elementalist',
+			description: 'Aether is the stuff of the Veil itself - all seven elements churned together into raw, unrefined arcane force, the substance empires kill a city for. Channel it and you can throw any element at all; channel it carelessly and it spills, because nothing about raw aether wants to stay in the lines you draw. The aetherist is the most versatile elementalist alive, and the most dangerous to stand beside.',
+			featuresByLevel: [
+				{
+					level: 1,
+					features: [
+						FactoryLogic.feature.create({ id: 'aether-aetheric-channelling', name: 'Aetheric Channelling', description: 'Your magic is bound to no single element. When you use a magic ability that deals damage, you can choose its damage type from acid, cold, corruption, fire, lightning, poison, or sonic, and the ability counts as having that element\'s keyword. Your Hurl Element can deal any of these.' }),
+						FactoryLogic.feature.create({ id: 'aether-overspill', name: 'Overspill', description: 'When you use an Essence ability that deals damage, you can let the raw aether overspill. If you do, the ability deals additional damage equal to your Reason - but a 1 burst of wild aether erupts, centred on one of the ability\'s targets. Each creature in that burst, allies and you included, takes damage equal to your Reason, and the ground there becomes unstable (difficult terrain) until the end of the round. You choose whether to overspill each time you cast.' }),
+						FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'aether-backlash', name: 'Backlash', description: 'Raw aether floods out of you.', type: FactoryLogic.type.createTrigger('A creature within range damages you with a strike'), keywords: [ AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One creature', sections: [ FactoryLogic.createAbilitySectionText('The triggering creature takes damage equal to your Reason of a type you choose.') ] }) }),
+						FactoryLogic.feature.create({ id: 'aether-hurl-element', name: 'Hurl Element (Aether)', description: 'Your Hurl Element shimmers through every colour at once; you choose its damage type each time you use it (as Aetheric Channelling), and once per round you may Overspill it like any Essence ability even though it costs none.' })
+					]
+				},
+				{
+					level: 2,
+					features: [
+						FactoryLogic.feature.create({ id: 'aether-disciple-of-aether', name: 'Disciple of Aether', description: 'Raw aether is every element, so no single resistance turns it. Your magic abilities ignore enemies\' resistances to specific damage types (they do not ignore immunities). Additionally, when you Overspill, you can split the spill: the burst can deal two different element types, divided as you like among the creatures caught.' })
+					]
+				},
+				{
+					level: 3,
+					features: [
+						FactoryLogic.feature.create({ id: 'aether-volatile-persistence', name: 'Volatile Persistence', description: 'When you maintain a persistent aether ability, the leak works for you: at the start of each of your turns, one enemy within your Mantle of Essence aura takes damage equal to your Reason of a type you choose.' }),
+						FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'aether-aetheric-detonation', name: 'Aetheric Detonation', description: 'Raw aether wants out, and you stop pretending you can hold it.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createSpecial('4 burst') ], target: 'Each creature in the area', cost: 7, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Reason, tier1: '12 + R damage', tier2: '15 + R damage', tier3: '18 + R damage' })), FactoryLogic.createAbilitySectionText('On a tier 3 result, each target is subject to Overspill.') ] }) })
+					]
+				},
+				{
+					level: 4,
+					features: [
+						FactoryLogic.feature.create({ id: 'aether-mantle-of-aether', name: 'Mantle of Aether', description: 'While you have 3 or more essence and are not dying, you exude an aura of magic whose distance is equal to your Reason score. You can activate and deactivate the aura at will (no action required). At the end of each of your turns, each enemy in the area takes damage equal to your Reason of a type you choose, and the area counts as difficult terrain for your enemies.' })
+					]
+				},
+				{
+					level: 5,
+					features: [
+						FactoryLogic.feature.create({ id: 'aether-channelled-spill', name: 'Channelled Spill', description: 'You\'ve learned to throw the spill clear of your own feet. When you Overspill, you can exclude yourself from the burst. Additionally, the unstable ground the spill creates now slows the first enemy that enters it (save ends).' })
+					]
+				},
+				{
+					level: 7,
+					features: [
+						FactoryLogic.feature.create({ id: 'aether-aetheric-resonance', name: 'Aetheric Resonance', description: 'The first time each round your Overspill deals damage to one or more enemies, you regain 1 Essence.' })
+					]
+				},
+				{
+					level: 8,
+					features: [
+						FactoryLogic.feature.create({ id: 'aether-riftcaller', name: 'Riftcaller', description: 'Your overspill is no longer an accident you tolerate but a weapon you aim. When you Overspill, the burst increases to a 2 cube, and you can shape it to exclude up to a number of allies equal to your Reason. Once per encounter, you can tear the Veil outright: each enemy in a 3 burst within 10 takes damage equal to four times your Reason of a type you choose and is knocked prone as raw aether floods the ground.' })
+					]
+				},
+				{
+					level: 10,
+					features: [
+						FactoryLogic.feature.create({ id: 'aether-master-of-aether', name: 'Master of Aether', description: 'You become a conduit of the Veil itself. Your Overspill no longer harms you or your allies, and when you cast a magic ability, you may have it deal all of its damage as two element types at once, applying whichever is worse for each target. Your Essential Being now grants 4 Essence at the start of each turn.' })
+					]
+				}
+			],
+			abilities: [],
+			selected: false
+		},
+		{
+			id: 'aos-sub-hexbreaker-tactician',
+			name: 'Hexbreaker Tactician',
+			description: 'A Hexbreaker is the martial answer to a world where magic is coming back and nobody asked it to. Where the Sanctioners of Ryvos meet sorcery with sorcery, the Hexbreaker meets it with drill, steel, and a cold, sapper\'s understanding of exactly how a working is built - and therefore how it comes apart. A Hexbreaker casts nothing. That is the entire point.',
+			featuresByLevel: [
+				{
+					level: 1,
+					features: [
+						FactoryLogic.feature.createSkillChoice({ id: 'hexbreaker-skill', selected: [ 'Magic' ], count: 1 }),
+						FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'hexbreaker-brace', name: 'Brace!', description: 'A command, drilled until it\'s spinal: when the air goes wrong, set your feet and weather it.', type: FactoryLogic.type.createTrigger('The target is targeted by a magic ability'), keywords: [ AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createSelf(), FactoryLogic.distance.createRanged(10) ], target: 'Self or one ally', sections: [ FactoryLogic.createAbilitySectionText('The target halves the damage they take from the ability and gains a +2 bonus to any saving throw the ability forces on them. Spend 1: The target also can\'t be subjected to any condition or forced movement by that ability.') ] }) }),
+						FactoryLogic.feature.create({ id: 'hexbreaker-break-the-hex', name: 'Break the Hex', description: 'You read a spell the way a sapper reads a wall. When you mark a creature it suffers the normal Mark (your allies gain an edge and deal extra damage against it) and the potency of its magic abilities is reduced by 1.' })
+					]
+				},
+				{
+					level: 2,
+					features: [
+						FactoryLogic.feature.create({ id: 'hexbreaker-disruptor', name: 'Disruptor', description: 'The first time each combat round that a creature marked by you uses an ability with the Magic or Psionic keywords, you gain 1 focus.' }),
+						FactoryLogic.feature.createChoice({ id: 'hexbreaker-2-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'hexbreaker-disrupting-strike', name: 'Disrupting Strike', description: 'Hit the hand as the word is forming.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Ranged, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1), FactoryLogic.distance.createRanged(5) ], target: 'One creature', cost: 5, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Might, tier1: '2 + M or A damage', tier2: '5 + M or A damage', tier3: '7 + M or A damage; prone' })), FactoryLogic.createAbilitySectionText('If the target has used an ability with the Magic or Psionic keywords since the end of your last turn, this strike deals additional damage equal to your Reason, and the target takes a bane on its next magic ability\'s power roll.') ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'hexbreaker-hold-fast', name: 'Hold Fast', description: 'Bitter agusis on the tongue, feet set: the squad becomes weather the spell has to get through.', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Area ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Self and each ally in the area', cost: 5, sections: [ FactoryLogic.createAbilitySectionText('The target gains immunity 5 against damage from abilities with the Magic or Psionic keywords (EoT).') ] }) }), value: 1 } ] })
+					]
+				},
+				{
+					level: 5,
+					features: [
+						FactoryLogic.feature.create({ id: 'hexbreaker-hardened-ranks', name: 'Hardened Ranks', description: 'Each ally within 5 squares of you reduces the damage they take from magic abilities by an amount equal to your Reason score, and gains a +2 bonus on saving throws made to end effects from magic abilities.' }),
+						FactoryLogic.feature.create({ id: 'hexbreaker-cut-the-cant', name: 'Cut the Cant', description: 'When a creature marked by you uses a magic ability, you can use a free triggered action to let one ally within 10 squares of it make a free strike against it. If that strike deals damage, the marked creature takes a bane on the triggering ability\'s power roll.' })
+					]
+				},
+				{
+					level: 6,
+					features: [
+						FactoryLogic.feature.createChoice({ id: 'hexbreaker-6-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'hexbreaker-shatter-the-working', name: 'Shatter the Working', description: 'A working is just a wall built fast. Walls come down.', type: FactoryLogic.type.createTrigger('A creature within 10 creates or sustains a magic aura, zone, effect, or summon'), keywords: [ AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One magic effect', cost: 9, sections: [ FactoryLogic.createAbilitySectionText('That aura, zone, effect, or summon ends. If it was a summon, the summoned creature is destroyed.') ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'hexbreaker-iron-cadre', name: 'Iron Cadre', description: 'Drill it until the body refuses the spell on its own.', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Area ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Self and each ally in the area', cost: 9, sections: [ FactoryLogic.createAbilitySectionText('The target can\'t be force moved or subjected to conditions from abilities with the Magic or Psionics keywords (EoT).') ] }) }), value: 1 } ] })
+					]
+				},
+				{
+					level: 8,
+					features: [
+						FactoryLogic.feature.create({ id: 'hexbreaker-edict-of-silence', name: 'Edict of Silence', description: 'As a maneuver, spend 5 focus and choose one creature marked by you within 10 squares. That creature is silenced (save ends): while silenced, it can\'t use magic abilities, and any magic effect, aura, or summon it was sustaining ends and can\'t be resumed.' })
+					]
+				},
+				{
+					level: 9,
+					features: [
+						FactoryLogic.feature.createChoice({ id: 'hexbreaker-9-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'hexbreaker-killing-word', name: 'Killing Word', description: 'Mark the caster. Tell the squad which throat the fire came out of.', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One creature', cost: 11, sections: [ FactoryLogic.createAbilitySectionText('You mark the target until the end of the encounter. Strikes against the marked target ignore its damage resistances. When an ally damages the marked target with a strike, that ally can spend 1 point of their own heroic resource to double that strike\'s damage.') ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'hexbreaker-total-suppression', name: 'Total Suppression', description: 'The whole doctrine in one breath: silence, across a room.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area ], distance: [ FactoryLogic.distance.createSpecial('5 burst within 10') ], target: 'Each enemy in the area', cost: 11, sections: [ FactoryLogic.createAbilitySectionText('The target is silenced (save ends): while silenced, it can\'t use magic abilities, and any magic effect, aura, or summon it was sustaining ends and can\'t be resumed.') ] }) }), value: 1 } ] })
+					]
+				}
+			],
+			abilities: [],
+			selected: false
+		},
+		{
+			id: 'aos-sub-kaza-null',
+			name: 'Kaza Null',
+			description: 'A kaza is a wandering weaponmaster sworn to nithadas, an ancient code that is equal parts martial art and honour, fought out with a pair of long curved knives. Some kaza are merely peerless duellists. The ones who walk the Null\'s road are something stranger: their devotion to the code has become a discipline of the mind as much as the body. They read a fight before it happens, turn an enemy\'s own force back through the edge that delivered it, and meet violence with a stillness that is its own kind of violence.',
+			featuresByLevel: [
+				{
+					level: 1,
+					features: [
+						FactoryLogic.feature.createSkillChoice({ id: 'kaza-skill', listOptions: [ SkillList.Interpersonal ], count: 1 }),
+						FactoryLogic.feature.create({ id: 'kaza-blade-of-nithadas', name: 'Blade of Nithadas', description: 'Where other nulls need no weapon, the kaza\'s discipline runs through a pair of blades without breaking. You can wield two light weapons - the long curved knives of the kaza - and you make your null strikes, signature abilities, and tradition abilities with them. While you wield two light weapons: you gain a +1 bonus to rolled damage with melee abilities; and the first time each round a creature makes a melee strike against you, it takes a bane on that power roll. A kaza may set the blades aside and fight empty-handed like any other null, losing only the damage bonus and the parry. You also gain a +1 bonus to saving throws.' }),
+						FactoryLogic.feature.create({ id: 'kaza-single-combat', name: 'Single Combat', description: 'This tradition adds an effect to the menu you can give your Null Field (once on each of your turns, as a free maneuver, by spending 1 discipline): Choose one enemy in your Null Field. Until the start of your next turn, that enemy takes a bane on strikes that don\'t include you as a target, and you have an edge on strikes against it.' }),
+						FactoryLogic.feature.create({ id: 'kaza-the-composed-blade', name: 'The Composed Blade', description: 'The higher your discipline, the slower the duel runs for you. These benefits last until the end of your turn, even if you later spend below the threshold. Discipline 2: Your melee strikes deal +1 rolled damage against any enemy that has damaged you since the end of your last turn. Discipline 4: When an enemy in your Null Field misses you with a strike, you can shift 1. Discipline 6: The first time on each of your turns that you damage an enemy with a melee strike, you can slide that enemy 1. Discipline 7 (level 5+): You have an edge on melee strikes against any enemy that has made a strike against you since the end of your last turn. Discipline 10 (level 7+): When you use Inertial Shield to reduce damage from a melee strike, you can make a melee free strike against the attacker. Discipline 12 (level 9+): Your melee strikes ignore the target\'s stability when they force move it, and you can\'t be made to grant an edge by being flanked.' })
+					]
+				},
+				{
+					level: 2,
+					features: [
+						FactoryLogic.feature.create({ id: 'kaza-the-turned-blade', name: 'The Turned Blade', description: 'When you use Inertial Shield against a melee strike, the attacker takes psychic damage equal to your Intuition score - the force you shed runs back up the blade into the hand that sent it. At 5th level and higher, you can also slide the attacker 1.' }),
+						FactoryLogic.feature.createChoice({ id: 'kaza-2-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'kaza-perfect-cut', name: 'Perfect Cut', description: 'Strike not where the enemy stands, but where the enemy has already resolved to be.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Psionic, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 5, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Agility, tier1: '5 + A or I psychic damage', tier2: '8 + A or I psychic damage; slowed (EoT)', tier3: '11 + A or I psychic damage; dazed (EoT)' })) ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'kaza-two-rivers', name: 'Two Rivers', description: 'Two blades, two rivers: let them part for two throats, or join for one.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Psionic, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One or two creatures', cost: 5, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Agility, tier1: '3 + A or I damage', tier2: '5 + A or I damage', tier3: '7 + A or I damage; the target cannot make opportunity attacks (EoT)' })) ] }) }), value: 1 } ] })
+					]
+				},
+				{
+					level: 5,
+					features: [
+						FactoryLogic.feature.create({ id: 'kaza-read-the-duel', name: 'Read the Duel', description: 'You see the cut before it is thrown. Once each round, when an enemy in your Null Field makes a strike against you, you can use a triggered action to shift 1 and gain an edge on the next strike you make against that enemy before the end of your next turn.' })
+					]
+				},
+				{
+					level: 6,
+					features: [
+						FactoryLogic.feature.createChoice({ id: 'kaza-6-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'kaza-the-blade-returned', name: 'The Blade Returned', description: 'Be the open door. Whatever enters by violence departs by the same threshold, and pays the toll.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Psionic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', cost: 9, sections: [ FactoryLogic.createAbilitySectionText('Until the start of your next turn, whenever an enemy in your Null Field makes a strike against you, you can make a melee free strike against that enemy before the strike resolves. If that free strike reduces the enemy to 0 Stamina, their strike is lost.') ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'kaza-circle-of-nithadas', name: 'Circle of Nithadas', description: 'When the many forget the courtesy of single combat, the kaza answers the many at once - and courteously.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Psionic, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createSpecial('1 burst') ], target: 'Each enemy in the area', cost: 9, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Agility, tier1: '5 + A or I damage; slide 1', tier2: '8 + A or I damage; slide 2', tier3: '11 + A or I damage; slide 3; the targets takes a bane on its next strike' })) ] }) }), value: 1 } ] })
+					]
+				},
+				{
+					level: 8,
+					features: [
+						FactoryLogic.feature.create({ id: 'kaza-nithadas-made-manifest', name: 'Nithadas Made Manifest', description: 'The devotion becomes literal: a faint blade-light trails every cut, and the edge lands on the mind as on the body. Your melee strikes deal an extra 1d6 psychic damage, and whenever you reduce an enemy to 0 Stamina with a melee strike, you regain 2 discipline.' })
+					]
+				},
+				{
+					level: 9,
+					features: [
+						FactoryLogic.feature.createChoice({ id: 'kaza-9-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'kaza-one-exchange', name: 'One Exchange', description: 'A true duel is one question, one answer, one breath. The rest is only butchery, and beneath the Code.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Psionic, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 11, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Agility, tier1: '11 + A or I damage; weakened (EoT)', tier2: '16 + A or I damage; weakened (EoT); the target cannot make saving throws (EoT)', tier3: '22 + A or I damage; weakened (EoT); the target cannot make saving throws (EoT)' })) ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'kaza-empty-the-blades', name: 'Empty the Blades', description: 'Keep nothing from the last form. A blade held in reserve is a lie the duellist tells himself.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Psionic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', cost: 11, sections: [ FactoryLogic.createAbilitySectionText('Make five melee free strikes against the same or different enemies. Each deals 10 additional damage. You can shift 3 before each strike.') ] }) }), value: 1 } ] })
+					]
+				}
+			],
+			abilities: [],
+			selected: false
+		},
+		{
+			id: 'aos-sub-mnemopath',
+			name: 'Mnemopath',
+			description: 'Mnemopathy abilities reach into memory: the memories of the living, the memories held by places, and above all the memories of the dying, which are loudest at the moment they are abandoned. Most psionic power announces itself; yours arrives as something the target believes they already knew. A mnemopath takes what is left behind and gives back only what they choose - and neither transaction leaves a mark anyone can point to.',
+			featuresByLevel: [
+				{
+					level: 1,
+					features: [
+						FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mnemopath-final-light', name: 'Final Light', description: 'You begin to understand how they came apart.', type: FactoryLogic.type.createTrigger('A creature within 5 dies'), keywords: [ 'Mnemopathy' as AbilityKeyword, AbilityKeyword.Psionic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('You gain 1 clarity, and the next power roll you make against a creature that shares a keyword with the triggering creature gains an edge.') ] }) }),
+						FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mnemopath-quiet-sending', name: 'Quiet Sending', description: 'They didn\'t hear you - they remembered it.', type: FactoryLogic.type.createManeuver(), keywords: [ 'Mnemopathy' as AbilityKeyword, AbilityKeyword.Psionic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One creature', sections: [ FactoryLogic.createAbilitySectionText('You place a short memory - a phrase, an image, an urge of ten words or fewer - in the target\'s mind, which they recall as their own thought from a moment ago. Nothing identifies you as the source. The next power roll the target makes before the start of your next turn that doesn\'t include you as a target takes a bane, as they act on a thought that was never theirs. Spend 1: Instead of the bane, you slide the target 1 square - they go where the memory tells them.') ] }) })
+					]
+				},
+				{
+					level: 2,
+					features: [
+						FactoryLogic.feature.create({ id: 'mnemopath-ease-the-telling', name: 'Ease the Telling', description: 'Once per negotiation, when an argument you make would decrease an NPC\'s interest, you can instead take the argument out of their memory: their interest doesn\'t change, and that argument can be made again later in the negotiation as though for the first time. Additionally, you gain an edge on tests made to retract, deny, or explain away something you have already said.' }),
+						FactoryLogic.feature.createChoice({ id: 'mnemopath-2-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mnemopath-the-worst-day', name: 'The Worst Day', description: 'You open the drawer they keep their fear in.', type: FactoryLogic.type.createMain(), keywords: [ 'Mnemopathy' as AbilityKeyword, AbilityKeyword.Psionic, AbilityKeyword.Ranged, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One creature', cost: 5, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Reason, tier1: '6 + R psychic damage; I<w frightened (save ends)', tier2: '10 + R psychic damage; I<v frightened (save ends)', tier3: '14 + R psychic damage; I<s frightened (save ends)' })), FactoryLogic.createAbilitySectionText('Strained: The potency of this ability increases by 1, and you take psychic damage equal to R that can\'t be reduced in any way.') ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mnemopath-forget-the-wound', name: 'Forget the Wound', description: 'You cannot mend it, but perhaps you can make them forget it is happening.', type: FactoryLogic.type.createManeuver(), keywords: [ 'Mnemopathy' as AbilityKeyword, AbilityKeyword.Psionic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'Self or one ally', cost: 5, sections: [ FactoryLogic.createAbilitySectionText('The target can end one effect on them that is ended by a saving throw or that ends at the end of their turn - they no longer remember acquiring it - and gains temporary Stamina equal to twice your Reason score. Strained: The target is dazed until the end of their next turn, but the temporary Stamina equals three times your Reason score.') ] }) }), value: 1 } ] })
+					]
+				},
+				{
+					level: 5,
+					features: [
+						FactoryLogic.feature.create({ id: 'mnemopath-final-testimony', name: 'Final Testimony', description: 'Whenever you obtain a success on a test using a skill from the Intrigue or Lore skill group while examining the body of a creature that died within the past day, you take its final memory. You learn the last thing it clearly perceived, the person, place, or thing foremost in its mind, and what it believed was about to happen. The dead cannot lie to you. They can only have been wrong.' }),
+						FactoryLogic.feature.create({ id: 'mnemopath-no-tell', name: 'No Tell', description: 'Your psionic abilities carry no visible manifestation - no glow, no gesture, no sound. A creature of your level or lower affected by your abilities doesn\'t learn that you are the source; a creature of higher level can identify you with a hard Intuition test. Using a psionic ability doesn\'t cause a creature to observe you for the purposes of hiding - you can work from behind the barrel without giving anyone a reason to look at it. You also gain an edge on tests made to avoid suspicion or to account for your presence.' })
+					]
+				},
+				{
+					level: 6,
+					features: [
+						FactoryLogic.feature.createChoice({ id: 'mnemopath-6-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mnemopath-relive-it', name: 'Relive It', description: 'For one breath, they are somewhere that already happened, and it is happening again.', type: FactoryLogic.type.createMain(), keywords: [ 'Mnemopathy' as AbilityKeyword, AbilityKeyword.Psionic, AbilityKeyword.Ranged, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One creature', cost: 9, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Reason, tier1: '8 + R psychic damage; I<w dazed (EoT)', tier2: '12 + R psychic damage; I<v dazed (save ends)', tier3: '16 + R psychic damage; I<s, the target is removed from the encounter map and returned to the nearest unoccupied space at the start of their next turn, dazed (save ends)' })), FactoryLogic.createAbilitySectionText('Strained: You go back with them: teleport up to your Reason score in squares, then take corruption damage equal to R that can\'t be reduced in any way.') ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mnemopath-chorus-of-last-words', name: 'A Chorus of Last Words', description: 'Every place remembers its dead.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, 'Mnemopathy' as AbilityKeyword, AbilityKeyword.Psionic ], distance: [ FactoryLogic.distance.createSpecial('3 burst') ], target: 'Each enemy in the area', cost: 9, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Reason, tier1: '5 + R psychic damage', tier2: '8 + R psychic damage; I<v frightened (save ends)', tier3: '11 + R psychic damage; I<s frightened (save ends)' })), FactoryLogic.createAbilitySectionText('Strained: Until the end of your next turn, you can\'t benefit from edges on power rolls, but the first enemy to enter the area or start their turn there takes psychic damage equal to your Reason score.') ] }) }), value: 1 } ] })
+					]
+				},
+				{
+					level: 8,
+					features: [
+						FactoryLogic.feature.create({ id: 'mnemopath-what-the-dead-keep', name: 'What the Dead Keep', description: 'During a respite, choose one creature whose final memory you have taken with Final Testimony. You gain one thing they knew: one language they spoke, or one skill they had. You keep every memory taken this way - the list grows as the campaign does - and the dead do not miss them.' }),
+						FactoryLogic.feature.create({ id: 'mnemopath-the-lending', name: 'The Lending', description: 'During a respite, you can give copies of what you carry. Choose a number of allies up to your Reason score: each gains one language or skill you have taken with What the Dead Keep, and keeps it until your next respite. While you have 5 or more Victories, you can also grant one ally an edge on the first test they make during the next montage test - they remember having done this before.' })
+					]
+				},
+				{
+					level: 9,
+					features: [
+						FactoryLogic.feature.createChoice({ id: 'mnemopath-9-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mnemopath-the-whole-of-a-life', name: 'The Whole of a Life', description: 'You give them everything you are carrying, all at once.', type: FactoryLogic.type.createMain(), keywords: [ 'Mnemopathy' as AbilityKeyword, AbilityKeyword.Psionic, AbilityKeyword.Ranged, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One creature', cost: 11, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Reason, tier1: '9 + R psychic damage; I<w weakened (save ends)', tier2: '13 + R psychic damage; I<v weakened and slowed (save ends)', tier3: '18 + R psychic damage; I<s, the target is removed from the encounter map until the end of your next turn, then returns prone and dazed (save ends)' })), FactoryLogic.createAbilitySectionText('Strained: Each enemy within 2 squares of you takes psychic damage equal to your Reason score, and you take the same amount, which can\'t be reduced in any way.') ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mnemopath-everyone-remembers', name: 'Everyone Remembers', description: 'Every soul on this field is handed one thing they had forgotten.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, 'Mnemopathy' as AbilityKeyword, AbilityKeyword.Psionic ], distance: [ FactoryLogic.distance.createSpecial('4 burst') ], target: 'Each enemy in the area', cost: 11, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Reason, tier1: '6 + R psychic damage; I<w dazed (save ends)', tier2: '9 + R psychic damage; I<v dazed (save ends)', tier3: '12 + R psychic damage; I<s dazed and slowed (save ends)' })), FactoryLogic.createAbilitySectionText('Each ally in the area can end one effect on them that is ended by a saving throw or that ends at the end of their turn, and each unconscious ally in the area who is not dying wakes. Strained: You are dazed (save ends).') ] }) }), value: 1 } ] })
+					]
+				}
+			],
+			abilities: [],
+			selected: false
+		},
+		{
+			id: 'aos-sub-watchful-host',
+			name: 'Watchful Host',
+			description: 'Every other college looks outward - Black Ash steps away, Caustic poisons, the Harlequin wears a face. The Watchful Host looks in. They are the Veilwatchers and Deathguards who stand at the Breach and the thin places, and their art is not escape but refusal: nothing crosses past them, nothing slips away, nothing leaves the line. But the long vigil cuts both ways - watch the Breach long enough and the Breach watches back, and a little of what lies beyond soaks into the watcher.',
+			featuresByLevel: [
+				{
+					level: 1,
+					features: [
+						FactoryLogic.feature.createSkillChoice({ id: 'watchful-skill', selected: [ 'Monsters' ], count: 1 }),
+						FactoryLogic.feature.create({ id: 'watchful-breach-watches-back', name: 'The Breach Watches Back', description: 'You can perceive creatures and objects that are invisible, ethereal, phased, or only partly across the Veil within your line of effect, and you sense when anything crosses the Veil within 10 squares of you. Once on each of your turns, you can step through a thin place - teleport up to 3 squares, passing through creatures and solid obstacles to do it. Your strikes deal additional corruption damage equal to your Agility to undead, horrors, and creatures from beyond the Veil.' }),
+						FactoryLogic.feature.create({ id: 'watchful-sentinel', name: 'Sentinel', description: 'Enemies adjacent to you can\'t teleport. The first time each round an enemy willingly leaves a square adjacent to you - or any enemy within 3 of you teleports - you can make a free strike against it without spending a triggered action.' }),
+						FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'watchful-hold-the-threshold', name: 'Hold the Threshold', description: 'The way is closed.', type: FactoryLogic.type.createTrigger('A creature within 3 of you moves, is force moved, or teleports'), keywords: [ AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(3) ], target: 'One creature', sections: [ FactoryLogic.createAbilitySectionText('That creature\'s movement immediately ends and it takes damage equal to twice your Agility. Spend 1 Insight: the creature is restrained until the end of its next turn. Spend 1 Insight: the creature can\'t teleport until the end of its next turn.') ] }) })
+					]
+				},
+				{
+					level: 2,
+					features: [
+						FactoryLogic.feature.createChoice({ id: 'watchful-2-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'watchful-pinning-strike', name: 'Pinning Strike', description: 'You are not going anywhere. The Breach is watching, and so am I.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 5, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Agility, tier1: '3 + A damage; slowed (save ends)', tier2: '6 + A damage; slowed (save ends) and restrained (EoT)', tier3: '9 + A damage; slowed (save ends) and restrained (save ends)' })) ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'watchful-warding-step', name: 'Warding Step', description: 'Step to the one who needs you and take the blow meant for them.', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One ally', cost: 5, sections: [ FactoryLogic.createAbilitySectionText('Teleport to a square adjacent to the target. Until the end of your next turn, the first strike that targets that ally targets you instead.') ] }) }), value: 1 } ] })
+					]
+				},
+				{
+					level: 5,
+					features: [
+						FactoryLogic.feature.create({ id: 'watchful-wardens-ground', name: 'Warden\'s Ground', description: 'While you are conscious you project a 3 aura. Enemies can\'t teleport within it or into it, they treat it as difficult terrain, and the first time each round an enemy moves while inside it, that enemy takes corruption damage equal to your Agility. Your step through a thin place distance increases to 5, and you can bring one adjacent ally with you.' })
+					]
+				},
+				{
+					level: 6,
+					features: [
+						FactoryLogic.feature.createChoice({ id: 'watchful-6-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'watchful-cast-out', name: 'Cast Out', description: 'Send it back where it leaked in from.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 9, sections: [ FactoryLogic.createAbilitySectionText('The target is teleported up to your Agility and is dazed (save ends). If the target is a summoned creature or a creature from beyond the Veil, it is instead removed from the encounter (save ends).') ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'watchful-net-draws-tight', name: 'The Net Draws Tight', description: 'Close the holes. Now nothing crosses without you knowing.', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', cost: 9, sections: [ FactoryLogic.createAbilitySectionText('Until the end of the encounter, you project a 3 aura. Enemies can\'t teleport within or into it and treat it as difficult terrain, and you sense every creature inside it, even the hidden and the unseen.') ] }) }), value: 1 } ] })
+					]
+				},
+				{
+					level: 8,
+					features: [
+						FactoryLogic.feature.create({ id: 'watchful-the-last-vigil', name: 'The Last Vigil', description: 'Once per encounter, as a main action, you anchor reality in a 5 burst until the end of the encounter. No creature can teleport into or out of the area, and no enemy can leave it: an enemy that tries to move out is stopped at the edge and takes corruption damage equal to three times your Agility. While any enemy from beyond the Veil stands in the area, you know its weaknesses as though you had studied it for hours.' })
+					]
+				},
+				{
+					level: 9,
+					features: [
+						FactoryLogic.feature.createChoice({ id: 'watchful-9-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'watchful-cast-beyond', name: 'Cast Beyond', description: 'The tithe runs both ways tonight.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 11, sections: [ FactoryLogic.createAbilitySectionText('The target must not be a leader, elite, or solo creature. The target makes a saving throw or is banished through the Breach (removed from the encounter; it returns dazed in its space at the end of the encounter).') ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'watchful-unblinking-hour', name: 'The Unblinking Hour', description: 'For one turning of the watch, nothing leaves the line.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('10 burst') ], target: 'Each enemy in the area', cost: 11, sections: [ FactoryLogic.createAbilitySectionText('Until the end of your next turn, the target cannot hide, teleport, move, or shift.') ] }) }), value: 1 } ] })
+					]
+				}
+			],
+			abilities: [],
+			selected: false
+		},
+		{
+			id: 'aos-sub-winnower',
+			name: 'Winnower',
+			description: 'The wheat is kept; the chaff is given to the fire. A Winnower\'s judgment is never for one soul alone: it leaps from the fallen to the standing, gathers heat as it goes, and does not stop until the field is sorted. Other orders hunt what hides; the Winnower\'s concern is what remains when nothing can.',
+			featuresByLevel: [
+				{
+					level: 1,
+					features: [
+						FactoryLogic.feature.createSkillChoice({ id: 'winnower-skill', selected: [ 'Society' ], count: 1 }),
+						FactoryLogic.feature.create({ id: 'winnower-the-fire-spreads', name: 'The Fire Spreads', description: 'When your judgment moves to a new target because a creature judged by you was reduced to 0 Stamina, the new target immediately takes holy damage equal to twice your Presence score, and you gain 1 wrath.' })
+					]
+				},
+				{
+					level: 2,
+					features: [
+						FactoryLogic.feature.create({ id: 'winnower-chaff-burns', name: 'Chaff Burns', description: 'When a creature judged by you is reduced to 0 Stamina, each enemy adjacent to them takes holy damage equal to your Presence score.' }),
+						FactoryLogic.feature.create({ id: 'winnower-an-eye-for-the-field', name: 'An Eye for the Field', description: 'You were trained to look at a crowd and see a crop. When you begin a negotiation, you automatically discover one of the NPC\'s motivations or pitfalls, your choice. Additionally, you gain an edge on tests made to single one creature out of a group: following a quarry through a mob, picking a face from a lineup, or spotting which member of a delegation is doing the real talking.' }),
+						FactoryLogic.feature.createChoice({ id: 'winnower-2-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'winnower-winnow', name: 'Winnow', description: 'The flail rises, and the field learns of what it is made.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('3 burst centered on a creature judged by you within 10') ], target: 'Each enemy in the area', cost: 5, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Presence, tier1: '3 holy damage; push 1 away from the judged creature', tier2: '5 holy damage; push 2 away from the judged creature', tier3: '8 holy damage; push 3 away from the judged creature; P<s frightened (save ends)' })), FactoryLogic.createAbilitySectionText('The judged creature at the center is not a target, but takes holy damage equal to your Presence score for each enemy pushed.') ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'winnower-first-fruits', name: 'First Fruits', description: 'The first sheaf is always given to the fire.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature judged by you', cost: 5, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Might, tier1: '5 + M holy damage', tier2: '8 + M holy damage', tier3: '11 + M holy damage' })), FactoryLogic.createAbilitySectionText('You gain 1 wrath for each enemy adjacent to the target, to a maximum of your Presence score.') ] }) }), value: 1 } ] })
+					]
+				},
+				{
+					level: 5,
+					features: [
+						FactoryLogic.feature.create({ id: 'winnower-twofold-harvest', name: 'Twofold Harvest', description: 'You can have two creatures judged by you at the same time. When you use your Judgment ability while two creatures are already judged by you, the earlier judgment ends. When your judgment moves because a judged creature was reduced to 0 Stamina, it can move to up to two new targets - The Fire Spreads applies to each.' })
+					]
+				},
+				{
+					level: 6,
+					features: [
+						FactoryLogic.feature.createChoice({ id: 'winnower-6-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'winnower-separate-wheat', name: 'Separate Wheat from Chaff', description: 'You do not strike the field. You sort it.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each enemy in the area', cost: 9, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Presence, tier1: '5 holy damage; slide 2', tier2: '8 holy damage; slide 3', tier3: '11 holy damage; slide 5; P<s frightened (save ends)' })), FactoryLogic.createAbilitySectionText('Each willing ally in the area can shift up to 2 squares.') ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'winnower-threshing-floor', name: 'The Threshing Floor', description: 'Step onto the boards, and be weighed.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('4 cube within 10') ], target: 'Special', cost: 9, sections: [ FactoryLogic.createAbilitySectionText('The area becomes a threshing floor until the end of the encounter. An enemy that starts their turn in the area adjacent to a creature judged by you takes holy damage equal to twice your Presence score. A creature judged by you takes holy damage equal to your Presence score for each square they willingly leave the area.') ] }) }), value: 1 } ] })
+					]
+				},
+				{
+					level: 8,
+					features: [
+						FactoryLogic.feature.create({ id: 'winnower-the-field-is-sorted', name: 'The Field Is Sorted', description: 'You treat your Renown as 2 higher than usual when dealing with a congregation, a crowd, or any group that answers to a single authority. If you successfully complete a negotiation with such a group\'s leader, you can use your Judgment ability as a free triggered action against any member of that group before an encounter begins. Additionally, when a creature judged by you is reduced to 0 Stamina, you or one ally within 10 squares of them gains temporary Stamina equal to twice your Presence score.' })
+					]
+				},
+				{
+					level: 9,
+					features: [
+						FactoryLogic.feature.createChoice({ id: 'winnower-9-ability', name: 'Ability', options: [ { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'winnower-harvest', name: 'Harvest', description: 'For one hour at the end of the season, everything in the field is judged at once. This is that hour.', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each enemy in the area', cost: 11, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Presence, tier1: '6 holy damage', tier2: '9 holy damage; P<v frightened (save ends)', tier3: '12 holy damage; P<s frightened (save ends)' })), FactoryLogic.createAbilitySectionText('Each target is judged by you until the end of the encounter, ignoring your usual limit on the number of judged creatures. While more than two creatures are judged this way, The Fire Spreads doesn\'t grant wrath.') ] }) }), value: 1 }, { feature: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'winnower-let-the-scythe-swing', name: 'Let the Scythe Swing', description: 'What could the harvest hope for, if not this?', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature judged by you', cost: 11, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: Characteristic.Might, tier1: '7 + M holy damage', tier2: '11 + M holy damage', tier3: '16 + M holy damage' })), FactoryLogic.createAbilitySectionText('If this ability reduces the target to 0 Stamina and your judgment moves to a new target within your melee distance, you can repeat this ability against the new target without spending wrath. You can repeat it a number of times equal to your Presence score.') ] }) }), value: 1 } ] })
+					]
+				}
+			],
+			abilities: [],
+			selected: false
+		}
 	],
 	tacticalMaps: [],
 	terrain: [],
 	titles: [
-		// TODO: Almoner
-		// TODO: Commander
-		// TODO: Constable
-		// TODO: Faithkeeper
-		// TODO: Faithkeeper Ascendant
-		// TODO: High Inquisitor
-		// TODO: Inquisitor
-		// TODO: Knight of the Hidden City
-		// TODO: Preceptor
-		// TODO: Rider of the Mjoll
-		// TODO: Seeker of the Keening Lament
-		// TODO: Storm of Valhaven
+		{
+			id: 'aos-title-almoner',
+			name: 'Almoner',
+			description: 'A Mercies title. A Hospitaller who has held a comrade back from death against the odds.',
+			echelon: 1,
+			prerequisites: 'You save a life that should have been lost - holding a comrade back from death against the odds.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'aos-title-almoner-1',
+					name: 'Triage',
+					description: 'Once per encounter, as a maneuver, an ally within 5 can spend a Recovery; if they have none left, they instead gain temporary Stamina equal to twice your level.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-almoner-2',
+					name: 'Unyielding',
+					description: 'While you are adjacent to a dying ally, strikes against you take a bane, and enemies adjacent to you can\'t target that ally with strikes or abilities.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-almoner-3',
+					name: 'Field Surgeon',
+					description: 'Whenever an ally within 5 spends a Recovery - including via the Heal main action - they regain additional Stamina equal to your level.'
+				})
+			],
+			selectedFeatureID: ''
+		},
+		{
+			id: 'aos-title-commander',
+			name: 'Commander',
+			description: 'A 2nd-echelon Greencoats title, for those raised to command the Marshals.',
+			echelon: 2,
+			prerequisites: 'You lead Marshals to break a major criminal operation, or are raised to command by your superiors.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'aos-title-commander-1',
+					name: 'Serjeant',
+					description: 'A seasoned constable (retainer) serves at your side in the field, warrant and truncheon ready.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-commander-2',
+					name: 'Rally the Watch',
+					description: 'Allies within a 3 aura who can see and hear you gain a +1 bonus to saving throws while you are not dying.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-commander-3',
+					name: 'Concordat Authority',
+					description: 'Your writ no longer stops at borders. You may lawfully command and requisition even outside Kaemius and Aetius, you gain a follower - an adjutant who runs your caseload - and your Renown increases by 1.'
+				})
+			],
+			selectedFeatureID: ''
+		},
+		{
+			id: 'aos-title-constable',
+			name: 'Constable',
+			description: 'A Greencoats title. A sworn Marshal of the Concordat, warrant in hand.',
+			echelon: 1,
+			prerequisites: 'You bring a wanted criminal to justice, or close your first case as a sworn Greencoat.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'aos-title-constable-1',
+					name: 'Beat',
+					description: 'Once per respite you can call up a pair of local watch to assist with a non-combat task - a cordon, a search, an extra set of hands.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-constable-2',
+					name: 'Hunter of the Dead',
+					description: 'You gain an edge on tests to track, identify, or expose a Veilbreaker or the undead.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-constable-3',
+					name: 'The Long Arm',
+					description: 'Once per encounter, as a maneuver, a creature within 10 that can hear you halts - it is slowed until the end of its next turn. Leaders and solos are unaffected unless winded.'
+				})
+			],
+			selectedFeatureID: ''
+		},
+		{
+			id: 'aos-title-faithkeeper',
+			name: 'Faithkeeper',
+			description: 'A Flamebearers title. One who has confronted and broken a heresy in Solan\'s name.',
+			echelon: 1,
+			prerequisites: 'You confront and break a heresy - a cult, a false prophet, or a worshipper of gods outside the Eightfold.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'aos-title-faithkeeper-1',
+					name: 'Solan\'s Brand',
+					description: 'Once per encounter, your strike or prayer flares with sacred fire: one creature takes holy or fire damage equal to your level, doubled against horrors, the undead, and creatures from beyond the Veil.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-faithkeeper-2',
+					name: 'Pyre-Warded',
+					description: 'You and allies within a 2 aura gain a +2 bonus to saving throws made to end the frightened condition.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-faithkeeper-3',
+					name: 'Consecrate the Ground',
+					description: 'As a maneuver, bless a 3 cube until the end of the encounter; allies within it gain a +1 bonus to saving throws.'
+				})
+			],
+			selectedFeatureID: ''
+		},
+		{
+			id: 'aos-title-faithkeeper-ascendant',
+			name: 'Faithkeeper Ascendant',
+			description: 'A 2nd-echelon Flamebearers title, for those who cast down a great heresy or a thing from beyond the Veil.',
+			echelon: 2,
+			prerequisites: 'You destroy a great heresy, or cast down a thing from beyond the Veil in Solan\'s name.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'aos-title-faithkeeper-ascendant-1',
+					name: 'Zealot',
+					description: 'A devoted Flamebearer (retainer) fights at your side, fervour undimmed.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-faithkeeper-ascendant-2',
+					name: 'Voice of Orthodoxy',
+					description: 'You speak with the authority of the Ascendancy: you gain a follower - an acolyte or scribe - your Renown increases by 1, and the faithful obey your lawful commands.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-faithkeeper-ascendant-3',
+					name: 'Radiance of the Undying Fire',
+					description: 'As a maneuver, wreathe yourself in sacred flame until the start of your next turn; enemies that start their turn within a 2 aura take holy or fire damage equal to your level, doubled for the unholy. You can use this maneuver again to sustain it.'
+				})
+			],
+			selectedFeatureID: ''
+		},
+		{
+			id: 'aos-title-high-inquisitor',
+			name: 'High Inquisitor',
+			description: 'A 2nd-echelon Arbiters title, for those who break a magical conspiracy.',
+			echelon: 2,
+			prerequisites: 'You break a magical conspiracy, or consign a notorious caster to the Crucible.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'aos-title-high-inquisitor-1',
+					name: 'The Order\'s Reach',
+					description: 'A junior Arbiter (follower) serves you, running down leads and watching for forbidden magic across the Alliance.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-high-inquisitor-2',
+					name: 'Aura of Silence',
+					description: 'Enemies take a bane on Magic and Psionic abilities that target you or that include you in their area - a faint, lawful echo of the Hexbreaker\'s art. Your Renown increases by 1.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-high-inquisitor-3',
+					name: 'Inquisitor\'s Judgement',
+					description: 'Once per encounter, when a creature within 10 uses a Magic or Psionic ability, you can use a triggered action to halve its damage or reduce its potency by 1.'
+				})
+			],
+			selectedFeatureID: ''
+		},
+		{
+			id: 'aos-title-inquisitor',
+			name: 'Inquisitor',
+			description: 'An Arbiters title. One who has exposed and brought in an unsanctioned caster.',
+			echelon: 1,
+			prerequisites: 'You expose and bring in an unsanctioned caster - best of all, a Veilbreaker.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'aos-title-inquisitor-1',
+					name: 'Pronounce Heresy',
+					description: 'Once per encounter, as a maneuver, name a creature you can see a heretic: you gain an edge on attacks and tests against it, and it takes a bane on Magic and Psionic abilities used against you, until the encounter ends.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-inquisitor-2',
+					name: 'Warded Mind',
+					description: 'You gain resistance equal to your level to damage from Magic and Psionic abilities.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-inquisitor-3',
+					name: 'Authority of the Crucible',
+					description: 'You may lawfully detain and bind any caster throughout the Northern Alliance, and you carry Crucible manacles that suppress a bound prisoner\'s magic.'
+				})
+			],
+			selectedFeatureID: ''
+		},
+		{
+			id: 'aos-title-knight-of-the-hidden-city',
+			name: 'Knight of the Hidden City',
+			description: 'A Seade Knights title. One who has upheld the honour of Ithyr in a duel, a charge, or a quest.',
+			echelon: 1,
+			prerequisites: 'You uphold the honour of Ithyr in a duel, a charge, or a quest set you by the masked elves.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'aos-title-knight-of-the-hidden-city-1',
+					name: 'Step Between',
+					description: 'Once per round, as part of your move, you teleport up to 2 squares - the displacing grace the Coursers ride to war.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-knight-of-the-hidden-city-2',
+					name: 'Unhurried Blade',
+					description: 'Once per encounter, when an enemy misses you with a strike, you make a free strike against it.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-knight-of-the-hidden-city-3',
+					name: 'The Mask\'s Silence',
+					description: 'You move without sound and leave no trace; you gain an edge on tests to hide and to move unseen.'
+				})
+			],
+			selectedFeatureID: ''
+		},
+		{
+			id: 'aos-title-preceptor',
+			name: 'Preceptor',
+			description: 'A 2nd-echelon Mercies title, for those who shepherd a chapterhouse through catastrophe.',
+			echelon: 2,
+			prerequisites: 'You shepherd a chapterhouse, or a column of wounded, through a siege, a disaster, or a rout.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'aos-title-preceptor-1',
+					name: 'Lay Brother',
+					description: 'A devoted lay-medic serves as your follower, running your chapterhouse\'s relief work and tending the wounded between battles.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-preceptor-2',
+					name: 'Preceptor\'s Word',
+					description: 'Once per encounter, as a free triggered action when an ally within 10 becomes winded, they can immediately spend a Recovery.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-preceptor-3',
+					name: 'Endurance of Tonaris',
+					description: 'Allies within a 3 aura reduce any ongoing damage they take - bleeding, burning, poison, and the like - by half your level, rounded up.'
+				})
+			],
+			selectedFeatureID: ''
+		},
+		{
+			id: 'aos-title-rider-of-the-mjoll',
+			name: 'Rider of the Mjoll',
+			description: 'An Einherjar title. The Svellander regiment\'s riders, bonded to war-mount and matched in the charge.',
+			echelon: 1,
+			prerequisites: 'You turn a battle with a mounted charge, or ride down a foe that should have escaped.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'aos-title-rider-of-the-mjoll-1',
+					name: 'Thunder of Hooves',
+					description: 'When you and your mount move at least 4 squares straight toward an enemy before you strike it, that strike deals 3 additional damage and you can push the target 1.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-rider-of-the-mjoll-2',
+					name: 'Seat of Iron',
+					description: 'You can\'t be knocked from your mount or made prone while mounted, and once per encounter, when your mount would drop to 0 Stamina, it stays up with 1 instead.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-rider-of-the-mjoll-3',
+					name: 'Windrider',
+					description: 'While mounted on an owlfalcon you can hover, and you gain an edge on tests to evade or escape by air.'
+				})
+			],
+			selectedFeatureID: ''
+		},
+		{
+			id: 'aos-title-seeker-of-the-keening-lament',
+			name: 'Seeker of the Keening Lament',
+			description: 'A 2nd-echelon Seade Knights title, for those who recover a fragment of the lost song.',
+			echelon: 2,
+			prerequisites: 'You recover a fragment of the lost song, or perform a deed the exiled elves judge worthy of their grief.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'aos-title-seeker-of-the-keening-lament-1',
+					name: 'The Lament',
+					description: 'Once per encounter, as a maneuver, you loose a note of the Keening Lament: each enemy within a 3 aura is frightened until the end of its next turn, while each ally there gains temporary Stamina equal to your level.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-seeker-of-the-keening-lament-2',
+					name: 'Ithyri Grace',
+					description: 'Your Step Between - or other teleport - distance increases by 2, and you can carry one adjacent ally with you when you teleport.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-seeker-of-the-keening-lament-3',
+					name: 'Sanctuary of the Hidden City',
+					description: 'Ithyr, which shelters no one, will shelter you: you gain refuge among the elves and a follower - an Ithyri attendant who shares their uncanny senses.'
+				})
+			],
+			selectedFeatureID: ''
+		},
+		{
+			id: 'aos-title-storm-of-valhaven',
+			name: 'Storm of Valhaven',
+			description: 'A 2nd-echelon Einherjar title, earned by leading a cavalry action that decides the day.',
+			echelon: 2,
+			prerequisites: 'You lead a cavalry action that decides the day.',
+			features: [
+				FactoryLogic.feature.create({
+					id: 'aos-title-storm-of-valhaven-1',
+					name: 'Shieldrider',
+					description: 'A single Einherjar rider (retainer) charges where you charge, moose or owlfalcon matched to your own.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-storm-of-valhaven-2',
+					name: 'Coordinated Charge',
+					description: 'When you charge, allies within a 5 aura who also move toward an enemy this turn gain an edge on their first strike.'
+				}),
+				FactoryLogic.feature.create({
+					id: 'aos-title-storm-of-valhaven-3',
+					name: 'Dread Rider',
+					description: 'The first enemy you strike each encounter after moving at least 4 squares is frightened until the end of its next turn.'
+				})
+			],
+			selectedFeatureID: ''
+		}
 	],
 	skills: [],
 	languages: [
-		// TODO: Languages
+		// Kaemian languages
+		{
+			name: 'Eladrith',
+			description: 'Spoken in Ithyr; spoken by most elves. Script: Eladric.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Eravian',
+			description: 'Spoken in Eravia. Script: Lirian.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Khezdath',
+			description: 'Spoken in the Dwarfholds and by most dwarves; the language of engineering. Script: Khezic.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Lirian',
+			description: 'Language of the old Lirian Empire; now the language of academia. Script: Lirian.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Serne',
+			description: 'Native language of Serne; trade language throughout Kaemius and common in Aetius. Script: Lirian.',
+			type: LanguageType.Common,
+			related: []
+		},
+		{
+			name: 'Sirovy',
+			description: 'Spoken in Sirovya. Script: Lirian.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Svellese',
+			description: 'Spoken in Svelland. Script: Lirian.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Telosi',
+			description: 'Spoken in Telos. Script: Lirian.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Valedien',
+			description: 'Spoken in Valedier. Script: Lirian.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Bhawaran',
+			description: 'Spoken in Bhawara. Script: Bushaic.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Dejiman',
+			description: 'Spoken by Dejim natives in Dejim. Script: Bushaic.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Jhazrendish',
+			description: 'Spoken in Jhazren. Script: Bushaic.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Mei\'chan',
+			description: 'Spoken in Mei\'chi. (No written script).',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Ranai',
+			description: 'Spoken by Rana natives in Dejim. Script: Bushaic.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Ryvian',
+			description: 'Spoken in Ryvos. Script: Bushaic.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Surayan',
+			description: 'Spoken by Suray natives in Dejim. Script: Bushaic.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Azhari',
+			description: 'Language of the empire of Azharad; trade language throughout Aetius; spoken by most devils. Script: Bushaic.',
+			type: LanguageType.Common,
+			related: []
+		},
+		{
+			name: 'Vraxalian',
+			description: 'Language of the empire of Vraxalia; today spoken mainly by dragon knights. Script: Vraxalic.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Gaureth',
+			description: 'Spoken in the Gauthek Empire; spoken by most goblinoids. Script: Kaman.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Kalish',
+			description: 'Spoken in Kalai; spoken by most orcs. Script: Kaman.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Sathrassian',
+			description: 'Spoken in Sathras; spoken by reptilians. Script: Kaman.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Giant',
+			description: 'Spoken by giants and hakaans in the Frostfell. (No written script).',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Orian',
+			description: 'Spoken in Oria; spoken by most orians. Script: Eladric.',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Hana',
+			description: 'Gnomish; spoken in Maerius. (No written script).',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Lowai',
+			description: 'Spoken in Lowai Pora; spoken by most polders. (No written script).',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Divine',
+			description: 'Spoken in the Divine Sea. (No written script).',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Elemental',
+			description: 'Spoken in the Elemental Chaos. (No written script).',
+			type: LanguageType.Regional,
+			related: []
+		},
+		{
+			name: 'Fae',
+			description: 'Spoken in the Bright Marches. (No written script).',
+			type: LanguageType.Regional,
+			related: []
+		}
 	]
 };
