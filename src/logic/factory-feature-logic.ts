@@ -14,6 +14,7 @@ import { Format } from '@/utils/format';
 import { ItemType } from '@/enums/item-type';
 import { KitArmor } from '@/enums/kit-armor';
 import { KitWeapon } from '@/enums/kit-weapon';
+import { LanguageType } from '@/enums/language-type';
 import { Monster } from '@/models/monster';
 import { Perk } from '@/models/perk';
 import { PerkList } from '@/enums/perk-list';
@@ -395,7 +396,7 @@ export class FactoryFeatureLogic {
 		};
 	};
 
-	createLanguageChoice = (data: { id: string, name?: string, description?: string, options?: string[], count?: number, selectAt?: 'build' | 'respite' | 'play', selected?: string[] }): FeatureLanguageChoice => {
+	createLanguageChoice = (data: { id: string, name?: string, description?: string, options?: string[], allowedTypes?: LanguageType[], count?: number, selectAt?: 'build' | 'respite' | 'play', selected?: string[] }): FeatureLanguageChoice => {
 		const count = data.count || 1;
 		return {
 			id: data.id,
@@ -404,6 +405,7 @@ export class FactoryFeatureLogic {
 			type: FeatureType.LanguageChoice,
 			data: {
 				options: data.options || [],
+				allowedTypes: data.allowedTypes || [ LanguageType.Common, LanguageType.Regional, LanguageType.Cultural, LanguageType.Dead ],
 				count: count,
 				selectAt: data.selectAt || 'build',
 				selected: data.selected || []

@@ -3,6 +3,7 @@ import { AbilityDistanceType } from '@/enums/ability-distance-type';
 import { AbilityKeyword } from '@/enums/ability-keyword';
 import { Characteristic } from '@/enums/characteristic';
 import { CultureType } from '@/enums/culture-type';
+import { DamageType } from '@/enums/damage-type';
 import { FactoryLogic } from '@/logic/factory-logic';
 import { FeatureField } from '@/enums/feature-field';
 import { FeatureType } from '@/enums/feature-type';
@@ -11,6 +12,8 @@ import { ItemType } from '@/enums/item-type';
 import { KitArmor } from '@/enums/kit-armor';
 import { KitWeapon } from '@/enums/kit-weapon';
 import { LanguageType } from '@/enums/language-type';
+import { MonsterGroup } from '@/models/monster-group';
+import { MonsterOrganizationType } from '@/enums/monster-organization-type';
 import { MonsterRoleType } from '@/enums/monster-role-type';
 import { PerkList } from '@/enums/perk-list';
 import { SkillList } from '@/enums/skill-list';
@@ -2180,6 +2183,326 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 	characteristics: []
 };
 
+const celestial: MonsterGroup = {
+	id: 'monster-group-aos-celestial',
+	name: 'Celestial',
+	description: 'When the Veil thins beneath a lavender sky, what steps through from the Divine Sea does not come to kill; it comes only to correct. They are radiant, beautiful, and patient, and the worst of them are most dangerous not in the moment they strike but in the moment you find yourself agreeing with them.',
+	picture: null,
+	information: [],
+	malice: [
+		FactoryLogic.feature.createMalice({
+			id: 'celestial-malice-antiphon',
+			name: 'Antiphon',
+			cost: 3,
+			sections: [
+				'The choir answers itself. Each celestial acting this turn may, after its action, force one enemy within 5 to make a Presence test; on a failure the enemy takes holy damage equal to the highest-level celestial\'s level and can\'t gain surges until the end of its next turn.'
+			]
+		}),
+		FactoryLogic.feature.createMalice({
+			id: 'celestial-malice-one-voice',
+			name: 'One Voice',
+			cost: 5,
+			sections: [
+				'Until the end of the round, each celestial on the encounter map gains an edge on power rolls while adjacent to another celestial, and each enemy that ends its turn adjacent to two or more celestials is in concord (save ends).'
+			]
+		}),
+		FactoryLogic.feature.createMalice({
+			id: 'celestial-malice-pronounce-sentence',
+			name: 'Pronounce Sentence',
+			cost: 7,
+			sections: [
+				'Choose one enemy. Each celestial that has line of effect may immediately use a signature ability against that enemy. An enemy reduced to 0 Stamina by this judgement doesn\'t die but falls unconscious (save ends).'
+			]
+		})
+	],
+	monsters: [
+		FactoryLogic.createMonster({
+			id: 'celestial-verger',
+			name: 'Celestial Verger',
+			description: 'A humanoid figure bathed in cold radiance.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Minion, MonsterRoleType.Brute),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 2,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 6,
+			stability: 0,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(2, 0, -1, 1, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'verger-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'verger-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 2 damage.' }),
+				FactoryLogic.feature.create({ id: 'verger-antiphonal', name: 'Antiphonal', description: 'A verger\'s abilities gain an edge while it is within 3 squares of another celestial.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'verger-stilling-touch', name: 'Stilling Touch', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One enemy per antiphon', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '2 holy damage', tier2: '3 holy damage', tier3: '4 holy damage; the target can\'t shift until the end of its next turn' })), FactoryLogic.createAbilitySectionText('If two or more vergers target the same enemy: the target is in concord (EoT).') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'verger-be-still', name: 'Be Still', type: FactoryLogic.type.createTrigger('The verger is reduced to 0 Stamina'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The verger comes apart into light, and that light does not disperse. One celestial within 3 squares regains 2 Stamina.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-chorister',
+			name: 'Celestial Chorister',
+			description: 'A drifting mote of voice and pale light; a hundred of them sound like a cathedral with no walls.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Minion, MonsterRoleType.Artillery),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 2,
+			size: FactoryLogic.createSize(1, 'S'),
+			speed: FactoryLogic.createSpeed(5, 'fly, hover'),
+			stamina: 5,
+			stability: 0,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(-1, 1, 1, 2, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'chorister-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'chorister-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'chorister-chorus', name: 'Chorus', description: 'A chorister\'s abilities gain an edge while it is within 3 of another celestial.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'chorister-radiant-note', name: 'Radiant Note', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(8) ], target: 'One enemy per chorister', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '2 holy damage', tier2: '3 holy damage', tier3: '4 holy damage; the target can\'t gain an edge until the end of its next turn' })), FactoryLogic.createAbilitySectionText('If two or more choristers target the same enemy: the target is also frightened (EoT).') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'chorister-be-still', name: 'Be Still', type: FactoryLogic.type.createTrigger('The chorister is reduced to 0 Stamina'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The chorister comes apart into light. One celestial within 3 squares regains 2 Stamina.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-mendicant',
+			name: 'Celestial Mendicant',
+			description: 'A robed, kneeling figure of soft radiance, palms upturned, that asks - gently, relentlessly - that you kneel beside it.',
+			level: 2,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Hexer),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 8,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 50,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Psychic,
+			characteristics: FactoryLogic.createCharacteristics(0, 1, 1, 2, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'mendicant-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'mendicant-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'mendicant-wearying-grace', name: 'Wearying Grace', description: 'When an adjacent enemy fails a saving throw, the mendicant regains 3 Stamina.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mendicant-burden-of-grace', name: 'Burden of Grace', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '5 psychic damage; P<0 weakened (EoT)', tier2: '7 psychic damage; P<1 weakened (save ends)', tier3: '9 psychic damage; P<2 in supplication (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mendicant-kneel', name: 'Kneel', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The target falls to its knees: it is prone and can\'t stand (EoT). The mendicant gains 3 temporary Stamina. Special: The target must be winded or weakened.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mendicant-weight-of-devotion', name: 'Weight of Devotion', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('2 burst within 5') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '5 psychic damage; P<1 weakened (save ends)', tier2: '7 psychic damage; P<2 in supplication (save ends)', tier3: '9 psychic damage; P<3 in supplication (save ends)' })), FactoryLogic.createAbilitySectionText('The mendicant regains 2 Stamina for each enemy brought to its knees by this ability.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-throne',
+			name: 'Celestial Throne',
+			description: 'A great seat of burning brass and folded wings, occupied by no one - the chair itself is the angel, and where it sets down, the ground becomes a court.',
+			level: 3,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Defender),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 11,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(4),
+			stamina: 75,
+			stability: 4,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(3, 0, 0, 1, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'throne-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'throne-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'throne-hold-court', name: 'Hold Court', description: 'While the throne hasn\'t moved since the start of its last turn, each enemy within 2 can\'t willingly end its move farther from the throne than it began.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'throne-scales-and-sword', name: 'Scales and Sword', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(2) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '5 holy damage; taunted (EoT)', tier2: '9 holy damage; taunted (save ends)', tier3: '12 holy damage; taunted (save ends) and P<2 in concord (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'throne-interpose', name: 'Interpose', type: FactoryLogic.type.createTrigger('The target is targeted by a strike'), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(2) ], target: 'One ally', cost: 1, sections: [ FactoryLogic.createAbilitySectionText('The throne becomes the new target of the strike, provided it is valid. It then reduces the damage by 5.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'throne-summon-the-dock', name: 'Summon the Dock', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Until the throne moves, each enemy that starts its turn within 2 is P<1 in supplication (save ends).') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-cantor',
+			name: 'Celestial Cantor',
+			description: 'A tall, slender thing of woven light that does not fight so much as conduct - every gesture tuning the host around it into something more certain.',
+			level: 3,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Support),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 11,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(6, 'fly'),
+			stamina: 60,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(0, 1, 2, 1, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'cantor-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'cantor-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'cantor-perfect-pitch', name: 'Perfect Pitch', description: 'When the cantor is reduced to 0 Stamina, before it is removed, one celestial within 5 may immediately make a signature ability as a free triggered action.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'cantor-tuning-note', name: 'Tuning Note', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '5 holy damage', tier2: '9 holy damage', tier3: '12 holy damage' })), FactoryLogic.createAbilitySectionText('If the cantor targets a celestial ally instead, the ability deals no damage; that ally instead gains 5 temporary Stamina and an edge on its next power roll.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'cantor-harmonize', name: 'Harmonize', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One or two allies', sections: [ FactoryLogic.createAbilitySectionText('Each target may immediately shift 2. Until the start of the cantor\'s next turn, each target\'s strikes deal 2 additional holy damage.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'cantor-dissonance', name: 'Dissonance is a Sin', type: FactoryLogic.type.createTrigger('The target ends an effect on itself with a saving throw'), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One enemy', cost: 1, sections: [ FactoryLogic.createAbilitySectionText('The target takes 5 psychic damage.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'cantor-swell', name: 'Swell the Chorus', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each ally in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionText('The target gains 5 temporary Stamina and may immediately shift 2. Until the start of the cantor\'s next turn, when the target imposes In Concord or In Supplication, that effect\'s potency increases by 1.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-dominion',
+			name: 'Celestial Dominion',
+			description: 'A column of ordered light ringed by slowly turning rings of script, imposing geometry on everything it surveys. Where it looks, the world lines up.',
+			level: 4,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Controller),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 13,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5, 'fly'),
+			stamina: 70,
+			stability: 1,
+			freeStrikeDamage: 6, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(1, 1, 2, 2, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'dominion-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'dominion-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'dominion-right-order', name: 'Right Order', description: 'Difficult terrain within 5 of the dominion isn\'t difficult terrain for celestials, and is difficult terrain for everyone else even when it otherwise wouldn\'t be.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'dominion-decree', name: 'Decree', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(8) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '6 holy damage; slide 1', tier2: '10 holy damage; slide 3', tier3: '13 holy damage; slide 3 and P<2 in concord (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'dominion-all-things', name: 'All Things in their Place', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('3 cube within 10') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '5 holy damage; pull 2 toward the cube\'s centre', tier2: '8 holy damage; pull 3 toward the centre', tier3: '11 holy damage; pull 3 toward the centre, and each target that ends adjacent to another target is restrained (save ends)' })), FactoryLogic.createAbilitySectionText('The area becomes a 3 cube of ordered light until the end of the encounter; enemies treat it as difficult terrain, celestials gain an edge on power rolls while inside it.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-virtue',
+			name: 'Celestial Virtue',
+			description: 'A blade of white fire trailing a comet\'s wing, too fast and too bright to look at directly - the host\'s swift hand, sent to make an example.',
+			level: 5,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Harrier),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 14,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(8, 'fly'),
+			stamina: 80,
+			stability: 0,
+			freeStrikeDamage: 6, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(1, 3, 0, 1, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'virtue-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'virtue-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'virtue-wings', name: 'On Wings of Judgement', description: 'The virtue can fly, ignores difficult terrain, and doesn\'t provoke opportunity attacks when it flies.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'virtue-searing-light', name: 'Searing Light', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '6 holy damage; the virtue shifts 2', tier2: '11 holy damage; the virtue shifts 3', tier3: '14 holy damage; the virtue shifts 3, and the target can\'t make opportunity attacks (EoT)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'virtue-annunciation', name: 'Annunciation', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The virtue marks the target for judgement until the end of its next turn. While marked, the target is frightened, and the next strike any celestial makes against it gains an edge.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'virtue-flense', name: 'Flense the Unworthy', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '9 holy damage', tier2: '14 holy damage; P<2 bleeding (save ends)', tier3: '18 holy damage; P<3 bleeding (save ends), and if the target is marked, it is also in supplication (save ends)' })) ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-power',
+			name: 'Celestial Power',
+			description: 'An armoured giant of cooling brass and four mailed wings, wielding a sword as long as a man is tall. The militant face of mercy.',
+			level: 6,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Brute),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 16,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(5, 'fly'),
+			stamina: 110,
+			stability: 3,
+			freeStrikeDamage: 8, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(3, 1, 0, 1, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'power-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'power-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'power-unanswerable', name: 'Unanswerable', description: 'When a creature scores a tier 3 result against the power with a strike, the power loses 1d6 Stamina and the result becomes a tier 2 result instead.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'power-sentencing-sword', name: 'Sentencing Sword', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(2) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '8 holy damage; push 1', tier2: '14 holy damage; push 2', tier3: '17 holy damage; push 3 and M<3 prone' })), FactoryLogic.createAbilitySectionText('If the target is prone or in supplication, this ability deals 4 additional damage.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'power-weight-of-heaven', name: 'The Weight of Heaven', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('2 burst') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '8 holy damage; P<2 in supplication (save ends)', tier2: '12 holy damage; P<3 in supplication (save ends)', tier3: '6 holy damage; P<4 in supplication (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'power-descent', name: 'Descent', type: FactoryLogic.type.createMove(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The power flies up to its speed in a straight line and lands; each enemy adjacent to its landing square takes 4 holy damage and is knocked prone.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-seraph',
+			name: 'Celestial Seraph',
+			description: 'Six wings, a wheel of eyes, and a voice like a sentence already passed. The radiant judge; a Seraph anchors a serious incursion.',
+			level: 7,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Hexer),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 56,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(6, 'fly'),
+			stamina: 200,
+			stability: 2,
+			freeStrikeDamage: 9, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(2, 1, 2, 3, 3),
+			features: [
+				FactoryLogic.feature.create({ id: 'seraph-serene', name: 'Serene', description: 'A celestial can\'t be frightened; additionally the seraph is immune to being dazed, taunted, or charmed.' }),
+				FactoryLogic.feature.create({ id: 'seraph-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'seraph-many-eyes', name: 'Many Eyes', description: 'The seraph can\'t be hidden from, and ignores concealment. The first time each round an enemy within 10 attempts to hide or break line of effect, that enemy is frightened (EoT).' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'seraph-pronouncement', name: 'Pronouncement', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '9 holy damage; I<2 in concord (save ends)', tier2: '15 holy damage; I<3 in concord (save ends)', tier3: '18 holy damage; I<4 in concord (save ends) and in supplication (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'seraph-kneel', name: 'Kneel before the Divine', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '11 psychic damage; in supplication (save ends)', tier2: '6 psychic damage; prone', tier3: 'no effect' })), FactoryLogic.createAbilitySectionText('Each target makes a Presence test.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'seraph-verdict', name: 'The Verdict is Love', type: FactoryLogic.type.createTrigger('The target would take damage from one of the seraph\'s allies'), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One enemy', cost: 1, sections: [ FactoryLogic.createAbilitySectionText('The target takes no damage, and instead its next action must be spent moving toward, and then defending, the seraph.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'seraph-final-judgement', name: 'Final Judgement', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each enemy in the area', cost: 5, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '11 holy damage; I<3 in concord (save ends)', tier2: '16 holy damage; I<4 in supplication (save ends)', tier3: '21 holy damage; I<5 in supplication (save ends)' })), FactoryLogic.createAbilitySectionText('Any enemy reduced to 0 Stamina by this ability falls unconscious (save ends) rather than dying.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-principality',
+			name: 'Celestial Principality',
+			description: 'It does not appear. It is realised - stepping out of the conviction of a crowd as though it had always been the thing they believed.',
+			level: 8,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Ambusher),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 20,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5, 'fly'),
+			stamina: 110,
+			stability: 0,
+			freeStrikeDamage: 8, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(0, 2, 2, 2, 3),
+			features: [
+				FactoryLogic.feature.create({ id: 'principality-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'principality-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'principality-belief', name: 'Made of Belief', description: 'While any enemy within 10 is in concord, the principality has concealment and can\'t be made the target of an opportunity attack. The first time each round it becomes hidden, it may teleport 5.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'principality-revelation', name: 'Revelation Strike', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '9 holy damage', tier2: '15 holy damage; if the target is in concord or frightened, +4 holy damage', tier3: '19 holy damage; if the target is in concord or frightened, the principality may teleport, swapping places with it' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'principality-spreads', name: 'Spreads Like Weather', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: 'P<2 in concord (save ends)', tier2: 'P<3 in concord (save ends)', tier3: 'P<4 in concord (save ends)' })), FactoryLogic.createAbilitySectionText('The target\'s allies that can see it take a bane on their next saving throw against concord.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'principality-no-you-agree', name: 'No, You Agree', type: FactoryLogic.type.createTrigger('The principality is targeted by a strike'), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One enemy', cost: 1, sections: [ FactoryLogic.createAbilitySectionText('The attacker must make a saving throw. On a failure, it chooses a new target for the strike, and is in concord (save ends).') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-concordant',
+			name: 'Celestial Concordant',
+			description: 'A towering figure of white robes and golden machinery, ringed by a silent choir, that offers the world the one thing it has always wanted: an end to argument.',
+			level: 9,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Leader, MonsterRoleType.Controller),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 72,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(6, 'fly'),
+			stamina: 240,
+			stability: 2,
+			freeStrikeDamage: 9, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(2, 1, 3, 3, 4),
+			features: [
+				FactoryLogic.feature.create({ id: 'concordant-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'concordant-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'concordant-choir-eternal', name: 'Choir Eternal', description: 'While the concordant is on the encounter map, celestial allies can\'t be in supplication or forced to make a saving throw against the concordant\'s own effects, and they gain an edge on saving throws.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'concordant-the-offer', name: 'The Offer', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '9 holy damage; P<2 in concord (save ends)', tier2: '14 holy damage; P<3 in concord (save ends)', tier3: '18 holy damage; P<4 in concord (save ends); if the target was already in concord, it is instead subjected to Supplication (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'concordant-world-without-discord', name: 'A World Without Discord', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', cost: 3, sections: [ FactoryLogic.createAbilitySectionText('Until the end of the concordant\'s next turn, each enemy in concord within 10 takes a bane on power rolls and saving throws, and each celestial within 10 gains 5 temporary Stamina.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'concordant-silence-dissenter', name: 'Silence the Dissenter', type: FactoryLogic.type.createTrigger('The target ends an effect with a saving throw, or damages the concordant'), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One enemy', cost: 2, sections: [ FactoryLogic.createAbilitySectionText('The target takes 9 psychic damage and, P<3, is in concord (save ends).') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'concordant-va1', name: 'Call to Worship', type: FactoryLogic.type.createVillainAction(1), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('Each enemy within 10') ], target: 'Each enemy within 10', sections: [ FactoryLogic.createAbilitySectionText('Each enemy within 10 makes a Presence test. On a failure, the enemy is frightened (save ends); an enemy already frightened is instead in concord (save ends).') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'concordant-va2', name: 'The Sentence of the Sea', type: FactoryLogic.type.createVillainAction(2), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('One enemy in concord or frightened') ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('Choose one enemy in concord or frightened. Each celestial within 10 with line of effect makes a signature ability against it as a free triggered action. If it is reduced to 0 Stamina, it falls unconscious rather than dying.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'concordant-va3', name: 'Perfected Stillness', type: FactoryLogic.type.createVillainAction(3), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Until the start of the concordant\'s next turn, no creature on the encounter map may shift, and forced movement distances are halved. Celestials are unaffected.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-perfected-silence',
+			name: 'Celestial Perfected Silence',
+			description: 'Not a figure. A region of the world made right - a sphere of motionless, luminous, soundless order, at the centre of which something vast is being still.',
+			level: 10,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Solo, MonsterRoleType.Controller),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 120,
+			size: FactoryLogic.createSize(2),
+			speed: FactoryLogic.createSpeed(5, 'fly, hover'),
+			stamina: 400,
+			stability: 5,
+			freeStrikeDamage: 11, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(3, 1, 3, 4, 5),
+			features: [
+				FactoryLogic.feature.create({ id: 'silence-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'silence-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'silence-solo-resolve', name: 'Solo Resolve', description: 'The Perfected Silence ignores the dazed, taunted, grabbed, and restrained conditions and takes only half damage from the Affront to Order trait it would otherwise suffer. At the start of each of its turns, it may end one effect on itself that a saving throw could end.' }),
+				FactoryLogic.feature.create({ id: 'silence-aura', name: 'Aura of Stillness (3)', description: 'Each enemy that enters the aura for the first time in a round or starts its turn there takes 5 holy damage and, P<3, is slowed (EoT). An enemy reduced to 0 Speed inside the aura is in supplication (save ends).' }),
+				FactoryLogic.feature.create({ id: 'silence-two-turns', name: 'Two Turns', description: 'The Perfected Silence takes two turns each round, at two different points in the initiative order. It can\'t take them consecutively.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'silence-hand-of-peace', name: 'Hand of Peace', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(2) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 5, tier1: '11 holy damage; P<3 in concord (save ends)', tier2: '16 holy damage; P<4 in concord (save ends) and slide 3', tier3: '21 holy damage; P<5 in supplication (save ends) and slide 3' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'silence-let-it-end', name: 'Let it End', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '9 holy damage; P<3 in concord (save ends)', tier2: '14 holy damage; P<4 in concord and weakened (save ends)', tier3: '19 holy damage; P<5 in supplication (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'silence-sea-closes', name: 'The Sea Closes Over', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('3 burst') ], target: 'Each enemy in the area', cost: 5, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '13 holy damage; P<4 in concord (save ends)', tier2: '18 holy damage; P<5 in supplication (save ends)', tier3: '23 holy damage; P<6 in supplication (save ends)' })), FactoryLogic.createAbilitySectionText('Any enemy reduced to 0 Stamina by this ability falls unconscious (save ends) rather than dying.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'silence-va1', name: 'The Quiet Spreads', type: FactoryLogic.type.createVillainAction(1), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The aura\'s size increases by 1 (to a maximum of 6) until the end of the encounter. Each enemy currently in the aura makes a Presence test or is in concord (save ends).') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'silence-va2', name: 'Be Still', type: FactoryLogic.type.createVillainAction(2), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Until the start of its next turn, no enemy on the encounter map may take more than one action, maneuver, or move on its turn, and forced movement against the Perfected Silence fails. Choose one enemy in concord: it is in supplication (save ends) with a double bane on the save.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'silence-va3', name: 'Annexation', type: FactoryLogic.type.createVillainAction(3), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('Each enemy in supplication within the aura') ], target: 'Each enemy in supplication within the aura', sections: [ FactoryLogic.createAbilitySectionText('Each enemy in supplication within the aura must make a Presence test. On a failure, it is removed from the encounter and returns at the start of the next round, dazed and weakened (save ends). On a success, it is no longer in supplication, and is immune to that condition until the end of its next turn.') ] }) })
+			]
+		})
+	],
+	addOns: []
+};
+
 export const ageOfSecrets: Sourcebook = {
 	id: 'community-age-of-secrets',
 	name: 'Age of Secrets',
@@ -3793,10 +4116,10 @@ The area becomes burning terrain until the end of your next turn. Creatures that
 	],
 	monsterGroups: [
 		// TODO: Beastfolk
-		// TODO: Celestials
-		// TODO: Devas
+		celestial
+		// TODO: Deva
 		// TODO: Ironbound
-		// TODO: Orians
+		// TODO: Orian
 		// TODO: Siabhra
 	],
 	montages: [],

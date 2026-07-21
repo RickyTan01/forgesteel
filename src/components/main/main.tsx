@@ -226,12 +226,12 @@ export const Main = (props: Props) => {
 	// #region Heroes
 
 	const newHero = (folder: string) => {
-		const sourcebookIDs = SourcebookLogic.getSourcebooks(homebrewSourcebooks)
+		const hero = FactoryLogic.createHero();
+
+		hero.folder = folder;
+		hero.sourcebookIDs = SourcebookLogic.getSourcebooks(homebrewSourcebooks)
 			.filter(sb => sb.type === SourcebookType.Official)
 			.map(sb => sb.id);
-
-		const hero = FactoryLogic.createHero(sourcebookIDs);
-		hero.folder = folder;
 
 		setDrawer(null);
 		persistHero(hero).then(() => navigation.goToHeroEdit(hero.id, 'start'));
@@ -1548,7 +1548,7 @@ export const Main = (props: Props) => {
 		setDrawer(
 			<RollModal
 				characteristics={[ characteristic ]}
-				hero={hero}
+				creature={hero}
 				onClose={() => setDrawer(null)}
 			/>
 		);

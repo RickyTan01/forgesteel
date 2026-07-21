@@ -40,7 +40,7 @@ describe('getPowerRollCharacteristics', () => {
 		CreatureLogic.isHero = vi.fn().mockReturnValue(true);
 		HeroLogic.getFeatures = vi.fn().mockReturnValue([]);
 
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 
 		[ AbilityData.grab, AbilityData.knockback ].forEach(ability => {
 			const result = AbilityLogic.getPowerRollCharacteristics(ability, hero);
@@ -54,7 +54,7 @@ describe('getPowerRollCharacteristics', () => {
 		CreatureLogic.isHero = vi.fn().mockReturnValue(true);
 		HeroLogic.getFeatures = vi.fn().mockReturnValue([ { feature: { id: 'null-1-8' } } ]); // Psionic Martial Arts id
 
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 
 		[ AbilityData.grab, AbilityData.knockback ].forEach(ability => {
 			const result = AbilityLogic.getPowerRollCharacteristics(ability, hero);

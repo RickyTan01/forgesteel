@@ -20,6 +20,7 @@ import { HeroLogic } from '@/logic/hero-logic';
 import { Item } from '@/models/item';
 import { ItemType } from '@/enums/item-type';
 import { Kit } from '@/models/kit';
+import { LanguageType } from '@/enums/language-type';
 import { Monster } from '@/models/monster';
 import { MonsterFeatureCategory } from '@/enums/monster-feature-category';
 import { MonsterLogic } from './monster-logic';
@@ -831,6 +832,7 @@ export class FeatureLogic {
 			case FeatureType.LanguageChoice: {
 				const data: FeatureLanguageChoiceData = {
 					options: [],
+					allowedTypes: [ LanguageType.Common, LanguageType.Regional, LanguageType.Cultural, LanguageType.Dead ],
 					count: 1,
 					selectAt: 'build',
 					selected: []

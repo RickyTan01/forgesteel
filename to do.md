@@ -2,6 +2,8 @@
 
 ### Bug Reports
 
+The Reference screen shows all languages for every sourcebook
+
 I don’t seem to be able to rename my familiar. I can see the customize box but I can’t save it (on iPad if that makes a difference)
 
 In the Encounter Builder, I put a couple encounters in the wrong sourcebook. The Move option appears to let me move them, but it doesn't do anything when I use it.

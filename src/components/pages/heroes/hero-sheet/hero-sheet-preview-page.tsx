@@ -121,7 +121,7 @@ export const HeroSheetPreviewPage = (props: Props) => {
 	};
 
 	const standardAbilityOptions: SelectProps['options'] = [];
-	const standardAbilities = HeroLogic.getAbilities(FactoryLogic.createHero([]), [], AbilityData.standardAbilities.map(a => a.id))
+	const standardAbilities = HeroLogic.getAbilities(FactoryLogic.createHero(), [], AbilityData.standardAbilities.map(a => a.id))
 		.map(a => ClassicSheetBuilder.buildAbilitySheet(a.ability, undefined));
 	standardAbilities.sort(SheetFormatter.sortAbilitiesByType);
 	standardAbilities.forEach(a => {

@@ -124,7 +124,7 @@ export const HeroSelectModal = (props: Props) => {
 								type='primary'
 								icon={<PlusOutlined />}
 								onClick={() => {
-									const hero = FactoryLogic.createHero([]);
+									const hero = FactoryLogic.createHero();
 									hero.name = heroName;
 									setHeroName('');
 									props.onSelect([ hero ]);

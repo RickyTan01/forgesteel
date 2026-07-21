@@ -34,7 +34,7 @@ describe('buildSummonSheet', () => {
 		const signatureMinions = circleOfGraves.featuresByLevel.flatMap(fbl => fbl.features)
 			.find(f => f.id === 'summoner-4-1-4') as FeatureSummonChoice;
 		const skeleton = signatureMinions.data.options.find(o => o.id === 'summoner-4-1-4c') as Summon;
-		const summoner = FactoryLogic.createHero([]);
+		const summoner = FactoryLogic.createHero();
 		HeroLogic.getCharacteristic = vi.fn().mockReturnValue(2);
 
 		const sheet = HeroSheetBuilder.buildSummonSheet(skeleton, summoner);

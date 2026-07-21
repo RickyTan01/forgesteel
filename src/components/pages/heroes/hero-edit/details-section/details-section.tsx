@@ -119,8 +119,9 @@ export const DetailsSection = (props: DetailsSectionProps) => {
 								return FactoryLogic.feature.createLanguageChoice({
 									id: f.id,
 									name: f.name || 'Language',
-									description: `${f.data.options.length > 0 ? `**Skills**: ${f.data.options.join(', ')}` : ''}`,
+									description: `${f.data.options.length > 0 ? `**Languages**: ${f.data.options.join(', ')}` : ''}`,
 									options: [ ...f.data.options ],
+									allowedTypes: [ ...f.data.allowedTypes ],
 									count: f.data.count,
 									selected: [ ...f.data.selected ]
 								});
