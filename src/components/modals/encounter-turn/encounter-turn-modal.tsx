@@ -162,7 +162,7 @@ export const EncounterTurnModal = (props: Props) => {
 
 		const getHeroButton = (hero: Hero, onClick: () => void) => {
 			return (
-				<SelectablePanel key={hero.id} onSelect={onClick} style={{ paddingBottom: '10px' }}>
+				<SelectablePanel key={hero.id} onSelect={onClick} style={{ paddingTop: '10px', paddingBottom: '10px' }}>
 					<Space orientation='vertical' style={{ width: '100%' }}>
 						<HeroInfo hero={hero} />
 						{

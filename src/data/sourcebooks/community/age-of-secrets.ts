@@ -11,10 +11,13 @@ import { ItemType } from '@/enums/item-type';
 import { KitArmor } from '@/enums/kit-armor';
 import { KitWeapon } from '@/enums/kit-weapon';
 import { LanguageType } from '@/enums/language-type';
+import { MonsterRoleType } from '@/enums/monster-role-type';
 import { PerkList } from '@/enums/perk-list';
 import { SkillList } from '@/enums/skill-list';
 import { Sourcebook } from '@/models/sourcebook';
 import { SourcebookType } from '@/enums/sourcebook-type';
+import { TerrainCategory } from '@/enums/terrain-category';
+import { TerrainRoleType } from '@/enums/terrain-role-type';
 
 const thaumaturge: HeroClass = {
 	id: 'class-thaumaturge',
@@ -193,6 +196,28 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 								value: 1,
 								effect: 'You learn one immunity or weakness of each creature you sense.'
 							})
+						]
+					})
+				}),
+				FactoryLogic.feature.createAbility({
+					ability: FactoryLogic.createAbility({
+						id: 'thaumaturge-arcane-bolt',
+						name: 'Arcane Bolt',
+						description: 'A bolt of raw, shaped magic.',
+						type: FactoryLogic.type.createMain({ freeStrike: true }),
+						cost: 'signature',
+						keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged, AbilityKeyword.Strike ],
+						distance: [ FactoryLogic.distance.createRanged(10) ],
+						target: 'One creature',
+						sections: [
+							FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({
+								characteristic: Characteristic.Reason,
+								tier1: '2 + R damage',
+								tier2: '5 + R damage',
+								tier3: '7 + R damage'
+							})),
+							FactoryLogic.createAbilitySectionText('Choose an energy type (acid, cold, fire, lightning, poison, or sonic); the ability deals that type. Usable as a ranged free strike.'),
+							FactoryLogic.createAbilitySectionPackage('arcane-bolt')
 						]
 					})
 				}),
@@ -385,26 +410,6 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 		}
 	],
 	abilities: [
-		FactoryLogic.createAbility({
-			id: 'thaumaturge-arcane-bolt',
-			name: 'Arcane Bolt',
-			description: 'A bolt of raw, shaped magic.',
-			type: FactoryLogic.type.createMain({ freeStrike: true }),
-			cost: 'signature',
-			keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged, AbilityKeyword.Strike ],
-			distance: [ FactoryLogic.distance.createRanged(10) ],
-			target: 'One creature',
-			sections: [
-				FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({
-					characteristic: Characteristic.Reason,
-					tier1: '2 + R damage',
-					tier2: '5 + R damage',
-					tier3: '7 + R damage'
-				})),
-				FactoryLogic.createAbilitySectionText('Choose an energy type (acid, cold, fire, lightning, poison, or sonic); the ability deals that type. Usable as a ranged free strike.'),
-				FactoryLogic.createAbilitySectionPackage('arcane-bolt')
-			]
-		}),
 		FactoryLogic.createAbility({
 			id: 'thaum-arcane-barrage',
 			name: 'Arcane Barrage',
@@ -2568,16 +2573,1143 @@ Regardless of your apparent ancestry, you are a síabhra underneath – one who 
 				goal: 45
 			}),
 			effect: 'As a maneuver, break the vial. Until the end of your turn, your movement ignores difficult terrain, and your next strike this turn deals an additional 1d6 fire, lightning, or cold damage.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-trackers-mantle',
+			name: 'Tracker\'s Mantle',
+			description: 'A cured mantle stitched with scent-masking herbs and tiny bone tags.',
+			type: ItemType.Trinket1st,
+			keywords: [ AbilityKeyword.Magic, AbilityKeyword.Neck ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'The clothes of a hunter who has never lost the trail of their prey',
+				source: 'Texts or lore in Fae',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 150
+			}),
+			effect: 'You gain an edge on Hide, Sneak, and Track tests made in wilderness environments.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-lodestone-mantle',
+			name: 'Lodestone Mantle',
+			description: 'A cloak stitched with eldritch symbols, its clasp made of a thumb-sized stone that vibrates near strong elemental forces.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Magic, AbilityKeyword.Neck ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A magnet from a different manifold',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'Choose one damage type: fire, lightning, or cold. When you deal damage with a strike that deals untyped damage, you can change the damage to the chosen type.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-aetherflare',
+			name: 'Aetherflare',
+			description: 'A humming cobalt round that leaves motes of blue light in the air.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A shard of fulgurite; a vial of aether',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'You can use this ammunition when making a strike with a firearm. The strike deals +1 lightning damage. Until the end of your next turn, the target can\'t gain concealment and can\'t hide. On a tier 3 result, the target also has a bane on their next strike.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-dragonbreath-round',
+			name: 'Dragonbreath Round',
+			description: 'A paper-wrapped cartridge dusted with red alchemical powder.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A flask of alchemical fire; a vial of aether',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'You can use this ammunition when making a strike with a firearm. The strike deals +2 fire damage. If the strike gets a tier 3 result, the target also takes 2 fire damage at the end of their next turn.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-entangling-shot',
+			name: 'Entangling Shot',
+			description: 'A cartridge packed with wirevine lament.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A spool of wirevine; a vial of aether',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'You can use this ammunition when making a strike with a firearm. The strike deals -2 damage, but on a tier 2 result the target can\'t shift until the end of their next turn, and on a tier 3 result the target is restrained until the end of their next turn.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-frost-round',
+			name: 'Frost Round',
+			description: 'A pale blue cartridge cold enough to mist in the hand.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A shard of frost crystal; a vial of aether',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'You can use this ammunition when making a strike with a firearm. The strike deals cold damage instead of its normal damage type. On a tier 2 or 3 result, the target is slowed until the end of their next turn.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-flash-round',
+			name: 'Flash Round',
+			description: 'A thin silver cartridge with a mirrored cap.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A packet of phosphor powder; a vial of aether',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'You can use this ammunition when making a strike with a firearm. The strike deals -2 damage, but on a tier 2 or 3 result the target has a bane on their next strike. On a tier 3 result, the target is also dazed until the end of their next turn.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-salt-shell',
+			name: 'Salt Shell',
+			description: 'A chalky shell stamped with a white sigil.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A packet of consecrated rock salt; a vial of aether',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'You can use this ammunition when making a strike with a firearm. The strike deals damage as normal, but if it reduces a creature to 0 Stamina, that creature falls unconscious instead of dying. Against undead or demon targets, the strike deals +2 holy damage.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-malite-round',
+			name: 'Malite Round',
+			description: 'A heavy cartridge with a visibly unstable malite crystal seated in the casing.',
+			type: ItemType.Consumable2nd,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A shard of malite; a vial of aether',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 90
+			}),
+			effect: 'You can use this ammunition when making a strike with a firearm. The strike deals +4 fire damage. Each enemy adjacent to the target takes 2 fire damage.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-smoke-grenade',
+			name: 'Smoke Grenade',
+			description: 'A matte-black grenade hisses for half a heartbeat before vomiting thick gray smoke.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A grenade shell, soot from a signal tower, and alchemical smoke salts',
+				source: 'Quartermaster manuals in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason ],
+				goal: 45
+			}),
+			effect: 'As a main action, throw the grenade into an unoccupied square within 6. At the start of your next turn, it creates a 3 cube of smoke that lasts until the end of that turn. Creatures inside the smoke have concealment, and creatures outside the cube take a bane on strikes targeting into it.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-aether-grenade',
+			name: 'Aether Grenade',
+			description: 'A small ceramic sphere that contains tightly-packed shrapnel surrounding a volatile aether charge.',
+			type: ItemType.Consumable2nd,
+			keywords: [ AbilityKeyword.Area, AbilityKeyword.Weapon ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A pouch of iron shot; a vial of aether',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 90
+			}),
+			effect: `
+You can use the following ability when you throw the aether grenade.
+ 
+Power Roll + Might or Agility; Area, Weapon; Main action; 3 cube within 5; each creature and object in the area:
+ 
+* 11 or lower: 6 fire damage; push 1
+* 12-16: 9 fire damage; push 2
+* 17+: 12 fire damage; push 3
+ 
+Objects, vehicles, and structures take double damage from this effect.`
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-breaching-charge',
+			name: 'Breaching Charge',
+			description: 'A flat magnetized packet of malite paste and brass timing strips adheres with a hard metallic thunk.',
+			type: ItemType.Consumable2nd,
+			keywords: [ AbilityKeyword.Area, AbilityKeyword.Weapon ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'Refined malite, a brass pressure shell, and a siege fuse',
+				source: 'Demolition notes in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 90
+			}),
+			effect: `
+As a main action, place the charge on an adjacent object of at least size 1L. At the start of your next turn, it detonates.
+ 
+Power Roll + Reason; Area, Weapon; 3 cube; each enemy and object in the area:
+ 
+* 11 or lower: 4 damage; M<0 push 2 away from the center of the burst and prone
+* 12-16: 6 damage; M<1 push 2 away from the center of the burst and prone
+* 17+: 8 damage; M<2 push 2 away from the center of the burst and prone
+ 
+Objects, vehicles, and structures take double damage from this effect. The area becomes difficult terrain until the end of your next turn.`
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-flash-grenade',
+			name: 'Flash Grenade',
+			description: 'A small ceramic sphere packed with mirrored foil and a volatile aether charge.',
+			type: ItemType.Consumable2nd,
+			keywords: [ AbilityKeyword.Area, AbilityKeyword.Weapon ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A pouch of magnesium powder; a vial of aether',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 90
+			}),
+			effect: `
+You can use the following ability when you throw the flash grenade.
+ 
+Power Roll + Might or Agility; Area, Weapon; Main action; 3 cube within 5; each enemy and object in the area:
+ 
+* 11 or lower: each target takes a bane on their next strike
+* 12-16: each target takes a bane on their next strike
+* 17+: each target takes a bane on their next strike; dazed (EoT)`
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-gas-grenade',
+			name: 'Gas Grenade',
+			description: 'A brass canister vents a crawling yellow cloud that gets into eyes, throats, and lungs.',
+			type: ItemType.Consumable2nd,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A grenade shell, choking salts, and preserved bile sacs',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 90
+			}),
+			effect: `
+As a main action, throw the grenade into an unoccupied square within 6. It creates a 2 cube of thin gas until the end of your next turn. The area is lightly obscured.
+ 
+When the cloud appears, and whenever a creature who needs to breathe starts their turn in it, that creature makes an Agility test:
+ 
+* 11 or lower: 5 poison damage; weakened (save ends)
+* 12-16: 3 poison damage; weakened (EoT)
+* 17+: no effect`
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-incendiary-grenade',
+			name: 'Incendiary Grenade',
+			description: 'A brutal anti-personnel grenade that bursts into flame when thrown.',
+			type: ItemType.Consumable2nd,
+			keywords: [ AbilityKeyword.Area, AbilityKeyword.Weapon ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A skin of oil; a vial of aether',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 90
+			}),
+			effect: `
+You can use the following ability when you throw the incendiary grenade.
+ 
+Power Roll + Might or Agility; Area, Weapon; Main action; 3 cube within 5; each enemy and object in the area:
+ 
+* 11 or lower: 4 fire damage
+* 12-16: 6 fire damage
+* 17+: 8 fire damage
+ 
+The area becomes burning terrain until the end of your next turn. Creatures that start their turn in the area suffer 2 fire damage.`
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-orcsteel-shield',
+			name: 'Orcsteel Shield',
+			description: 'A shield forged from dionium, colossally heavy and all but impossible to dent or melt.',
+			type: ItemType.LeveledArmor,
+			keywords: [ KitArmor.Shield, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A sheet of orcsteel; a master smith\'s forge',
+				source: 'Metallurgy texts in Kalai',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 150
+			}),
+			effect: '1st Level: +3 Stamina; the shield can\'t be damaged, melted, or destroyed by anything short of an artifact. 5th Level: Stamina bonus becomes +6; +1 Stability. 9th Level: Stamina bonus becomes +9; Stability bonus becomes +2.',
+			featuresByLevel: [
+				{
+					level: 1,
+					features: [
+						FactoryLogic.feature.createBonus({ id: 'item-aos-orcsteel-shield-1', field: FeatureField.Stamina, value: 3 })
+					]
+				},
+				{
+					level: 5,
+					features: [
+						FactoryLogic.feature.createBonus({ id: 'item-aos-orcsteel-shield-5a', field: FeatureField.Stamina, value: 6 }),
+						FactoryLogic.feature.createBonus({ id: 'item-aos-orcsteel-shield-5b', field: FeatureField.Stability, value: 1 })
+					]
+				},
+				{
+					level: 9,
+					features: [
+						FactoryLogic.feature.createBonus({ id: 'item-aos-orcsteel-shield-9a', field: FeatureField.Stamina, value: 9 }),
+						FactoryLogic.feature.createBonus({ id: 'item-aos-orcsteel-shield-9b', field: FeatureField.Stability, value: 2 })
+					]
+				}
+			]
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-orcsteel-armor',
+			name: 'Orcsteel Armor',
+			description: 'Heavy plate cast from dionium: nearly indestructible, and impossible to move quietly in.',
+			type: ItemType.LeveledArmor,
+			keywords: [ KitArmor.Heavy, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A suit\'s worth of orcsteel plate; a master smith\'s forge',
+				source: 'Metallurgy texts in Kalai',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 150
+			}),
+			effect: '1st Level: +6 Stamina; the armour can\'t be damaged, melted, or destroyed by anything short of an artifact; you have a bane on tests to move silently, hide, or otherwise avoid notice. 5th Level: Stamina bonus becomes +12; +1 Stability. 9th Level: Stamina bonus becomes +21; Stability bonus becomes +2.',
+			featuresByLevel: [
+				{
+					level: 1,
+					features: [
+						FactoryLogic.feature.createBonus({ id: 'item-aos-orcsteel-armor-1', field: FeatureField.Stamina, value: 6 })
+					]
+				},
+				{
+					level: 5,
+					features: [
+						FactoryLogic.feature.createBonus({ id: 'item-aos-orcsteel-armor-5a', field: FeatureField.Stamina, value: 12 }),
+						FactoryLogic.feature.createBonus({ id: 'item-aos-orcsteel-armor-5b', field: FeatureField.Stability, value: 1 })
+					]
+				},
+				{
+					level: 9,
+					features: [
+						FactoryLogic.feature.createBonus({ id: 'item-aos-orcsteel-armor-9a', field: FeatureField.Stamina, value: 21 }),
+						FactoryLogic.feature.createBonus({ id: 'item-aos-orcsteel-armor-9b', field: FeatureField.Stability, value: 2 })
+					]
+				}
+			]
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-orcsteel-weapon',
+			name: 'Orcsteel Weapon',
+			description: 'A weapon cast from dionium falls like an anvil and never chips, dulls, or breaks - least forgiving of all when swung to crush.',
+			type: ItemType.LeveledWeapon,
+			keywords: [ KitWeapon.Medium, KitWeapon.Heavy, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A billet of orcsteel; a master smith\'s forge',
+				source: 'Metallurgy texts in Kalai',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 150
+			}),
+			effect: '1st Level: +1 damage; the weapon can\'t be damaged, dulled, or destroyed except by an artifact; it is too heavy to be a light weapon; on a tier 3 strike, push the target 1. 5th Level: +2 damage; the push becomes 2, and a target pushed is knocked prone if it has M < [average]. 9th Level: +3 damage; the push becomes 3, prone if M < [strong]; your strikes deal double damage to objects and unattended structures.',
+			featuresByLevel: [
+				{
+					level: 1,
+					features: [
+						FactoryLogic.feature.createAbilityDamage({ id: 'item-aos-orcsteel-weapon-1', name: '', keywords: [ AbilityKeyword.Weapon, AbilityKeyword.Melee ], value: 1 })
+					]
+				},
+				{
+					level: 5,
+					features: [
+						FactoryLogic.feature.createAbilityDamage({ id: 'item-aos-orcsteel-weapon-5', name: '', keywords: [ AbilityKeyword.Weapon, AbilityKeyword.Melee ], value: 2 })
+					]
+				},
+				{
+					level: 9,
+					features: [
+						FactoryLogic.feature.createAbilityDamage({ id: 'item-aos-orcsteel-weapon-9', name: '', keywords: [ AbilityKeyword.Weapon, AbilityKeyword.Melee ], value: 3 })
+					]
+				}
+			]
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-aether-cell',
+			name: 'Aether Cell',
+			description: 'A palm-sized glass-and-brass capsule full of refined aether, warm to the touch and faintly luminous in darkness.',
+			type: ItemType.Consumable1st,
+			keywords: [ AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A sealed glass capsule, refined aether, and brass contact fittings',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'An aether cell has 4 charges. As a maneuver, you can install an aether cell into a Bright or bionic within your reach that is designed to accept one. Each device requires its own installed cell; one cell cannot power two devices at once. While installed, the device can spend the cell\'s charges to power its abilities. When the cell\'s last charge is spent, it becomes inert until recharged. If an aether cell is broken (which requires taking 10 damage), the aether escapes and causes an aether surge (roll on the aether surge table).'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-aetherlight-lamp',
+			name: 'Aetherlight Lamp',
+			description: 'A brass lamp with frosted crystal panels hums with pale blue radiance.',
+			type: ItemType.Trinket1st,
+			keywords: [ AbilityKeyword.Hands, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A hooded lantern, powdered sunstone',
+				source: 'Weavewright schematics in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 150
+			}),
+			effect: 'While holding the lamp, you can use a maneuver to hood or unhood it. When unhooded, it sheds bright light in a 5 aura; creatures and objects in the aura can\'t benefit from concealment granted only by darkness. You gain an edge on Search tests that rely on sight while the lamp is lit.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-armor-arcane',
+			name: 'Armor Arcane',
+			description: 'A smooth metal torc projects a faint geometric shimmer around its wearer.',
+			type: ItemType.Trinket1st,
+			keywords: [ AbilityKeyword.Neck, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A polished torc, a fragment of protective sigilwork',
+				source: 'Defensive formulae in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 150
+			}),
+			effect: 'While wearing this torc and not wearing medium or heavy armor, you gain +3 Stamina.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-brightsuit',
+			name: 'Brightsuit',
+			description: 'This tailored coat and waistcoat somehow never wrinkle, stain, or smell of smoke.',
+			type: ItemType.Trinket1st,
+			keywords: [ AbilityKeyword.Neck, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'Fine formalwear, a vial of alchemical detergent',
+				source: 'Tailor-guild manuals in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Presence ],
+				goal: 150
+			}),
+			effect: 'While wearing the suit, you gain an edge on tests to endure cold, smoke, soot, grime, and similar urban hardship. Additionally, the first Presence test you make after each respite gains an edge, provided you have spent at least 1 minute cleaning and dressing in the suit.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-cipherwheel-ring',
+			name: 'Cipherwheel Ring',
+			description: 'A brass signet ring whose tiny inner wheels realign themselves whenever you hold coded text.',
+			type: ItemType.Trinket1st,
+			keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ring ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A signet ring and a page of ciphered military correspondence',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 150
+			}),
+			effect: 'You gain an edge on Reason tests to decode, encode, authenticate, or detect tampering in messages, maps, manifests, and orders. If you spend 1 minute examining a written document, you can tell whether it has been altered, forged, or copied from another source.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-deckhand-s-balance-charm',
+			name: 'Deckhand\'s Balance Charm',
+			description: 'A thin chain with a tiny lead weight constantly twitches to counter your motion.',
+			type: ItemType.Trinket1st,
+			keywords: [ AbilityKeyword.Neck, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A sailor\'s lucky charm and ballast taken from a wreck',
+				source: 'Quartermaster lore in Khezdath',
+				characteristic: [ Characteristic.Intuition, Characteristic.Presence ],
+				goal: 150
+			}),
+			effect: 'Forced movement against you is reduced by 1 square. Additionally, when you would be knocked prone by a slick deck, violent roll, sudden lurch, or similar environmental movement, you can stay standing.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-false-seal-stylus',
+			name: 'False-Seal Stylus',
+			description: 'A thin silver pen with a retractable heated nib and a tiny chamber of shimmering blue ink.',
+			type: ItemType.Trinket1st,
+			keywords: [ AbilityKeyword.Hands, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A silver stylus, wax from three official seals, and a drop of aether',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Presence ],
+				goal: 150
+			}),
+			effect: 'If you spend 1 minute using the stylus on papers, tags, manifests, or permits, you can create a convincing official-looking version of them. The first test made to pass off or inspect these papers gains a double edge for you and a bane for the opposing creature.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-instant-polyglot',
+			name: 'Instant Polyglot',
+			description: 'This tiny earring grows warm whenever anyone nearby speaks.',
+			type: ItemType.Trinket1st,
+			keywords: [ AbilityKeyword.Head, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A silver earring, a page torn from a multilingual dictionary',
+				source: 'Diplomatic glossaries in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Presence ],
+				goal: 150
+			}),
+			effect: 'While wearing the earring, you can understand any spoken language within 3 squares. If you study a nonmagical text for 1 minute, you understand its broad meaning. In negotiations, language barriers never impose a bane on your tests.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-mage-glasses',
+			name: 'Mage-Glasses',
+			description: 'Thin spectacles with faintly glowing rims reveal the hum of nearby magic.',
+			type: ItemType.Trinket1st,
+			keywords: [ AbilityKeyword.Head, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A pair of spectacles and residue from a dispelled ward',
+				source: 'Lecture notes in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 150
+			}),
+			effect: 'As a maneuver, you scan a 5 aura until the end of your next turn. Powered devices, wards, ongoing supernatural effects, and creatures sustained by magic or psionics in the area can\'t be hidden from you. The first Search or Reason test you make involving something detected this way gains a double edge.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-message-bright',
+			name: 'Message Bright',
+			description: 'A thumb-sized recording cylinder clicks softly when it stores a voice.',
+			type: ItemType.Trinket1st,
+			keywords: [ AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A hollow brass cylinder, wax from a funeral candle',
+				source: 'Telegraph office notes in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Presence ],
+				goal: 150
+			}),
+			effect: 'As a maneuver, record up to ten spoken words into the Bright. As a maneuver, any creature holding it can replay the message in your voice.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-whisperbutton',
+			name: 'Whisperbutton',
+			description: 'A matte-black brass collar stud made to resemble an unremarkable shirt button.',
+			type: ItemType.Trinket1st,
+			keywords: [ AbilityKeyword.Neck, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A brass button, velvet thread, and ash from a burned confession',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Intuition, Characteristic.Presence ],
+				goal: 150
+			}),
+			effect: 'While wearing the button, you can speak in a whisper and be clearly heard by one creature within 5 squares, and no other creature farther than 1 square away can hear you. You gain an edge on tests to pass secret instructions unnoticed during a social or combat scene.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-aetherstim',
+			name: 'Aetherstim',
+			description: 'A heavy glass-and-steel injector hisses softly when primed.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Arms, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A large syringe, distilled vitae salts',
+				source: 'Hospital notes in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'As a maneuver, you inject yourself or an adjacent willing creature. The target can immediately spend a Recovery; if they do, they regain 5 additional Stamina. If the target has no Recoveries remaining, they instead regain 8 Stamina.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-communicator',
+			name: 'Communicator',
+			description: 'A discreet earpiece of brass and crystal carries whispers across impossible distances.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Head, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A matched pair of silver earpieces, a length of copper thread',
+				source: 'Military signals manuals in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Presence ],
+				goal: 300
+			}),
+			effect: 'Crafted as a linked set. Wearers can whisper to one another anywhere on the same world. Additionally, once per round when a linked ally within 10 squares uses an ability after hearing you, that ally can shift 1 before or after the ability resolves.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-crowd-control',
+			name: 'Crowd Control',
+			description: 'A steel bracer vents thunder with a violent backward kick.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Arms, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A bracer reinforced with resonant copper plates',
+				source: 'Riot-control field reports in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Presence ],
+				goal: 300
+			}),
+			effect: 'You can use the following ability; once you have used it, you cannot use it again until you have gained a Victory. Crowd Control Power Roll + Reason or Presence Area, magicMain action o 2 burstx Each enemy in the area ! 3 sonic damage; push 2 @ 5 sonic damage; push 3 # 7 sonic damage; push 4 If a target ends this forced movement adjacent to a wall, vehicle, or similarly solid obstacle, they fall prone.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-falseface-collar',
+			name: 'Falseface Collar',
+			description: 'A stiff military collar lined with crystalline filaments that hum against the throat.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Magic, AbilityKeyword.Neck ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A dress collar, a stage actor\'s mask, and a lock of hair freely given',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ],
+				goal: 300
+			}),
+			effect: 'As a maneuver, alter your voice, posture, and facial details until the end of the encounter or for 1 hour outside combat. Creatures who don\'t know you personally take a bane on tests to identify you. Your first Presence test to impersonate someone during the effect gains a double edge.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-float-harness',
+			name: 'Float Harness',
+			description: 'This leather rig is fitted with humming brass vanes and a tiny venting engine.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Waist, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A climbing harness, an intact skyship stabilizer fin',
+				source: 'Aeronaut notebooks in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'You reduce the effective height of any fall by 10 squares. Additionally, as a free triggered action when you would fall or be force-moved over an edge, you can fly 4 squares and then land standing.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-ghostlight-beacon',
+			name: 'Ghostlight Beacon',
+			description: 'A palm-sized beacon projects a thin, cold blue lantern-flame.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A signal lantern, a pinch of grave ash',
+				source: 'Veilwatch reports in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'As a maneuver, place or throw the beacon into an unoccupied square within 6 squares. It creates a 2 aura of ghostlight until the end of the encounter. Creatures in the aura can\'t hide, and creatures from beyond the Veil take 2 lightning damage the first time each round they enter the aura or start their turn there.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-lifeline-winch',
+			name: 'Lifeline Winch',
+			description: 'A compact belt-mounted winch fires a hooked line with a violent metallic snap.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Waist, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A mooring hook, a spring reel, and braided phase-silk',
+				source: 'Rescue service manuals in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'As a free triggered action when you or an ally within 6 squares would fall, be pushed over an edge, or be swept away by water or wind, you fire the winch. Move that creature up to 4 squares to the nearest safe space adjacent to a solid surface, railing, ladder, or anchored object. If there is no such space, the creature instead ends hanging securely from the line and doesn\'t continue falling. Once used, you cannot use it again until you have gained a Victory.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-rebreather',
+			name: 'Rebreather',
+			description: 'This folding brass mask opens like a steel flower and fills with softly humming blue vapor.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Head, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A diving mask, preserved fish gills, and pearl dust',
+				source: 'Naval dive notes in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'As a maneuver, you activate the rebreather for 1 hour. While active, you can breathe underwater or in any otherwise unbreathable environment, and you ignore harmful gas, smoke, and inhaled poison.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-signal-scrambler',
+			name: 'Signal Scrambler',
+			description: 'This pocket-sized crystal buzzer emits faint static that makes other devices mutter nonsense.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A crystal tuning fork, copper mesh, and a shattered telegraph insulator',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'As a maneuver, create a 3 aura centered on yourself until the end of your next turn. Supernatural communication, remote listening, and paired-device transmission can\'t pass into or out of the aura, and enemies in the aura can\'t gain an edge from spoken instructions or coordinated signals. Once used, you cannot use it again until you have gained a Victory.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-skyhook-harness',
+			name: 'Skyhook Harness',
+			description: 'This leather chest rig ends in a magnetized blue hook designed for boarding actions and emergency retrieval.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Waist, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A boarding harness, a grapnel, and a sliver of skyship fin',
+				source: 'Marine boarding notes in Khezdath',
+				characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason ],
+				goal: 300
+			}),
+			effect: 'As a maneuver, fire the hook at a railing, mast, ladder, rigging point, or metal structure within 8 squares. You can then either pull yourself up to 4 squares in a straight line without provoking opportunity attacks, or pull a willing adjacent ally 3 squares toward you.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-smokeshroud-projector',
+			name: 'Smokeshroud Projector',
+			description: 'A wrist-mounted canister spits out a dense silver-gray curtain that smells faintly of ozone.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Arms, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A pressurized brass canister and soot from a burnt signal tower',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'As a maneuver, you create a 2 cube within 5 filled with smoke until the start of your next turn. Creatures inside the cube have concealment. You and each ally who starts their turn in the cube can shift 1. Once used, you cannot use it again until you have gained a Victory.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-veilstorm-gauge',
+			name: 'Veilstorm Gauge',
+			description: 'A disk of trembling needles and crystal fins chatters whenever reality wears thin.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Head, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A barometer, a shard of stormglass',
+				source: 'Breach research in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'You can\'t be surprised by supernatural weather, planar ruptures, or echo-plane manifestations within 10 squares. Additionally, when a magic area effect or environmental hazard appears within 10 squares, you and each ally within 3 squares can shift 2.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-wiretap-beetle',
+			name: 'Wiretap Beetle',
+			description: 'This tiny mechanical beetle unfolds from a brass capsule and skitters where it is sent.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A brass scarab, hair-thin silver wire, and a preserved beetle shell',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'As a maneuver, place the beetle adjacent or send it to an unoccupied square within 10 you can see. Until the end of the encounter or for 10 minutes outside combat, you can hear as if in the beetle\'s space, gaining an edge on Eavesdrop and Search tests based on sound. The beetle can climb walls and ceilings.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-beacon-buoy',
+			name: 'Beacon Buoy',
+			description: 'A heavy anchor-shaped beacon drops with a splash or clang, then projects a humming field that steadies space itself.',
+			type: ItemType.Trinket3rd,
+			keywords: [ AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A small anchor, an aether coil, and a fragment from a displaced device',
+				source: 'Experimental engine notes in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 450
+			}),
+			effect: 'As a maneuver, place or throw the beacon into an unoccupied square within 6. It creates a 3 aura until the end of the encounter. Teleportation, phasing, displacement, and similar supernatural relocation can\'t begin or end inside the aura unless the creature succeeds on a hard test set by the Director. Hidden creatures in the aura can\'t benefit from concealment granted by distortion or mirage effects.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-breach-ward-locket',
+			name: 'Breach Ward Locket',
+			description: 'This silver locket contains a miniature ward-circle etched on rotating plates.',
+			type: ItemType.Trinket3rd,
+			keywords: [ AbilityKeyword.Neck, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A silver locket, dust from a broken wardstone, a sliver of veilglass',
+				source: 'Anti-incursion protocols in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 450
+			}),
+			effect: 'Once per respite, as a maneuver, create a 3 wall within 5 squares that lasts until the end of the encounter. Creatures from beyond the Veil treat the wall as difficult terrain, and the first time each round one of them enters a wall square it takes 5 lightning damage.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-counterspy-lenses',
+			name: 'Counterspy Lenses',
+			description: 'These smoke-tinted spectacles reveal the outlines of people trying very hard not to be seen.',
+			type: ItemType.Trinket3rd,
+			keywords: [ AbilityKeyword.Head, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'Darkened lenses, a spyglass from a scuttled ship, and soot from a watchfire',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 450
+			}),
+			effect: 'Hidden creatures within 10 squares can\'t be hidden from you if they moved since the end of their last turn. Illusions, disguises, and supernatural concealment take a bane on tests or effects made to fool you. Additionally, once per encounter, as a maneuver, choose one creature or square you can see within 10 squares; all allies gain an edge on strikes and Search tests involving that target until the end of your next turn.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-echo-stepper-boots',
+			name: 'Echo-Stepper Boots',
+			description: 'These lacquered boots leave a delayed afterimage with every hurried step.',
+			type: ItemType.Trinket3rd,
+			keywords: [ AbilityKeyword.Feet, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'Riding boots, a spool of phase-silk, dust from a displaced footprint',
+				source: 'Experimental transit notes in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 450
+			}),
+			effect: 'As a free triggered action when you are targeted by a strike, you teleport 3 squares. If the strike no longer has distance or line of effect, it misses; otherwise, you halve the damage from the strike. Once used, you cannot use it again until you have gained a Victory.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-ghost-pass-badge',
+			name: 'Ghost-Pass Badge',
+			description: 'A polished officer\'s badge that reflects uniforms you aren\'t actually wearing.',
+			type: ItemType.Trinket3rd,
+			keywords: [ AbilityKeyword.Neck, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'An officer\'s insignia, a paper pass signed under duress, and powdered mirror glass',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ],
+				goal: 450
+			}),
+			effect: 'While wearing the badge, guards, sentries, and rank-and-file soldiers who can see you take a bane on tests to challenge your presence unless you give them a strong reason to do so. Additionally, when a creature would stop your movement with a maneuver or triggered action, you can spend Stamina equal to 1d6 plus your level to ignore that effect and continue moving.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-interceptor-prism',
+			name: 'Interceptor Prism',
+			description: 'A triangular crystal in a brass frame catches whispers, signals, and hostile intentions in flickers of light.',
+			type: ItemType.Trinket3rd,
+			keywords: [ AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A flawless prism, copper wire from a telegraph coil, and a drop of aether from a cracked cell',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 450
+			}),
+			effect: 'As a free triggered action when an enemy within 10 squares gives an order, uses a support ability, or creates an effect that lets another creature move, shift, or make a strike, you can interfere: reduce that movement by 2, or impose a bane on the granted strike or test. Once used, you cannot use it again until you have gained a Victory.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-phantom-dispatch-tube',
+			name: 'Phantom Dispatch Tube',
+			description: 'A black courier tube lined in blue sigils vanishes its contents with a hush.',
+			type: ItemType.Trinket3rd,
+			keywords: [ AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A courier tube, a stamp from a dead empire, and soot from a telegraph office',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ],
+				goal: 450
+			}),
+			effect: 'Once per respite, as a maneuver, place a Tiny object or written message into the tube and name a creature you know on the same world. If that creature is alive and not warded against transport or communication, the contents appear in their possession or adjacent to them. If delivery fails, the contents return to the tube at the end of your next turn.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-stormglass-sextant',
+			name: 'Stormglass Sextant',
+			description: 'This dark brass sextant\'s needle points not to north, but to the nearest danger in sky or sea.',
+			type: ItemType.Trinket3rd,
+			keywords: [ AbilityKeyword.Hands, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A masterwork sextant, a shard of stormglass, and chart ink mixed with sea salt',
+				source: 'Navigator archives in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 450
+			}),
+			effect: 'You can\'t be surprised by severe weather, supernatural storms, portals, or other major environmental hazards within 10 squares. Additionally, when an area effect, portal, or environmental hazard appears within 10 squares, you and each ally within 5 squares can shift 2.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-fine-motor-hand',
+			name: 'Fine-Motor Hand',
+			description: 'This articulated hand hums softly while its fingertips align themselves to the task.',
+			type: ItemType.Trinket1st,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Hands, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A prosthetic hand, silver wire, and clockmaker\'s tools',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason ],
+				goal: 150
+			}),
+			effect: 'Passive; does not spend charges. You gain an edge on tests to pick pockets, palm objects, perform delicate work, or use tools such as lockpicks, jeweller\'s tools, or surgical equipment. Once per round, drawing or stowing a 1T object with this hand requires no action.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-inspector-s-eye',
+			name: 'Inspector\'s Eye',
+			description: 'Tiny brass shutters flick open and closed across this eye\'s surface as it focuses.',
+			type: ItemType.Trinket1st,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Head, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A prosthetic eye, a jeweler\'s loupe, and a page from an inspector\'s casebook',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 150
+			}),
+			effect: 'Passive; does not spend charges. You gain an edge on Search tests based on sight, and on tests to spot hidden details, read lips, or notice tampering.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-nightglass-eye',
+			name: 'Nightglass Eye',
+			description: 'A polished glass eye with a faint blue iris that widens in darkness.',
+			type: ItemType.Trinket1st,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Head, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A prosthetic eye, soot-polished lens glass, and a sliver of night crystal',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 150
+			}),
+			effect: 'Passive; does not spend charges. While the eye has an installed cell, darkness can\'t impose a bane on your Search tests within 5 squares, and creatures and objects within 5 squares can\'t benefit from concealment granted only by dim light or darkness against you.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-smuggler-s-sleeve-compartment',
+			name: 'Smuggler\'s Sleeve Compartment',
+			description: 'A prosthetic forearm opens along a hidden seam to reveal a velvet-lined cavity.',
+			type: ItemType.Trinket1st,
+			keywords: [ AbilityKeyword.Arms, 'Bionic' as AbilityKeyword, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A prosthetic arm, a concealed spring latch, and a customs seal taken from seized contraband',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Presence ],
+				goal: 150
+			}),
+			effect: 'Passive; does not spend charges. The compartment holds one Tiny item or document bundle. Tests to find it take a double bane unless the searcher already suspects the prosthetic. The first test each scene to smuggle, plant, or conceal such an item gains an edge.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-climber-s-armature',
+			name: 'Climber\'s Armature',
+			description: 'A reinforced arm with retractable grips and locking joints built for walls, ladders, and wrecks.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Arms, 'Bionic' as AbilityKeyword, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A prosthetic arm, climbing claws, and a spool of braided wire',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason ],
+				goal: 300
+			}),
+			effect: 'Passive; does not spend charges. You can automatically climb at full speed on stone, wood, rigging, brick, and similar rough surfaces, and you gain an edge on tests to climb, hold on, or keep your footing while hanging or swinging.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-courier-legs',
+			name: 'Courier Legs',
+			description: 'A matched pair of spring-loaded legs with whispering pistons at the calves.',
+			type: ItemType.Trinket2nd,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Feet, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A pair of prosthetic legs, tension springs, and a messenger\'s route map',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason ],
+				goal: 300
+			}),
+			effect: 'Passive; does not spend charges. Your speed increases by 1. Additionally, once on each of your turns after you move at least 3 squares, you can shift 1.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-ghoststep-legs',
+			name: 'Ghoststep Legs',
+			description: 'These matte-black prosthetic legs absorb impact so completely they seem to erase the sound of motion.',
+			type: ItemType.Trinket2nd,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Feet, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A pair of prosthetic legs, velvet shock padding, and dust from a stage floor',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'You gain an edge on tests to move quietly, follow a target, or avoid notice while moving (passive; does not spend charges). Additionally, after you move at least 3 squares, you can spend 1 charge to gain concealment until the start of your next turn; once used, you can\'t use this again until you gain a Victory.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-grapnel-arm',
+			name: 'Grapnel Arm',
+			description: 'A reinforced prosthetic forearm conceals a spring-fired hook and cable.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Arms, 'Bionic' as AbilityKeyword, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A prosthetic arm, a grapnel launcher, and braided cable',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason ],
+				goal: 300
+			}),
+			effect: 'As a maneuver, spend 1 charge to fire the grapnel at an anchor within 8 squares. You can pull yourself up to 4 squares in a straight line without provoking opportunity attacks, or pull a willing adjacent ally up to 3 squares toward you.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-heavy-lift-arms',
+			name: 'Heavy-Lift Arms',
+			description: 'These thick-framed prosthetic arms lock into place before heavy exertion with a solid metallic clack.',
+			type: ItemType.Trinket2nd,
+			keywords: [ AbilityKeyword.Arms, 'Bionic' as AbilityKeyword, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A pair of prosthetic arms, reinforced steel braces, and forge slag from a lifting engine',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Might, Characteristic.Reason ],
+				goal: 300
+			}),
+			effect: 'Passive; does not spend charges. You gain an edge on Might tests to lift, carry, shove, break, force open, or hold something shut, and on the Grab and Knockback maneuvers. As a drawback, delicate Agility tests that rely on both hands take a bane unless you spend 1 minute calibrating the arms beforehand.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-lockbreaker-hand',
+			name: 'Lockbreaker Hand',
+			description: 'A blackened steel hand with retractable picks, tension wires, and a pressure-sensitive thumb.',
+			type: ItemType.Trinket2nd,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Hands, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A prosthetic hand, thieves\' tools, and a lockplate from a police evidence room',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'You gain a double edge on tests to pick locks, disarm traps, sabotage mechanisms, or open secured containers quietly (passive; does not spend charges). Additionally, you can spend 1 charge to open or jam an adjacent mundane lock or latch as a maneuver without a test; once used, you can\'t use this again until you gain a Victory.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-shock-palm',
+			name: 'Shock Palm',
+			description: 'A copper-lined prosthetic hand stores a brutal aether discharge behind the knuckles.',
+			type: ItemType.Trinket2nd,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Hands, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A prosthetic hand, an induction coil, and a spent constabulary shock-cell',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason ],
+				goal: 300
+			}),
+			effect: 'Once per turn when you hit a creature with a melee free strike or unarmed attack using this hand, spend 1 charge: that creature takes +2 lightning damage and can\'t make opportunity attacks until the start of its next turn.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-stability-leg',
+			name: 'Stability Leg',
+			description: 'A weighted prosthetic leg with a gyroscopic knee and locking ankle.',
+			type: ItemType.Trinket2nd,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Feet, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A prosthetic leg, a gyroscopic bearing, and ballast lead',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'Passive; does not spend charges. You can\'t be knocked prone or force-moved against your will while you have at least one foot planted, and you gain an edge on tests to resist being moved or to keep your balance on unstable ground.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-telltale-eye',
+			name: 'Telltale Eye',
+			description: 'A smoky glass eye that flashes pale whenever it catches falsehood, disguise, or distortion.',
+			type: ItemType.Trinket2nd,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Head, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A prosthetic eye, smoked crystal, and a fragment of mirrored disguise glass',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 300
+			}),
+			effect: 'Illusions, disguises, and mundane concealment take a bane on tests or effects made to fool you. Hidden creatures within 5 squares who moved since the end of their last turn can\'t be hidden from you.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-marksman-s-eye',
+			name: 'Marksman\'s Eye',
+			description: 'This military ocular implant projects a faint range grid only the wearer can see.',
+			type: ItemType.Trinket3rd,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Head, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A prosthetic eye, a rangefinder lens, and a spent officer\'s sighting crystal',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 450
+			}),
+			effect: 'You gain an edge on ranged weapon strikes against creatures with cover (passive; does not spend charges). Additionally, once per round, you can spend 1 charge to ignore cover from one obstacle between you and the target of a ranged strike.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-pursuit-legs',
+			name: 'Pursuit Legs',
+			description: 'A harder, louder, more brutal pair of military prosthetics built for charges, leaps, and rooftop chases.',
+			type: ItemType.Trinket3rd,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Feet, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A pair of prosthetic legs, assault springs, and a patrol route ledger',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Intuition ],
+				goal: 450
+			}),
+			effect: 'Your speed increases by 1 (passive; does not spend charges). Additionally, once per round when you charge, chase, or move at least 5 squares on your turn, you can spend 1 charge to ignore difficult terrain for that movement and then make either a Grab or Knockback maneuver as a free triggered action.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-reflex-anchor-leg',
+			name: 'Reflex Anchor Leg',
+			description: 'A military-surplus civilian leg favored by explorers, couriers, and anyone who hates falling off things.',
+			type: ItemType.Trinket3rd,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Feet, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A prosthetic leg, anchor hooks, and a stripped trigger spring',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 450
+			}),
+			effect: 'As a triggered action when you would fall, be pushed over an edge, or slide unwillingly, you can spend 1 charge to stop your movement in the nearest legal space and remain standing.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-black-office-cipher-eye',
+			name: 'Black Office Cipher-Eye',
+			description: 'A clandestine-state prosthetic eye set with a rotating black lens and whisper-thin brass shutters.',
+			type: ItemType.Trinket3rd,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Head, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A masterwork prosthetic eye, a decoded intelligence file, and a lens ground from spyglass crystal',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ],
+				goal: 450
+			}),
+			effect: '1st Level: You gain a +1 damage bonus on ranged weapon strikes and magic or psionic abilities that deal rolled damage to a single target you can see. You also gain an edge on tests to detect lies, read coded communication, or identify surveillance. 5th Level: The damage bonus increases to +2. Additionally, as a maneuver, you can spend 1 charge to choose one creature within 10 squares. Until the end of your next turn, that creature can\'t be hidden from you, and the first ally to strike that creature gains an edge. 9th Level: The damage bonus increases to +3. Additionally, once per turn when you obtain a tier 3 outcome against a creature you can see, you can spend 1 charge to choose up to two allies within 10 squares. Each chosen ally can shift 2 and gains an edge on their next strike against that creature before the end of your next turn.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-pathfinder-s-ocular-engine',
+			name: 'Pathfinder\'s Ocular Engine',
+			description: 'A black-brass prosthetic eye whose iris forms shifting concentric rings as danger nears.',
+			type: ItemType.Trinket3rd,
+			keywords: [ 'Bionic' as AbilityKeyword, AbilityKeyword.Head, AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A masterwork prosthetic eye, a surveyor\'s lens, and maps of three ruined sites',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 450
+			}),
+			effect: '1st Level: You gain an edge on Search tests and tests to detect traps, hidden doors, weak structures, or concealed movement. Once per round, when you succeed on such a test, you can spend 1 charge to let one ally within 5 squares gain an edge on their next test or strike involving the same target or hazard. 5th Level: You can\'t be surprised by traps, hidden attackers, or sudden environmental hazards within 5 squares of you while conscious. Additionally, as a maneuver, you can spend 1 charge to choose one creature, object, or square within 10 squares. Until the end of your next turn, you and your allies ignore cover from one obstacle involving that target. 9th Level: Hidden creatures within 10 squares who moved since the end of their last turn can\'t be hidden from you. Additionally, when an ally within 10 squares makes a Search test or a strike against a target you can see, they gain a double edge.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-estander',
+			name: 'Estander',
+			description: 'A watery, pale-grey paste that warms the skin as it soaks in.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'a measure of Vochan polecat musk',
+				source: 'smugglers\' formularies in Azhari',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'As a maneuver, rub the paste into your skin. Until the end of the encounter, you have an edge on melee strikes and you can\'t be frightened. When this effect ends, you are weakened and slowed (save ends), and you can\'t spend Recoveries until you complete a respite. (Black-market price: 180 marks per dose.)'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-madak',
+			name: 'Madak',
+			description: 'Vivid blue petals, eaten or steeped in cold water.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: undefined,
+			effect: 'Over a few minutes you fall into a shared dreaming; this counts as a respite. While you dream, you can speak mind-to-mind with - and share a single dream with - every other creature within 10 squares who has also taken madak. When you wake, you have a bane on Reason, Intuition, and Presence tests until you complete a respite. (Black-market price: 60 marks per dose. Harvested on the mountainsides of Kohana rather than crafted; obtaining a fresh supply is a Project to acquire (Source: trade contacts speaking Hanish; Goal 45) rather than to make.) This narcotic is acquired rather than crafted (see the black-market price / Project to acquire).'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-nishtar',
+			name: 'Nishtar',
+			description: 'Black shreds of syrup-cured bark; their smoke is sweet and numbing.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'bark stripped from a living nishtar tree',
+				source: 'apothecary texts in Jhazrendish',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'As a maneuver, burn a shred. Each creature within 3 squares that breathes the smoke gains 5 temporary Stamina and is slowed (save ends) as the sedative dulls them. A creature can choose not to inhale. (Black-market price: 100 marks per dose.)'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-salt-honey',
+			name: 'Salt Honey',
+			description: 'A thick, salt-sweet syrup pressed from Orian sponges.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'a living sponge cultivated in the Orian shallows',
+				source: 'pearl-divers\' lore in Orian',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'As a maneuver, swallow a dose. Until the end of the encounter, while you are winded your melee strikes deal additional damage equal to your echelon. When this effect ends, you are weakened (save ends). (Black-market price: 80 marks per dose.)'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-dyrwydd',
+			name: 'Dyrwydd',
+			description: 'A single golden drop, applied to the open eye.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'viable golden berries from a dyrwydd plant (each plant yields only a handful)',
+				source: 'elven horticultural lore in Eladrith',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'As a maneuver, apply a drop to each eye. Until the end of the encounter, you have an edge on Agility tests and on tests to notice or perceive your surroundings. When this effect ends, you are slowed (save ends); the first time you are slowed this way, you are also dazed (save ends) as your senses reel. (Black-market price: 300 marks (30 sovereigns) per dose.)'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-agusis',
+			name: 'Agusis',
+			description: 'Arrow-shaped leaves with a sharp citrus tang - hard to hide in food, but not impossible.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'fresh agusis leaf (export banned from Telos)',
+				source: 'alchemical texts in Telosi',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'A creature that swallows a dose (often slipped into food or drink) takes a bane on power rolls made with magic abilities and can\'t gain a benefit from its own magic abilities that would grant it an edge (save ends). (Black-market price: 200 marks per dose. Prized - and quietly bought - by the very Arbiters who outlaw it.)'
 		})
-		// TODO: 1st-echelon trinkets
-		// TODO: 2nd-echelon trinkets
-		// TODO: Ammunition
-		// TODO: Explosives
-		// TODO: Orcsteel
-		// TODO: Aether
-		// TODO: Brights
-		// TODO: Bionics
-		// TODO: Narcotics
 	],
 	kits: [
 		{
@@ -3024,7 +4156,59 @@ You are a member of the Hospitallers, and are trained in the field medicine of T
 		}
 	],
 	tacticalMaps: [],
-	terrain: [],
+	terrain: [
+		{
+			id: 'terrain-aos-aether-cask',
+			name: 'Aether Cask',
+			description: 'A heavy glass-and-brass barrel full of refined aether. An aether cask has 80 charges.',
+			category: TerrainCategory.SupernaturalObject,
+			level: 5,
+			role: FactoryLogic.createTerrainRole(MonsterRoleType.Support, TerrainRoleType.Hazard),
+			encounterValue: 7,
+			area: '',
+			typicalSpace: '',
+			direction: '',
+			link: '',
+			stamina: {
+				base: 50,
+				perSquare: 0
+			},
+			size: FactoryLogic.createSize(1, 'M'),
+			damageMods: [],
+			sections: [
+				{
+					id: 'aether-cask-details',
+					content: [
+						FactoryLogic.feature.create({
+							id: 'aether-cask-deactivate',
+							name: 'Deactivate',
+							description: 'The cask is deactivated if all its charges are used up.'
+						}),
+						FactoryLogic.feature.create({
+							id: 'aether-cask-recharge',
+							name: 'Recharge',
+							description: 'Any creature adjacent to the cask can replenish an aether cell by transferring charges from the cask to the cell; transferring one charge requires a maneuver.'
+						}),
+						FactoryLogic.feature.create({
+							id: 'aether-cask-install',
+							name: 'Install',
+							description: 'You can install a cask into a machine or vehicle designed to accept one; this takes one minute. While installed, the machine can spend the cask\'s charges to power its abilities. When the last charge is spent, it becomes inert until recharged.'
+						}),
+						FactoryLogic.feature.create({
+							id: 'aether-cask-crack-the-glass',
+							name: 'Crack the Glass',
+							description: 'If an aether cask is reduced to 0 Stamina, the aether escapes and causes an aether surge: roll three times on the aether surge table. Unless a result says otherwise, each effect is centered on the broken cask and affects a 5 burst.'
+						})
+					]
+				}
+			],
+			upgrades: [],
+			state: {
+				squares: 1,
+				staminaDamage: 0
+			}
+		}
+	],
 	titles: [
 		{
 			id: 'aos-title-almoner',
@@ -3329,7 +4513,6 @@ You are a member of the Hospitallers, and are trained in the field medicine of T
 	],
 	skills: [],
 	languages: [
-		// Kaemian languages
 		{
 			name: 'Eladrith',
 			description: 'Spoken in Ithyr; spoken by most elves. Script: Eladric.',
@@ -3351,7 +4534,7 @@ You are a member of the Hospitallers, and are trained in the field medicine of T
 		{
 			name: 'Lirian',
 			description: 'Language of the old Lirian Empire; now the language of academia. Script: Lirian.',
-			type: LanguageType.Regional,
+			type: LanguageType.Dead,
 			related: []
 		},
 		{
@@ -3434,8 +4617,8 @@ You are a member of the Hospitallers, and are trained in the field medicine of T
 		},
 		{
 			name: 'Vraxalian',
-			description: 'Language of the empire of Vraxalia; today spoken mainly by dragon knights. Script: Vraxalic.',
-			type: LanguageType.Regional,
+			description: 'Language of the empire of Vraxalia; today it is spoken by some dragon knights. Script: Vraxalic.',
+			type: LanguageType.Dead,
 			related: []
 		},
 		{
