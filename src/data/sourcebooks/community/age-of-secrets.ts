@@ -2290,6 +2290,7 @@ const celestial: MonsterGroup = {
 			stamina: 6,
 			stability: 0,
 			freeStrikeDamage: 2, freeStrikeType: DamageType.Holy,
+			withCaptain: '+1 damage bonus to strikes',
 			characteristics: FactoryLogic.createCharacteristics(2, 0, -1, 1, 1),
 			features: [
 				FactoryLogic.feature.create({ id: 'verger-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
@@ -2312,6 +2313,7 @@ const celestial: MonsterGroup = {
 			stamina: 5,
 			stability: 0,
 			freeStrikeDamage: 2, freeStrikeType: DamageType.Holy,
+			withCaptain: '+5 bonus to ranged distance',
 			characteristics: FactoryLogic.createCharacteristics(-1, 1, 1, 2, 2),
 			features: [
 				FactoryLogic.feature.create({ id: 'chorister-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
@@ -2929,6 +2931,7 @@ const orian: MonsterGroup = {
 			stamina: 4,
 			stability: 0,
 			freeStrikeDamage: 2, freeStrikeType: DamageType.Damage,
+			withCaptain: '+2 to Speed',
 			characteristics: FactoryLogic.createCharacteristics(1, 2, 0, 0, 1),
 			features: [
 				FactoryLogic.feature.create({ id: 'tidehunter-depths-born', name: 'Depths-Born', description: 'Water is home: full Speed while swimming, clear sight in murk and darkness, and deep, cold, or turbulent water never slows the tide-hunter.' }),
@@ -3144,7 +3147,7 @@ const siabhra: MonsterGroup = {
 			stamina: 4,
 			stability: 0,
 			freeStrikeDamage: 2, freeStrikeType: DamageType.Psychic,
-			withCaptain: 'Strike damage +1',
+			withCaptain: '+1 damage bonus to strikes',
 			characteristics: FactoryLogic.createCharacteristics(0, 2, 0, 2, 0),
 			features: [
 				FactoryLogic.feature.create({ id: 'reflector-flickering', name: 'Flickering Visages', description: 'If the reflector is adjacent to a síabhra ally, attacks against it take a bane.' }),
@@ -3655,6 +3658,48 @@ Regardless of your apparent ancestry, you are a síabhra underneath – one who 
 				goal: 300
 			}),
 			effect: 'Choose one damage type: fire, lightning, or cold. When you deal damage with a strike that deals untyped damage, you can change the damage to the chosen type.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-smoke-round',
+			name: 'Smoke Round',
+			description: 'A squat shell with a soft ceramic tip.',
+			type: ItemType.Consumable1st,
+			keywords: [],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'A packet of smoke powder; a vial of aether',
+				source: 'Texts or lore in Khezdath',
+				characteristic: [ Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'You can use this ammunition when making a strike with a firearm. Instead of its normal effect, the shot creates a 1 cube of smoke in the target\'s space or an adjacent unoccupied space. The area is heavily obscured until the end of your next turn.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-transformation-potion',
+			name: 'Transformation Potion',
+			description: 'A shimmering blue potion with flecks of purple.',
+			type: ItemType.Consumable1st,
+			keywords: [ AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'Skin from a siabhra',
+				source: 'Texts or lore in Fae',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 150
+			}),
+			effect: 'After drinking this potion, you take on the physical form of the next humanoid you touch. Your clothing doesn\'t change, but your size can change to match them (to a minimum of 1S and a maximum of 1L). This is a purely cosmetic change; you don\'t gain any abilities that they have due to their physiology. You retain this appearance until one hour after drinking the potion.'
+		}),
+		FactoryLogic.createItem({
+			id: 'item-aos-trophy-cord-of-the-first-hunt',
+			name: 'Trophy-Cord of the First Hunt',
+			description: 'A braided cord strung with teeth, claws, feathers, and old beads.',
+			type: ItemType.Consumable1st,
+			keywords: [ AbilityKeyword.Magic ],
+			crafting: FactoryLogic.createProject({
+				prerequisites: 'The pelt of an extinct animal',
+				source: 'Texts or lore in Fae',
+				characteristic: [ Characteristic.Reason, Characteristic.Intuition ],
+				goal: 45
+			}),
+			effect: 'When you score a tier 3 result on a melee strike, you gain temporary Stamina equal to your echelon.'
 		}),
 		FactoryLogic.createItem({
 			id: 'item-aos-aetherflare',
@@ -4705,7 +4750,6 @@ The area becomes burning terrain until the end of your next turn. Creatures that
 			description: 'Vivid blue petals, eaten or steeped in cold water.',
 			type: ItemType.Consumable1st,
 			keywords: [],
-			crafting: undefined,
 			effect: 'Over a few minutes you fall into a shared dreaming; this counts as a respite. While you dream, you can speak mind-to-mind with - and share a single dream with - every other creature within 10 squares who has also taken madak. When you wake, you have a bane on Reason, Intuition, and Presence tests until you complete a respite. (Black-market price: 60 marks per dose. Harvested on the mountainsides of Kohana rather than crafted; obtaining a fresh supply is a Project to acquire (Source: trade contacts speaking Hanish; Goal 45) rather than to make.) This narcotic is acquired rather than crafted (see the black-market price / Project to acquire).'
 		}),
 		FactoryLogic.createItem({
