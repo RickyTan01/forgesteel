@@ -25,19 +25,21 @@ jobs:
           git fetch upstream
           git checkout main
 
-          # Attempt the merge, don't auto-commit yet
           git merge --no-ff --no-commit upstream/main || true
 
-          # Always keep our version of the icon, no matter what upstream did
           git checkout HEAD -- src/assets/shield.png
           git add src/assets/shield.png
 
-          # Fail loudly if anything ELSE still has unresolved conflicts
           if git diff --name-only --diff-filter=U | grep -q .; then
             echo "Unresolved conflicts remain outside shield.png:"
             git diff --name-only --diff-filter=U
             exit 1
           fi
 
-          git commit -m "Sync upstream (keeping custom shield icon)" --allow-empty
+          if git diff --cached --quiet && git diff --quiet; then
+            echo "No changes from upstream today — nothing to commit."
+            exit 0
+          fi
+
+          git commit -m "Sync upstream (keeping custom shield icon)"
           git push origin main
