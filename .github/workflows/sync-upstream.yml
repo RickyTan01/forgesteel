@@ -16,10 +16,28 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Add upstream and merge
+      - name: Add upstream and merge, keeping our custom icon
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
           git remote add upstream https://github.com/andyaiken/forgesteel.git
           git fetch upstream
           git checkout main
-          git merge --ff-only upstream/main
+
+          # Attempt the merge, don't auto-commit yet
+          git merge --no-ff --no-commit upstream/main || true
+
+          # Always keep our version of the icon, no matter what upstream did
+          git checkout HEAD -- src/assets/shield.png
+          git add src/assets/shield.png
+
+          # Fail loudly if anything ELSE still has unresolved conflicts
+          if git diff --name-only --diff-filter=U | grep -q .; then
+            echo "Unresolved conflicts remain outside shield.png:"
+            git diff --name-only --diff-filter=U
+            exit 1
+          fi
+
+          git commit -m "Sync upstream (keeping custom shield icon)" --allow-empty
           git push origin main
