@@ -38,6 +38,7 @@ import { Item } from '@/models/item';
 import { ItemType } from '@/enums/item-type';
 import { KitArmor } from '@/enums/kit-armor';
 import { KitWeapon } from '@/enums/kit-weapon';
+import { LanguageType } from '@/enums/language-type';
 import { Monster } from '@/models/monster';
 import { MonsterGroup } from '@/models/monster-group';
 import { MonsterOrganizationType } from '@/enums/monster-organization-type';
@@ -77,13 +78,13 @@ export class FactoryLogic {
 		};
 	};
 
-	static createHero = (sourcebookIDs: string[]): Hero => {
+	static createHero = (): Hero => {
 		return {
 			id: Utils.guid(),
 			name: '',
 			picture: null,
 			folder: '',
-			sourcebookIDs: sourcebookIDs,
+			sourcebookIDs: [],
 			ancestry: null,
 			culture: null,
 			class: null,
@@ -93,7 +94,7 @@ export class FactoryLogic {
 				FactoryLogic.feature.createLanguageChoice({
 					id: 'default-language',
 					name: 'Default Language',
-					selected: [ 'Caelian' ]
+					allowedTypes: [ LanguageType.Common ]
 				})
 			],
 			state: FactoryLogic.createHeroState(),

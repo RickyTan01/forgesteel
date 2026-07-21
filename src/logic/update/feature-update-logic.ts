@@ -3,6 +3,7 @@ import { Characteristic } from '@/enums/characteristic';
 import { Feature } from '@/models/feature';
 import { FeatureType } from '@/enums/feature-type';
 import { ItemUpdateLogic } from '@/logic/update/item-update-logic';
+import { LanguageType } from '@/enums/language-type';
 
 export class FeatureUpdateLogic {
 	static updateFeature = (feature: Feature) => {
@@ -108,6 +109,9 @@ export class FeatureUpdateLogic {
 				}
 				break;
 			case FeatureType.LanguageChoice:
+				if (feature.data.allowedTypes === undefined) {
+					feature.data.allowedTypes = [ LanguageType.Common, LanguageType.Regional, LanguageType.Cultural, LanguageType.Dead ];
+				}
 				if (feature.data.selectAt === undefined) {
 					feature.data.selectAt = 'build';
 				}

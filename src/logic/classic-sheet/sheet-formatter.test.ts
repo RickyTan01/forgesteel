@@ -401,7 +401,7 @@ describe('calculateFeatureReferenceSize', () => {
 
 	test('Correctly calculates the size for a single column and source', () => {
 		const features = [ { feature: {} as Feature, source: 'Source 1' } ];
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 
 		vi.spyOn(SheetFormatter, 'calculateFeatureSize').mockReturnValueOnce(10);
 
@@ -414,7 +414,7 @@ describe('calculateFeatureReferenceSize', () => {
 			{ feature: {} as Feature, source: 'Source 1' },
 			{ feature: {} as Feature, source: 'Source 2' }
 		];
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 
 		vi.spyOn(SheetFormatter, 'calculateFeatureSize').mockReturnValueOnce(10).mockReturnValueOnce(20);
 
@@ -426,7 +426,7 @@ describe('calculateFeatureReferenceSize', () => {
 		const features = [
 			{ feature: {} as Feature, source: 'Source 1' }
 		];
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 
 		vi.spyOn(SheetFormatter, 'calculateFeatureSize').mockReturnValueOnce(10);
 
@@ -439,7 +439,7 @@ describe('calculateFeatureReferenceSize', () => {
 			{ feature: {} as Feature, source: 'Source 1' },
 			{ feature: {} as Feature, source: 'Source 2' }
 		];
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 
 		vi.spyOn(SheetFormatter, 'calculateFeatureSize').mockReturnValueOnce(10).mockReturnValueOnce(20);
 
@@ -457,7 +457,7 @@ describe('calculateFeatureReferenceSize', () => {
 			{ feature: {} as Feature, source: 'Source 2' },
 			{ feature: {} as Feature, source: 'Source 2' }
 		];
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 
 		vi.spyOn(SheetFormatter, 'calculateFeatureSize').mockReturnValue(10);
 
@@ -531,7 +531,7 @@ describe('calculateAbilitySize', () => {
 		[ AbilityData.clawDirt, 23.1 ],
 		[ AbilityData.advance, 9 ]
 	])('calculates size properly for standard abilities', (ability: Ability, expected: number) => {
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 		const sheet = ClassicSheetBuilder.buildAbilitySheet(ability, hero);
 
 		const result = SheetFormatter.calculateAbilitySize(sheet, 54);

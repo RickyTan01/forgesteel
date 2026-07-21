@@ -16,10 +16,10 @@ describe('getHeroCount', () => {
 	});
 
 	test('returns the correct hero count a party is defined', () => {
-		const partyHero = FactoryLogic.createHero([]);
+		const partyHero = FactoryLogic.createHero();
 		partyHero.folder = 'test';
 		const heroes: Hero[] = new Array(4).fill(partyHero);
-		const nonPartyHero = FactoryLogic.createHero([]);
+		const nonPartyHero = FactoryLogic.createHero();
 		nonPartyHero.folder = 'asdf';
 		heroes.push(nonPartyHero);
 		const options = {
@@ -46,7 +46,7 @@ describe('getSuccessLimit', () => {
 		const montage = {
 			difficulty: difficulty
 		} as Montage;
-		const partyHero = FactoryLogic.createHero([]);
+		const partyHero = FactoryLogic.createHero();
 		partyHero.folder = 'test';
 		const heroes: Hero[] = new Array(numHeroes).fill(partyHero);
 		const options = {

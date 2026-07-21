@@ -37,7 +37,7 @@ describe('buildCharacteristicsSheet', () => {
 describe('buildItemSheet', () => {
 	test('builds artifact sheets correctly', () => {
 		const artifact = ArtifactData.bladeOfAThousandYears;
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 		const options = {} as Options;
 
 		const result = ClassicSheetBuilder.buildItemSheet(artifact, hero, options);
@@ -53,7 +53,7 @@ describe('buildAbilitySheet', () => {
 
 	test('when showPowerRollCalc is false, uses characteristics', () => {
 		const ability = AbilityData.escapeGrab;
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 
 		const options = {
 			showPowerRollCalculation: false
@@ -65,7 +65,7 @@ describe('buildAbilitySheet', () => {
 
 	test('when showPowerRollCalc is true, calculates value', () => {
 		const ability = AbilityData.escapeGrab;
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 		vi.spyOn(HeroLogic, 'getCharacteristic').mockReturnValue(4);
 
 		const options = {
@@ -80,7 +80,7 @@ describe('buildAbilitySheet', () => {
 		[ AbilityData.advance, true ],
 		[ AbilityData.escapeGrab, false ]
 	])('properly sets isNotTrueAbility for non-ability abilities', (ability: Ability, expected: boolean) => {
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 		const options = {} as Options;
 
 		const result = ClassicSheetBuilder.buildAbilitySheet(ability, hero, undefined, options);
@@ -93,7 +93,7 @@ describe('buildAbilitySheet', () => {
 			Characteristic.Reason,
 			Characteristic.Presence
 		]);
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 		const options = {
 			showPowerRollCalculation: false
 		} as Options;
@@ -111,7 +111,7 @@ describe('buildAbilitySheet', () => {
 			Characteristic.Agility,
 			Characteristic.Might
 		]);
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 		const options = {
 			showPowerRollCalculation: false
 		} as Options;
@@ -121,7 +121,7 @@ describe('buildAbilitySheet', () => {
 	});
 
 	test('if a Hero does NOT has multiple kits that apply, rollBonuses is empty', () => {
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 		const options = {} as Options;
 
 		const result = ClassicSheetBuilder.buildAbilitySheet(AbilityData.escapeGrab, hero, undefined, options);
@@ -129,7 +129,7 @@ describe('buildAbilitySheet', () => {
 	});
 
 	test('if a Hero has multiple kits that apply, rollBonuses gets populated', () => {
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 		const options = {} as Options;
 
 		vi.spyOn(HeroLogic, 'getKitDamageBonuses').mockReturnValue([
@@ -142,7 +142,7 @@ describe('buildAbilitySheet', () => {
 	});
 
 	test('if a Hero has multiple kits that apply, rollBonuses gets populated', () => {
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 		const options = {} as Options;
 
 		vi.spyOn(HeroLogic, 'getKitDamageBonuses').mockReturnValue([
@@ -156,7 +156,7 @@ describe('buildAbilitySheet', () => {
 	});
 
 	test('if a Hero has multiple kits but one is always worse, rollBonuses stays empty', () => {
-		const hero = FactoryLogic.createHero([]);
+		const hero = FactoryLogic.createHero();
 		const options = {} as Options;
 
 		vi.spyOn(HeroLogic, 'getKitDamageBonuses').mockReturnValue([

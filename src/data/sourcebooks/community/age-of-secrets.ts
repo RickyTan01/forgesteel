@@ -3,6 +3,7 @@ import { AbilityDistanceType } from '@/enums/ability-distance-type';
 import { AbilityKeyword } from '@/enums/ability-keyword';
 import { Characteristic } from '@/enums/characteristic';
 import { CultureType } from '@/enums/culture-type';
+import { DamageType } from '@/enums/damage-type';
 import { FactoryLogic } from '@/logic/factory-logic';
 import { FeatureField } from '@/enums/feature-field';
 import { FeatureType } from '@/enums/feature-type';
@@ -11,11 +12,14 @@ import { ItemType } from '@/enums/item-type';
 import { KitArmor } from '@/enums/kit-armor';
 import { KitWeapon } from '@/enums/kit-weapon';
 import { LanguageType } from '@/enums/language-type';
+import { MonsterGroup } from '@/models/monster-group';
+import { MonsterOrganizationType } from '@/enums/monster-organization-type';
 import { MonsterRoleType } from '@/enums/monster-role-type';
 import { PerkList } from '@/enums/perk-list';
 import { SkillList } from '@/enums/skill-list';
 import { Sourcebook } from '@/models/sourcebook';
 import { SourcebookType } from '@/enums/sourcebook-type';
+import { StatBlockIcon } from '@/enums/stat-block-icon';
 import { TerrainCategory } from '@/enums/terrain-category';
 import { TerrainRoleType } from '@/enums/terrain-role-type';
 
@@ -2180,6 +2184,1056 @@ Once per round, when a creature within 10 squares uses an ability with the Magic
 	characteristics: []
 };
 
+const beastfolk: MonsterGroup = {
+	id: 'monster-group-aos-beastfolk',
+	name: 'Beastfolk',
+	description: '',
+	picture: null,
+	information: [],
+	malice: [],
+	monsters: [
+		FactoryLogic.createMonster({
+			id: 'beastfolk-houndfolk-scout',
+			name: 'Houndfolk Scout',
+			description: 'A houndfolk retainer who runs down what their mentor marks, and brings it to the ground.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Harrier),
+			keywords: [ 'Beastfolk', 'Humanoid' ],
+			encounterValue: 0,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(7),
+			stamina: 21,
+			stability: 0,
+			freeStrikeDamage: 3, freeStrikeType: DamageType.Damage,
+			retainer: {
+				level4: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'beastfolk-hound-4', name: 'Bring It Down!', type: FactoryLogic.type.createMain({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '5 damage; the scout shifts 2', tier2: '8 damage; prone', tier3: '11 damage; prone, and the mentor can shift up to their speed' })) ] }) }),
+				level7: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'beastfolk-hound-7', name: 'Circling Hunt', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Until the end of the scout\'s turn, the scout ignores enemy opportunity attacks. The scout moves up to their speed, and if they end adjacent to an enemy adjacent to their mentor, that enemy takes a bane on their next strike.') ] }) }),
+				level10: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'beastfolk-hound-10', name: 'Alpha\'s Opening', type: FactoryLogic.type.createMain({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '8 damage', tier2: '12 damage; the mentor can make a free strike against the target', tier3: '16 damage; the mentor can make a free strike against the target with an edge' })) ] }) })
+			},
+			characteristics: FactoryLogic.createCharacteristics(1, 2, 0, 1, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'hound-packwise', name: 'Packwise', description: 'When the scout ends a move adjacent to their mentor, the scout can shift 1.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'hound-hamstring-bite', name: 'Hamstring Bite', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '3 damage', tier2: '5 damage', tier3: '7 damage' })), FactoryLogic.createAbilitySectionText('If the target is adjacent to the scout\'s mentor, the target can\'t make opportunity attacks until the end of the scout\'s turn, and the scout can shift 1.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'beastfolk-monkeyfolk-canopy-guide',
+			name: 'Monkeyfolk Canopy Guide',
+			description: 'A monkeyfolk retainer who keeps to the high ground and pulls their mentor out of trouble by the scruff.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Support),
+			keywords: [ 'Beastfolk', 'Humanoid' ],
+			encounterValue: 0,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(6, 'climb'),
+			stamina: 21,
+			stability: 0,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Damage,
+			retainer: {
+				level4: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'beastfolk-monkey-4', name: 'Branch to Branch', type: FactoryLogic.type.createTrigger('The mentor is targeted by a melee strike'), keywords: [ AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'The guide\'s mentor', sections: [ FactoryLogic.createAbilitySectionText('The mentor shifts 3 before the strike resolves. If this moves them out of distance, the strike misses.') ] }) }),
+				level7: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'beastfolk-monkey-7', name: 'Distracting Feint', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(2) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The target takes a bane on their next strike, and the guide or one ally adjacent to the target shifts 2.') ] }) }),
+				level10: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'beastfolk-monkey-10', name: 'Scatter the Flock', type: FactoryLogic.type.createMain({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createSpecial('3 burst') ], target: 'Each ally in the area', sections: [ FactoryLogic.createAbilitySectionText('Each target shifts up to their speed. Until the start of the guide\'s next turn, each affected target gains an edge on Disengage tests.') ] }) })
+			},
+			characteristics: FactoryLogic.createCharacteristics(0, 2, 0, 2, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'monkey-nimble-escape', name: 'Nimble Escape', description: 'When a creature misses the Canopy Guide with a strike, the guide shifts 1.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'monkey-tail-snag', name: 'Tail-Snag', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(2) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '3 damage', tier2: '5 damage', tier3: '7 damage' })), FactoryLogic.createAbilitySectionText('One ally adjacent to the target can shift 1. If the Canopy Guide targets their mentor, the ability deals no damage. Instead, the mentor shifts 3.') ] }) })
+			]
+		})
+	],
+	addOns: []
+};
+
+const celestial: MonsterGroup = {
+	id: 'monster-group-aos-celestial',
+	name: 'Celestial',
+	description: 'When the Veil thins beneath a lavender sky, what steps through from the Divine Sea does not come to kill; it comes only to correct. They are radiant, beautiful, and patient, and the worst of them are most dangerous not in the moment they strike but in the moment you find yourself agreeing with them.',
+	picture: null,
+	information: [],
+	malice: [
+		FactoryLogic.feature.createMalice({
+			id: 'celestial-malice-antiphon',
+			name: 'Antiphon',
+			cost: 3,
+			sections: [
+				'The choir answers itself. Each celestial acting this turn may, after its action, force one enemy within 5 to make a Presence test; on a failure the enemy takes holy damage equal to the highest-level celestial\'s level and can\'t gain surges until the end of its next turn.'
+			]
+		}),
+		FactoryLogic.feature.createMalice({
+			id: 'celestial-malice-one-voice',
+			name: 'One Voice',
+			cost: 5,
+			sections: [
+				'Until the end of the round, each celestial on the encounter map gains an edge on power rolls while adjacent to another celestial, and each enemy that ends its turn adjacent to two or more celestials is in concord (save ends).'
+			]
+		}),
+		FactoryLogic.feature.createMalice({
+			id: 'celestial-malice-pronounce-sentence',
+			name: 'Pronounce Sentence',
+			cost: 7,
+			sections: [
+				'Choose one enemy. Each celestial that has line of effect may immediately use a signature ability against that enemy. An enemy reduced to 0 Stamina by this judgement doesn\'t die but falls unconscious (save ends).'
+			]
+		})
+	],
+	monsters: [
+		FactoryLogic.createMonster({
+			id: 'celestial-verger',
+			name: 'Celestial Verger',
+			description: 'A humanoid figure bathed in cold radiance.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Minion, MonsterRoleType.Brute),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 2,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 6,
+			stability: 0,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(2, 0, -1, 1, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'verger-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'verger-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 2 damage.' }),
+				FactoryLogic.feature.create({ id: 'verger-antiphonal', name: 'Antiphonal', description: 'A verger\'s abilities gain an edge while it is within 3 squares of another celestial.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'verger-stilling-touch', name: 'Stilling Touch', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One enemy per antiphon', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '2 holy damage', tier2: '3 holy damage', tier3: '4 holy damage; the target can\'t shift until the end of its next turn' })), FactoryLogic.createAbilitySectionText('If two or more vergers target the same enemy: the target is in concord (EoT).') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'verger-be-still', name: 'Be Still', type: FactoryLogic.type.createTrigger('The verger is reduced to 0 Stamina'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The verger comes apart into light, and that light does not disperse. One celestial within 3 squares regains 2 Stamina.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-chorister',
+			name: 'Celestial Chorister',
+			description: 'A drifting mote of voice and pale light; a hundred of them sound like a cathedral with no walls.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Minion, MonsterRoleType.Artillery),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 2,
+			size: FactoryLogic.createSize(1, 'S'),
+			speed: FactoryLogic.createSpeed(5, 'fly, hover'),
+			stamina: 5,
+			stability: 0,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(-1, 1, 1, 2, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'chorister-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'chorister-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'chorister-chorus', name: 'Chorus', description: 'A chorister\'s abilities gain an edge while it is within 3 of another celestial.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'chorister-radiant-note', name: 'Radiant Note', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(8) ], target: 'One enemy per chorister', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '2 holy damage', tier2: '3 holy damage', tier3: '4 holy damage; the target can\'t gain an edge until the end of its next turn' })), FactoryLogic.createAbilitySectionText('If two or more choristers target the same enemy: the target is also frightened (EoT).') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'chorister-be-still', name: 'Be Still', type: FactoryLogic.type.createTrigger('The chorister is reduced to 0 Stamina'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The chorister comes apart into light. One celestial within 3 squares regains 2 Stamina.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-mendicant',
+			name: 'Celestial Mendicant',
+			description: 'A robed, kneeling figure of soft radiance, palms upturned, that asks - gently, relentlessly - that you kneel beside it.',
+			level: 2,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Hexer),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 8,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 50,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Psychic,
+			characteristics: FactoryLogic.createCharacteristics(0, 1, 1, 2, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'mendicant-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'mendicant-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'mendicant-wearying-grace', name: 'Wearying Grace', description: 'When an adjacent enemy fails a saving throw, the mendicant regains 3 Stamina.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mendicant-burden-of-grace', name: 'Burden of Grace', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '5 psychic damage; P<0 weakened (EoT)', tier2: '7 psychic damage; P<1 weakened (save ends)', tier3: '9 psychic damage; P<2 in supplication (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mendicant-kneel', name: 'Kneel', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The target falls to its knees: it is prone and can\'t stand (EoT). The mendicant gains 3 temporary Stamina. Special: The target must be winded or weakened.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mendicant-weight-of-devotion', name: 'Weight of Devotion', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('2 burst within 5') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '5 psychic damage; P<1 weakened (save ends)', tier2: '7 psychic damage; P<2 in supplication (save ends)', tier3: '9 psychic damage; P<3 in supplication (save ends)' })), FactoryLogic.createAbilitySectionText('The mendicant regains 2 Stamina for each enemy brought to its knees by this ability.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-throne',
+			name: 'Celestial Throne',
+			description: 'A great seat of burning brass and folded wings, occupied by no one - the chair itself is the angel, and where it sets down, the ground becomes a court.',
+			level: 3,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Defender),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 11,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(4),
+			stamina: 75,
+			stability: 4,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(3, 0, 0, 1, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'throne-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'throne-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'throne-hold-court', name: 'Hold Court', description: 'While the throne hasn\'t moved since the start of its last turn, each enemy within 2 can\'t willingly end its move farther from the throne than it began.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'throne-scales-and-sword', name: 'Scales and Sword', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(2) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '5 holy damage; taunted (EoT)', tier2: '9 holy damage; taunted (save ends)', tier3: '12 holy damage; taunted (save ends) and P<2 in concord (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'throne-interpose', name: 'Interpose', type: FactoryLogic.type.createTrigger('The target is targeted by a strike'), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(2) ], target: 'One ally', cost: 1, sections: [ FactoryLogic.createAbilitySectionText('The throne becomes the new target of the strike, provided it is valid. It then reduces the damage by 5.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'throne-summon-the-dock', name: 'Summon the Dock', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Until the throne moves, each enemy that starts its turn within 2 is P<1 in supplication (save ends).') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-cantor',
+			name: 'Celestial Cantor',
+			description: 'A tall, slender thing of woven light that does not fight so much as conduct - every gesture tuning the host around it into something more certain.',
+			level: 3,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Support),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 11,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(6, 'fly'),
+			stamina: 60,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(0, 1, 2, 1, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'cantor-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'cantor-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'cantor-perfect-pitch', name: 'Perfect Pitch', description: 'When the cantor is reduced to 0 Stamina, before it is removed, one celestial within 5 may immediately make a signature ability as a free triggered action.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'cantor-tuning-note', name: 'Tuning Note', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '5 holy damage', tier2: '9 holy damage', tier3: '12 holy damage' })), FactoryLogic.createAbilitySectionText('If the cantor targets a celestial ally instead, the ability deals no damage; that ally instead gains 5 temporary Stamina and an edge on its next power roll.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'cantor-harmonize', name: 'Harmonize', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One or two allies', sections: [ FactoryLogic.createAbilitySectionText('Each target may immediately shift 2. Until the start of the cantor\'s next turn, each target\'s strikes deal 2 additional holy damage.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'cantor-dissonance', name: 'Dissonance is a Sin', type: FactoryLogic.type.createTrigger('The target ends an effect on itself with a saving throw'), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One enemy', cost: 1, sections: [ FactoryLogic.createAbilitySectionText('The target takes 5 psychic damage.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'cantor-swell', name: 'Swell the Chorus', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each ally in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionText('The target gains 5 temporary Stamina and may immediately shift 2. Until the start of the cantor\'s next turn, when the target imposes In Concord or In Supplication, that effect\'s potency increases by 1.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-dominion',
+			name: 'Celestial Dominion',
+			description: 'A column of ordered light ringed by slowly turning rings of script, imposing geometry on everything it surveys. Where it looks, the world lines up.',
+			level: 4,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Controller),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 13,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5, 'fly'),
+			stamina: 70,
+			stability: 1,
+			freeStrikeDamage: 6, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(1, 1, 2, 2, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'dominion-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'dominion-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'dominion-right-order', name: 'Right Order', description: 'Difficult terrain within 5 of the dominion isn\'t difficult terrain for celestials, and is difficult terrain for everyone else even when it otherwise wouldn\'t be.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'dominion-decree', name: 'Decree', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(8) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '6 holy damage; slide 1', tier2: '10 holy damage; slide 3', tier3: '13 holy damage; slide 3 and P<2 in concord (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'dominion-all-things', name: 'All Things in their Place', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('3 cube within 10') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '5 holy damage; pull 2 toward the cube\'s centre', tier2: '8 holy damage; pull 3 toward the centre', tier3: '11 holy damage; pull 3 toward the centre, and each target that ends adjacent to another target is restrained (save ends)' })), FactoryLogic.createAbilitySectionText('The area becomes a 3 cube of ordered light until the end of the encounter; enemies treat it as difficult terrain, celestials gain an edge on power rolls while inside it.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-virtue',
+			name: 'Celestial Virtue',
+			description: 'A blade of white fire trailing a comet\'s wing, too fast and too bright to look at directly - the host\'s swift hand, sent to make an example.',
+			level: 5,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Harrier),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 14,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(8, 'fly'),
+			stamina: 80,
+			stability: 0,
+			freeStrikeDamage: 6, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(1, 3, 0, 1, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'virtue-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'virtue-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'virtue-wings', name: 'On Wings of Judgement', description: 'The virtue can fly, ignores difficult terrain, and doesn\'t provoke opportunity attacks when it flies.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'virtue-searing-light', name: 'Searing Light', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '6 holy damage; the virtue shifts 2', tier2: '11 holy damage; the virtue shifts 3', tier3: '14 holy damage; the virtue shifts 3, and the target can\'t make opportunity attacks (EoT)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'virtue-annunciation', name: 'Annunciation', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The virtue marks the target for judgement until the end of its next turn. While marked, the target is frightened, and the next strike any celestial makes against it gains an edge.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'virtue-flense', name: 'Flense the Unworthy', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '9 holy damage', tier2: '14 holy damage; P<2 bleeding (save ends)', tier3: '18 holy damage; P<3 bleeding (save ends), and if the target is marked, it is also in supplication (save ends)' })) ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-power',
+			name: 'Celestial Power',
+			description: 'An armoured giant of cooling brass and four mailed wings, wielding a sword as long as a man is tall. The militant face of mercy.',
+			level: 6,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Brute),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 16,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(5, 'fly'),
+			stamina: 110,
+			stability: 3,
+			freeStrikeDamage: 8, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(3, 1, 0, 1, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'power-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'power-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'power-unanswerable', name: 'Unanswerable', description: 'When a creature scores a tier 3 result against the power with a strike, the power loses 1d6 Stamina and the result becomes a tier 2 result instead.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'power-sentencing-sword', name: 'Sentencing Sword', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(2) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '8 holy damage; push 1', tier2: '14 holy damage; push 2', tier3: '17 holy damage; push 3 and M<3 prone' })), FactoryLogic.createAbilitySectionText('If the target is prone or in supplication, this ability deals 4 additional damage.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'power-weight-of-heaven', name: 'The Weight of Heaven', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('2 burst') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '8 holy damage; P<2 in supplication (save ends)', tier2: '12 holy damage; P<3 in supplication (save ends)', tier3: '6 holy damage; P<4 in supplication (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'power-descent', name: 'Descent', type: FactoryLogic.type.createMove(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The power flies up to its speed in a straight line and lands; each enemy adjacent to its landing square takes 4 holy damage and is knocked prone.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-seraph',
+			name: 'Celestial Seraph',
+			description: 'Six wings, a wheel of eyes, and a voice like a sentence already passed. The radiant judge; a Seraph anchors a serious incursion.',
+			level: 7,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Hexer),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 56,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(6, 'fly'),
+			stamina: 200,
+			stability: 2,
+			freeStrikeDamage: 9, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(2, 1, 2, 3, 3),
+			features: [
+				FactoryLogic.feature.create({ id: 'seraph-serene', name: 'Serene', description: 'A celestial can\'t be frightened; additionally the seraph is immune to being dazed, taunted, or charmed.' }),
+				FactoryLogic.feature.create({ id: 'seraph-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'seraph-many-eyes', name: 'Many Eyes', description: 'The seraph can\'t be hidden from, and ignores concealment. The first time each round an enemy within 10 attempts to hide or break line of effect, that enemy is frightened (EoT).' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'seraph-pronouncement', name: 'Pronouncement', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '9 holy damage; I<2 in concord (save ends)', tier2: '15 holy damage; I<3 in concord (save ends)', tier3: '18 holy damage; I<4 in concord (save ends) and in supplication (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'seraph-kneel', name: 'Kneel before the Divine', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '11 psychic damage; in supplication (save ends)', tier2: '6 psychic damage; prone', tier3: 'no effect' })), FactoryLogic.createAbilitySectionText('Each target makes a Presence test.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'seraph-verdict', name: 'The Verdict is Love', type: FactoryLogic.type.createTrigger('The target would take damage from one of the seraph\'s allies'), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One enemy', cost: 1, sections: [ FactoryLogic.createAbilitySectionText('The target takes no damage, and instead its next action must be spent moving toward, and then defending, the seraph.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'seraph-final-judgement', name: 'Final Judgement', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each enemy in the area', cost: 5, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '11 holy damage; I<3 in concord (save ends)', tier2: '16 holy damage; I<4 in supplication (save ends)', tier3: '21 holy damage; I<5 in supplication (save ends)' })), FactoryLogic.createAbilitySectionText('Any enemy reduced to 0 Stamina by this ability falls unconscious (save ends) rather than dying.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-principality',
+			name: 'Celestial Principality',
+			description: 'It does not appear. It is realised - stepping out of the conviction of a crowd as though it had always been the thing they believed.',
+			level: 8,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Ambusher),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 20,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5, 'fly'),
+			stamina: 110,
+			stability: 0,
+			freeStrikeDamage: 8, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(0, 2, 2, 2, 3),
+			features: [
+				FactoryLogic.feature.create({ id: 'principality-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'principality-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'principality-belief', name: 'Made of Belief', description: 'While any enemy within 10 is in concord, the principality has concealment and can\'t be made the target of an opportunity attack. The first time each round it becomes hidden, it may teleport 5.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'principality-revelation', name: 'Revelation Strike', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '9 holy damage', tier2: '15 holy damage; if the target is in concord or frightened, +4 holy damage', tier3: '19 holy damage; if the target is in concord or frightened, the principality may teleport, swapping places with it' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'principality-spreads', name: 'Spreads Like Weather', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: 'P<2 in concord (save ends)', tier2: 'P<3 in concord (save ends)', tier3: 'P<4 in concord (save ends)' })), FactoryLogic.createAbilitySectionText('The target\'s allies that can see it take a bane on their next saving throw against concord.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'principality-no-you-agree', name: 'No, You Agree', type: FactoryLogic.type.createTrigger('The principality is targeted by a strike'), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One enemy', cost: 1, sections: [ FactoryLogic.createAbilitySectionText('The attacker must make a saving throw. On a failure, it chooses a new target for the strike, and is in concord (save ends).') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-concordant',
+			name: 'Celestial Concordant',
+			description: 'A towering figure of white robes and golden machinery, ringed by a silent choir, that offers the world the one thing it has always wanted: an end to argument.',
+			level: 9,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Leader, MonsterRoleType.Controller),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 72,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(6, 'fly'),
+			stamina: 240,
+			stability: 2,
+			freeStrikeDamage: 9, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(2, 1, 3, 3, 4),
+			features: [
+				FactoryLogic.feature.create({ id: 'concordant-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'concordant-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'concordant-choir-eternal', name: 'Choir Eternal', description: 'While the concordant is on the encounter map, celestial allies can\'t be in supplication or forced to make a saving throw against the concordant\'s own effects, and they gain an edge on saving throws.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'concordant-the-offer', name: 'The Offer', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '9 holy damage; P<2 in concord (save ends)', tier2: '14 holy damage; P<3 in concord (save ends)', tier3: '18 holy damage; P<4 in concord (save ends); if the target was already in concord, it is instead subjected to Supplication (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'concordant-world-without-discord', name: 'A World Without Discord', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', cost: 3, sections: [ FactoryLogic.createAbilitySectionText('Until the end of the concordant\'s next turn, each enemy in concord within 10 takes a bane on power rolls and saving throws, and each celestial within 10 gains 5 temporary Stamina.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'concordant-silence-dissenter', name: 'Silence the Dissenter', type: FactoryLogic.type.createTrigger('The target ends an effect with a saving throw, or damages the concordant'), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One enemy', cost: 2, sections: [ FactoryLogic.createAbilitySectionText('The target takes 9 psychic damage and, P<3, is in concord (save ends).') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'concordant-va1', name: 'Call to Worship', type: FactoryLogic.type.createVillainAction(1), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('Each enemy within 10') ], target: 'Each enemy within 10', sections: [ FactoryLogic.createAbilitySectionText('Each enemy within 10 makes a Presence test. On a failure, the enemy is frightened (save ends); an enemy already frightened is instead in concord (save ends).') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'concordant-va2', name: 'The Sentence of the Sea', type: FactoryLogic.type.createVillainAction(2), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('One enemy in concord or frightened') ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('Choose one enemy in concord or frightened. Each celestial within 10 with line of effect makes a signature ability against it as a free triggered action. If it is reduced to 0 Stamina, it falls unconscious rather than dying.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'concordant-va3', name: 'Perfected Stillness', type: FactoryLogic.type.createVillainAction(3), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Until the start of the concordant\'s next turn, no creature on the encounter map may shift, and forced movement distances are halved. Celestials are unaffected.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'celestial-perfected-silence',
+			name: 'Celestial Perfected Silence',
+			description: 'Not a figure. A region of the world made right - a sphere of motionless, luminous, soundless order, at the centre of which something vast is being still.',
+			level: 10,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Solo, MonsterRoleType.Controller),
+			keywords: [ 'Celestial', 'Horror' ],
+			encounterValue: 120,
+			size: FactoryLogic.createSize(2),
+			speed: FactoryLogic.createSpeed(5, 'fly, hover'),
+			stamina: 400,
+			stability: 5,
+			freeStrikeDamage: 11, freeStrikeType: DamageType.Holy,
+			characteristics: FactoryLogic.createCharacteristics(3, 1, 3, 4, 5),
+			features: [
+				FactoryLogic.feature.create({ id: 'silence-serene', name: 'Serene', description: 'A celestial can\'t be frightened.' }),
+				FactoryLogic.feature.create({ id: 'silence-affront', name: 'An Affront to Order', description: 'The first time each round this celestial is targeted by an ability that imposes a condition, or is subjected to forced movement, it takes 5 damage.' }),
+				FactoryLogic.feature.create({ id: 'silence-solo-resolve', name: 'Solo Resolve', description: 'The Perfected Silence ignores the dazed, taunted, grabbed, and restrained conditions and takes only half damage from the Affront to Order trait it would otherwise suffer. At the start of each of its turns, it may end one effect on itself that a saving throw could end.' }),
+				FactoryLogic.feature.create({ id: 'silence-aura', name: 'Aura of Stillness (3)', description: 'Each enemy that enters the aura for the first time in a round or starts its turn there takes 5 holy damage and, P<3, is slowed (EoT). An enemy reduced to 0 Speed inside the aura is in supplication (save ends).' }),
+				FactoryLogic.feature.create({ id: 'silence-two-turns', name: 'Two Turns', description: 'The Perfected Silence takes two turns each round, at two different points in the initiative order. It can\'t take them consecutively.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'silence-hand-of-peace', name: 'Hand of Peace', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(2) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 5, tier1: '11 holy damage; P<3 in concord (save ends)', tier2: '16 holy damage; P<4 in concord (save ends) and slide 3', tier3: '21 holy damage; P<5 in supplication (save ends) and slide 3' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'silence-let-it-end', name: 'Let it End', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '9 holy damage; P<3 in concord (save ends)', tier2: '14 holy damage; P<4 in concord and weakened (save ends)', tier3: '19 holy damage; P<5 in supplication (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'silence-sea-closes', name: 'The Sea Closes Over', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('3 burst') ], target: 'Each enemy in the area', cost: 5, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '13 holy damage; P<4 in concord (save ends)', tier2: '18 holy damage; P<5 in supplication (save ends)', tier3: '23 holy damage; P<6 in supplication (save ends)' })), FactoryLogic.createAbilitySectionText('Any enemy reduced to 0 Stamina by this ability falls unconscious (save ends) rather than dying.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'silence-va1', name: 'The Quiet Spreads', type: FactoryLogic.type.createVillainAction(1), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The aura\'s size increases by 1 (to a maximum of 6) until the end of the encounter. Each enemy currently in the aura makes a Presence test or is in concord (save ends).') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'silence-va2', name: 'Be Still', type: FactoryLogic.type.createVillainAction(2), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Until the start of its next turn, no enemy on the encounter map may take more than one action, maneuver, or move on its turn, and forced movement against the Perfected Silence fails. Choose one enemy in concord: it is in supplication (save ends) with a double bane on the save.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'silence-va3', name: 'Annexation', type: FactoryLogic.type.createVillainAction(3), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('Each enemy in supplication within the aura') ], target: 'Each enemy in supplication within the aura', sections: [ FactoryLogic.createAbilitySectionText('Each enemy in supplication within the aura must make a Presence test. On a failure, it is removed from the encounter and returns at the start of the next round, dazed and weakened (save ends). On a success, it is no longer in supplication, and is immune to that condition until the end of its next turn.') ] }) })
+			]
+		})
+	],
+	addOns: []
+};
+
+const deva: MonsterGroup = {
+	id: 'monster-group-aos-deva',
+	name: 'Deva',
+	description: 'Devas are not incursions. They were born here - ember-kin with eyes like coals, storm-kin whose hair stirs in still air, stone-kin veined like weathered rock, and the tide-, wild-, grave-, and rift-kin beside them. What they carry is not passage from the Elemental Chaos but an ancestry, worn in the body - and in an age that drowns a child for stopping a falling cup, being unable to go unnoticed is a whole life, decided at birth by strangers.',
+	picture: null,
+	information: [],
+	malice: [
+		FactoryLogic.feature.createMalice({ id: 'deva-malice-elemental-convergence', name: 'Elemental Convergence', cost: 3, icon: StatBlockIcon.Self, sections: [ 'The devas let their elemental natures flare in concert. Each deva acting this turn deals an additional 1d6 damage on their signature attack.' ] }),
+		FactoryLogic.feature.createMalice({ id: 'deva-malice-unstable-flare', name: 'Unstable Flare', cost: 5, icon: StatBlockIcon.AuraBurst, sections: [ 'Raw planar force bursts from every deva on the encounter map. Each enemy adjacent to one or more devas takes damage equal to the highest-level deva\'s level. The damage type is chosen by the Director from fire, lightning, cold, poison, corruption, or psychic. Until the end of the next turn, each square adjacent to a deva is difficult terrain for enemies.' ] }),
+		FactoryLogic.feature.createMalice({ id: 'deva-malice-planar-cascade', name: 'Planar Cascade', cost: 7, icon: StatBlockIcon.Self, sections: [ 'Each deva on the encounter map can immediately shift 1 square and use their signature action.' ] })
+	],
+	monsters: [
+		FactoryLogic.createMonster({
+			id: 'deva-ember-kin-reaver',
+			name: 'Ember-Kin Reaver',
+			description: 'Not a fire elemental - a person who has been visible every day of their life in a world that would have preferred otherwise, and has stopped apologising for it.',
+			level: 2,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Artillery),
+			keywords: [ 'Humanoid', 'Deva', 'Ember-Kin' ],
+			encounterValue: 8,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 50,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Fire,
+			characteristics: FactoryLogic.createCharacteristics(0, 1, 2, 1, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'reaver-immunity', name: 'Immunity', description: 'The reaver has fire immunity 2.' }),
+				FactoryLogic.feature.create({ id: 'reaver-burning-momentum', name: 'Burning Momentum', description: 'The first time the reaver reduces a creature to 0 Stamina on its turn, its next strike before the end of its next turn deals 3 additional fire damage.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'reaver-cinder-spear', name: 'Cinder Spear', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '5 fire damage', tier2: '8 fire damage', tier3: '10 fire damage' })), FactoryLogic.createAbilitySectionText('One enemy adjacent to the target takes 2 fire damage.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'reaver-flash-kill', name: 'Flash-Kill', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('2 burst within 10') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '5 fire damage; A<0 fire weakness 3 (EoT)', tier2: '8 fire damage; A<1 fire weakness 3 (EoT)', tier3: '10 fire damage; A<2 fire weakness 3 (EoT)' })), FactoryLogic.createAbilitySectionText('If the reaver moved at least 3 squares straight toward the target before using this ability, it deals 4 additional damage.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'reaver-ignition', name: 'Ignition', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Until the end of the reaver\'s turn, its strikes deal 2 additional fire damage.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'reaver-scorching-rebuke', name: 'Scorching Rebuke', type: FactoryLogic.type.createTrigger('A creature attempts to grab the reaver'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'The triggering creature', sections: [ FactoryLogic.createAbilitySectionText('The triggering creature takes 3 fire damage.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'deva-storm-kin-tempest-runner',
+			name: 'Storm-Kin Tempest Runner',
+			description: 'Storm-kin whose hair stirs in still air; fast as weather and twice as hard to hold.',
+			level: 2,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Harrier),
+			keywords: [ 'Humanoid', 'Deva', 'Storm-Kin' ],
+			encounterValue: 8,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(7, 'fly'),
+			stamina: 50,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Lightning,
+			characteristics: FactoryLogic.createCharacteristics(0, 2, 1, 1, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'runner-immunity', name: 'Immunity', description: 'The tempest runner has lightning immunity 2.' }),
+				FactoryLogic.feature.create({ id: 'runner-ride-the-gale', name: 'Ride the Gale', description: 'When the tempest runner disengages, it can move 1 additional square.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'runner-thunder-knives', name: 'Thunder Knives', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '5 lightning damage; shift 1', tier2: '8 lightning damage; shift 2', tier3: '10 lightning damage; shift 3' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'runner-downsquall', name: 'Downsquall Pass', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('4x1 line within 1') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '6 lightning damage; push 1', tier2: '10 lightning damage; push 2', tier3: '12 lightning damage; push 3' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'runner-skate', name: 'Skate the Storm', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The tempest runner disengages, then moves up to its speed.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'runner-reflexes', name: 'Lightning Reflexes', type: FactoryLogic.type.createTrigger('An enemy moves adjacent to the tempest runner'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The tempest runner shifts 1 square.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'deva-tide-kin-undertow-duelist',
+			name: 'Tide-Kin Undertow Duelist',
+			description: 'Tide-kin who move like the pull beneath a wave - always taking something with them when they go.',
+			level: 2,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Controller),
+			keywords: [ 'Humanoid', 'Deva', 'Tide-Kin' ],
+			encounterValue: 8,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(6, 'swim'),
+			stamina: 50,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Cold,
+			characteristics: FactoryLogic.createCharacteristics(1, 2, 0, 1, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'duelist-immunity', name: 'Immunity', description: 'The undertow duelist has cold immunity 2.' }),
+				FactoryLogic.feature.create({ id: 'duelist-undertow', name: 'Undertow', description: 'Whenever the undertow duelist shifts, it can slide one adjacent creature 1 square.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'duelist-frostcurrent', name: 'Frostcurrent Blade', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '5 cold damage; slide 1', tier2: '8 cold damage; slide 2', tier3: '10 cold damage; slide 3' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'duelist-drown-the-line', name: 'Drown the Line', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('3 cube within 5') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '6 cold damage; slide 1', tier2: '10 cold damage; slide 2', tier3: '12 cold damage; slide 3, the target can\'t shift (EoT)' })), FactoryLogic.createAbilitySectionText('If the undertow duelist moved at least 3 squares straight toward the target before using this ability, it deals 4 additional damage.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'duelist-riptide', name: 'Riptide Step', type: FactoryLogic.type.createMove(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The undertow duelist shifts 3.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'duelist-flow', name: 'Flow Like Water', type: FactoryLogic.type.createTrigger('The undertow duelist is subjected to an effect that can be ended by a saving throw'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('That effect becomes EoT instead.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'deva-wild-kin-canopy-shaper',
+			name: 'Wild-Kin Canopy Shaper',
+			description: 'Wild-kin who tend the green the way others tend a hearth - and set it against you like a wall.',
+			level: 2,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Support),
+			keywords: [ 'Humanoid', 'Deva', 'Wild-Kin' ],
+			encounterValue: 8,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 50,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Poison,
+			characteristics: FactoryLogic.createCharacteristics(0, 1, 1, 2, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'shaper-immunity', name: 'Immunity', description: 'The canopy shaper has acid immunity 2 and poison immunity 2.' }),
+				FactoryLogic.feature.create({ id: 'shaper-resurgence', name: 'Wild Resurgence', description: 'If the canopy shaper is winded at the start of its turn, it regains 2 Stamina.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'shaper-thorncast', name: 'Thorncast', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '5 poison damage', tier2: '8 poison damage', tier3: '10 poison damage' })), FactoryLogic.createAbilitySectionText('If the canopy shaper targets an ally, the ability deals no damage. Instead, that ally gains 5 temporary Stamina.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'shaper-briar-maze', name: 'Briar Maze', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('3 cube within 5') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '5 poison damage; the area is difficult terrain until the end of the canopy shaper\'s next turn', tier2: '8 poison damage; the area is difficult terrain until the end of the encounter', tier3: '10 poison damage; the area is difficult terrain until the end of the encounter, and each target is slowed (EoT)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'shaper-hedgewalk', name: 'Hedgewalk', type: FactoryLogic.type.createMove(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('If the canopy shaper is adjacent to a square of vegetation, it teleports to an unoccupied square adjacent to another square of vegetation within 5.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'shaper-verdant', name: 'Verdant Vitality', type: FactoryLogic.type.createTrigger('The target spends a Recovery'), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One ally', sections: [ FactoryLogic.createAbilitySectionText('One ally within 5 of the shaper regains 5 Stamina.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'deva-grave-kin-corpsetender',
+			name: 'Grave-Kin Corpsetender',
+			description: 'Grave-kin carry the stillness of decay in a world whose Arbiters hunt necromancers - they need do nothing to look exactly like the crime.',
+			level: 3,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Hexer),
+			keywords: [ 'Humanoid', 'Deva', 'Grave-Kin' ],
+			encounterValue: 10,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 60,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Corruption,
+			characteristics: FactoryLogic.createCharacteristics(1, 0, 1, 3, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'corpsetender-immunity', name: 'Immunity', description: 'The corpsetender has corruption immunity 3.' }),
+				FactoryLogic.feature.create({ id: 'corpsetender-entropy', name: 'Entropy', description: 'When the corpsetender reduces an enemy to 0 Stamina, one enemy adjacent to that creature takes 4 corruption damage.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'corpsetender-withering', name: 'Withering Touch', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '5 corruption damage; bleeding (EoT)', tier2: '9 corruption damage; bleeding (save ends)', tier3: '12 corruption damage; bleeding (save ends) and weakened (EoT)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'corpsetender-displeasure', name: 'Death\'s Displeasure', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('2 burst within 5') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '6 corruption damage; bane on the next power roll', tier2: '11 corruption damage; bane on all power rolls (EoT)', tier3: '14 corruption damage; bane on all power rolls (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'corpsetender-grave-step', name: 'Grave Step', type: FactoryLogic.type.createMove(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('If the corpsetender is adjacent to a dead creature of size 1M or larger, it teleports to an unoccupied square adjacent to another dead creature within 5.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'corpsetender-feast', name: 'Feast on the Fallen', type: FactoryLogic.type.createTrigger('A creature adjacent to the tender drops to 0 Stamina'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The corpsetender regains 5 Stamina.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'deva-stone-kin-fault-warden',
+			name: 'Stone-Kin Fault Warden',
+			description: 'Stone-kin veined like weathered rock, who plant themselves between the family and the world and simply do not move.',
+			level: 3,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Defender),
+			keywords: [ 'Humanoid', 'Deva', 'Stone-Kin' ],
+			encounterValue: 10,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(4, 'burrow'),
+			stamina: 60,
+			stability: 3,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Damage,
+			characteristics: FactoryLogic.createCharacteristics(3, 0, 0, 1, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'warden-stone-endurance', name: 'Stone Endurance', description: 'The first time each round the fault warden takes damage, it reduces that damage by 3.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'warden-quarry-hammer', name: 'Quarry Hammer', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '5 damage; push 1', tier2: '9 damage; push 2', tier3: '12 damage; push 3 and prone' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'warden-burying-rush', name: 'Burying Rush', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 2, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '6 damage; the target is grabbed', tier2: '11 damage; the target is grabbed', tier3: '14 damage; the target is grabbed and restrained (EoT)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'warden-stand-fast', name: 'Stand Fast', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self and each ally adjacent to the fault warden', sections: [ FactoryLogic.createAbilitySectionText('Each target gains +1 Stability until the start of the fault warden\'s next turn.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'warden-immovable', name: 'Immovable', type: FactoryLogic.type.createTrigger('The fault warden is subjected to forced movement'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The fault warden ignores that forced movement.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'deva-rift-kin-manifold-knife',
+			name: 'Rift-Kin Manifold Knife',
+			description: 'Rift-kin seem faintly misfiled in the world itself - here one breath, a step to the side of here the next.',
+			level: 4,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Ambusher),
+			keywords: [ 'Humanoid', 'Deva', 'Rift-Kin' ],
+			encounterValue: 12,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(6),
+			stamina: 70,
+			stability: 0,
+			freeStrikeDamage: 6, freeStrikeType: DamageType.Psychic,
+			characteristics: FactoryLogic.createCharacteristics(1, 3, 1, 1, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'knife-immunity', name: 'Immunity', description: 'The manifold knife has psychic immunity 4.' }),
+				FactoryLogic.feature.create({ id: 'knife-geometry', name: 'Impossible Geometry', description: 'Once per round, when targeted by an attack, the manifold knife can teleport 1 square before the attack resolves.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'knife-fracture', name: 'Fracture Stab', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '6 psychic damage', tier2: '10 psychic damage; teleport the target to a square adjacent to the manifold knife', tier3: '13 psychic damage; teleport the target to a square adjacent to the manifold knife, and the target is dazed (EoT)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'knife-collapse', name: 'Manifold Collapse', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('3 cube within 5') ], target: 'Each enemy in the area', cost: 3, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '7 psychic damage; slide 2', tier2: '12 psychic damage; slide 3', tier3: '16 psychic damage; slide 4 and dazed (EoT)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'knife-dark-step', name: 'Dark Step', type: FactoryLogic.type.createMove(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('If the manifold knife is adjacent to a square in darkness, it teleports to an unoccupied square adjacent to another square in darkness within 5.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'knife-uncertain', name: 'Uncertain Form', type: FactoryLogic.type.createTrigger('An enemy targets the manifold knife with a strike'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The triggering strike takes a bane.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'deva-storm-kin-courier',
+			name: 'Storm-Kin Courier',
+			description: 'A storm-kin retainer who runs the wind ahead of their mentor and calls the weather down behind them.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Controller),
+			keywords: [ 'Humanoid', 'Deva', 'Storm-Kin' ],
+			encounterValue: 0,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(6),
+			stamina: 21,
+			stability: 0,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Lightning,
+			retainer: {
+				level4: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'deva-storm-courier-4', name: 'Sudden Squall', type: FactoryLogic.type.createMain({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('3 cube within 10') ], target: 'Each enemy in the area', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '3 lightning damage; push 1', tier2: '5 lightning damage; push 2', tier3: '8 lightning damage; push 3' })) ] }) }),
+				level7: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'deva-storm-courier-7', name: 'Eye on the Horizon', type: FactoryLogic.type.createTrigger('The mentor is targeted by a ranged strike'), keywords: [ AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'The courier\'s mentor', sections: [ FactoryLogic.createAbilitySectionText('The mentor shifts 3 before the strike resolves. If this moves them out of distance, the strike misses.') ] }) }),
+				level10: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'deva-storm-courier-10', name: 'Stormbreak', type: FactoryLogic.type.createMain({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createSpecial('5 cube within 10') ], target: 'Each enemy in the area', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '8 lightning damage', tier2: '12 lightning damage; slide 2', tier3: '16 lightning damage; slide 3 and the target is dazed (save ends)' })) ] }) })
+			},
+			characteristics: FactoryLogic.createCharacteristics(0, 1, 2, 1, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'courier-immunity', name: 'Immunity', description: 'The courier has lightning immunity 1.' }),
+				FactoryLogic.feature.create({ id: 'courier-ride-the-gale', name: 'Ride the Gale', description: 'When the courier disengages, they can move 1 additional square.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'courier-lightning-lash', name: 'Lightning Lash', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '3 lightning damage', tier2: '5 lightning damage; push 1', tier3: '7 lightning damage; push 2' })), FactoryLogic.createAbilitySectionText('If the courier targets their mentor, the mentor ignores the damage and can shift 2.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'deva-ember-kin-cindercaster',
+			name: 'Ember-Kin Cindercaster',
+			description: 'An ember-kin retainer who lays down fire from the back rank so their mentor can walk through the gap.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Artillery),
+			keywords: [ 'Humanoid', 'Deva', 'Ember-Kin' ],
+			encounterValue: 0,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 21,
+			stability: 0,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Fire,
+			retainer: {
+				level4: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'deva-ember-cindercaster-4', name: 'Flashflame', type: FactoryLogic.type.createMain({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('2 burst within 10') ], target: 'Each enemy in the area', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '5 fire damage', tier2: '8 fire damage', tier3: '11 fire damage' })), FactoryLogic.createAbilitySectionText('Each target that takes damage has fire weakness 3 until the end of the cindercaster\'s next turn.') ] }) }),
+				level7: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'deva-ember-cindercaster-7', name: 'Stoke the Blaze', type: FactoryLogic.type.createTrigger('The mentor reduces an enemy to 0 Stamina'), keywords: [ AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'The cindercaster\'s mentor', sections: [ FactoryLogic.createAbilitySectionText('The mentor gains 5 temporary Stamina and their next strike before the end of their next turn deals 3 additional fire damage.') ] }) }),
+				level10: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'deva-ember-cindercaster-10', name: 'Wildfire Arc', type: FactoryLogic.type.createMain({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One creature or object', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '8 fire damage', tier2: '12 fire damage', tier3: '16 fire damage' })), FactoryLogic.createAbilitySectionText('The retainer can target a second creature within 5 squares of and line of effect of the original target. The second target takes half the damage.') ] }) })
+			},
+			characteristics: FactoryLogic.createCharacteristics(0, 1, 2, 1, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'cinder-immunity', name: 'Immunity', description: 'The cindercaster has fire immunity 1.' }),
+				FactoryLogic.feature.create({ id: 'cinder-burning-temper', name: 'Burning Temper', description: 'When a creature attempts to grab the cindercaster or hits them with a melee free strike, that creature takes 1 fire damage.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'cinder-cinderbolt', name: 'Cinderbolt', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '3 fire damage', tier2: '5 fire damage', tier3: '7 fire damage' })), FactoryLogic.createAbilitySectionText('If the target is adjacent to another enemy, one enemy adjacent to the target takes 1 fire damage.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'deva-wild-kin-verdant-attendant',
+			name: 'Wild-Kin Verdant Attendant',
+			description: 'A wild-kin retainer who keeps their mentor standing when by rights they shouldn\'t be.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Support),
+			keywords: [ 'Humanoid', 'Deva', 'Wild-Kin' ],
+			encounterValue: 0,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 21,
+			stability: 0,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Poison,
+			retainer: {
+				level4: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'deva-wild-verdant-4', name: 'Briar Shelter', type: FactoryLogic.type.createMain({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'Self and each ally', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: 'Each target gains 4 temporary Stamina', tier2: 'Each target gains 4 temporary Stamina', tier3: 'Each target gains 4 temporary Stamina' })), FactoryLogic.createAbilitySectionText('Each target gains 4 temporary Stamina. Until the end of the verdant attendant\'s next turn, enemies treat squares adjacent to any affected target as difficult terrain.') ] }) }),
+				level7: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'deva-wild-verdant-7', name: 'Regrow', type: FactoryLogic.type.createTrigger('The target becomes winded'), keywords: [ AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One ally', sections: [ FactoryLogic.createAbilitySectionText('The target can spend a Recovery and shifts 2.') ] }) }),
+				level10: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'deva-wild-verdant-10', name: 'Grasping Vines', type: FactoryLogic.type.createMain({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('3 cube within 10') ], target: 'Each enemy in the area', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '6 poison damage; the area is difficult terrain for enemies', tier2: '9 poison damage; the area is difficult terrain for enemies', tier3: '13 poison damage; the area is difficult terrain for enemies, and each target is restrained (save ends)' })) ] }) })
+			},
+			characteristics: FactoryLogic.createCharacteristics(0, 1, 1, 2, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'verdant-living-canopy', name: 'Living Canopy', description: 'Whenever the verdant attendant\'s mentor gains temporary Stamina, the mentor can shift 1.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'verdant-sap-lash', name: 'Sap Lash', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '3 poison damage', tier2: '5 poison damage', tier3: '7 poison damage' })), FactoryLogic.createAbilitySectionText('If the verdant attendant targets an ally, the ability deals no damage. Instead, the ally gains 3 temporary Stamina.') ] }) })
+			]
+		})
+	],
+	addOns: []
+};
+
+const ironbound: MonsterGroup = {
+	id: 'monster-group-aos-ironbound',
+	name: 'Ironbound',
+	description: 'Ask an ironbound what they were made for and you will get a silence. It is the question every one of them carries and almost none can answer. Look at what these things do together - Lockstep Advance, Interlocking Plates, Interception Protocol - and you see the horror of the section: they do not fight as individuals, because they were not built to be individuals. Deploy them as a faceless unit only when facelessness is the entire point, and let the party\'s ironbound be the one who says so.',
+	picture: null,
+	information: [],
+	malice: [
+		FactoryLogic.feature.createMalice({ id: 'ironbound-malice-lockstep', name: 'Lockstep Advance', cost: 3, icon: StatBlockIcon.Self, sections: [ 'Each ironbound acting this turn gains an edge on strikes until the start of their next turn. In addition, each ironbound can ignore 1 square of difficult terrain during this turn.' ] }),
+		FactoryLogic.feature.createMalice({ id: 'ironbound-malice-interlocking', name: 'Interlocking Plates', cost: 5, icon: StatBlockIcon.Self, sections: [ 'Choose one ironbound on the encounter map. Until the end of their next turn, strikes against that ironbound and each ironbound adjacent to them take a bane.' ] }),
+		FactoryLogic.feature.createMalice({ id: 'ironbound-malice-interception', name: 'Interception Protocol', cost: 5, icon: StatBlockIcon.Self, sections: [ 'Until the end of the next turn, the first time each ironbound is targeted by a strike while adjacent to an ironbound ally, the strike takes a bane.' ] }),
+		FactoryLogic.feature.createMalice({ id: 'ironbound-malice-overdrive-cascade', name: 'Overdrive Cascade', cost: 7, icon: StatBlockIcon.Self, sections: [ 'Each ironbound on the encounter map can either take a signature action or move up to their speed. An ironbound that chooses to make a signature action loses 1d6 Stamina after the strike resolves.' ] })
+	],
+	monsters: [
+		FactoryLogic.createMonster({
+			id: 'ironbound-sentinel',
+			name: 'Ironbound Sentinel',
+			description: 'A rank of these advancing in step is not a monster - it is what an ironbound hero would have been if nobody had ever thought to ask them a question.',
+			level: 5,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Defender),
+			keywords: [ 'Humanoid', 'Ironbound' ],
+			encounterValue: 28,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 160,
+			stability: 4,
+			freeStrikeDamage: 6, freeStrikeType: DamageType.Damage,
+			characteristics: FactoryLogic.createCharacteristics(3, 0, 0, 1, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'sentinel-immunity', name: 'Immunity & Weakness', description: 'The sentinel has poison immunity 5, and lightning weakness 5.' }),
+				FactoryLogic.feature.create({ id: 'sentinel-iron-body', name: 'Iron Body', description: 'The sentinel can\'t suffocate, and doesn\'t need to eat or drink to stay alive.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'sentinel-pike', name: 'Pike', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(2) ], target: 'Two creatures or objects', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '6 damage', tier2: '11 damage; taunted (EoT)', tier3: '14 damage; taunted (save ends)' })), FactoryLogic.createAbilitySectionText('If the targets are adjacent to each other, this ability deals 3 additional damage to each target.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'sentinel-overdrive-slam', name: 'Overdrive Slam', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createSpecial('1 burst') ], target: 'Each enemy in the area', cost: 2, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '8 damage; push 1', tier2: '14 damage; push 2', tier3: '17 damage; push 3 and prone' })), FactoryLogic.createAbilitySectionText('After using this ability, the sentinel is dazed until the end of its next turn.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'sentinel-fortress-mode', name: 'Fortress Mode', type: FactoryLogic.type.createManeuver({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Until the sentinel moves, strikes made against allies adjacent to the sentinel take a bane.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'sentinel-interpose', name: 'Interpose Plating', type: FactoryLogic.type.createTrigger('An adjacent ally is targeted by a strike'), keywords: [ AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One ally', cost: 1, sections: [ FactoryLogic.createAbilitySectionText('The sentinel swaps places with the ally and becomes the new target of the strike, provided the sentinel is a valid target.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'ironbound-siegebreaker',
+			name: 'Ironbound Siegebreaker',
+			description: 'Built to break a wall and keep walking; the horror is only a horror if a player is in the room to feel it.',
+			level: 6,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Brute),
+			keywords: [ 'Humanoid', 'Ironbound' ],
+			encounterValue: 32,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 180,
+			stability: 4,
+			freeStrikeDamage: 8, freeStrikeType: DamageType.Damage,
+			characteristics: FactoryLogic.createCharacteristics(3, 0, 0, 1, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'siege-immunity', name: 'Immunity & Weakness', description: 'The siegebreaker has poison immunity 6, and lightning weakness 5.' }),
+				FactoryLogic.feature.create({ id: 'siege-iron-body', name: 'Iron Body', description: 'The siegebreaker can\'t suffocate, and doesn\'t need to eat or drink to stay alive.' }),
+				FactoryLogic.feature.create({ id: 'siege-frame', name: 'Siege Frame', description: 'The siegebreaker deals double damage to objects and structures.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'siege-ramming-maul', name: 'Ramming Maul', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(2) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '8 damage; push 1', tier2: '14 damage; push 2', tier3: '17 damage; push 3 and prone' })), FactoryLogic.createAbilitySectionText('If the siegebreaker moved at least 3 squares straight toward the target before using this ability, it deals 4 additional damage.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'siege-break-the-line', name: 'Break the Line', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createSpecial('6x1 line within 1') ], target: 'Each enemy and object in the area', cost: 5, sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '9 damage; push 1', tier2: '16 damage; push 2', tier3: '21 damage; push 3 and prone' })), FactoryLogic.createAbilitySectionText('The siegebreaker can move up to its speed in a straight line before using this ability. This movement ignores opportunity attacks.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'siege-overdrive-impact', name: 'Overdrive Impact', type: FactoryLogic.type.createManeuver({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Until the end of the siegebreaker\'s turn, its strikes deal 4 additional damage. At the end of its turn, it loses 1d6 Stamina and becomes dazed (EoT).') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'siege-trample', name: 'Trample Forward', type: FactoryLogic.type.createTrigger('A creature is pushed or knocked prone by the siegebreaker'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The siegebreaker shifts up to 2 squares toward that creature.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'siege-ablative', name: 'Ablative Plating', type: FactoryLogic.type.createTrigger('A creature scores a tier 3 result against the siegebreaker with a strike'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', cost: 1, sections: [ FactoryLogic.createAbilitySectionText('The siegebreaker loses 1d6 Stamina, and the result becomes a tier 2 result.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'ironbound-squire',
+			name: 'Ironbound Squire',
+			description: 'A junior ironbound assigned to a mentor - loyal, literal, and learning what it was never asked whether it wanted to be.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Defender),
+			keywords: [ 'Humanoid', 'Ironbound' ],
+			encounterValue: 0,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 21,
+			stability: 1,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Damage,
+			retainer: {
+				level4: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'ironbound-squire-4', name: 'Interpose Plating', type: FactoryLogic.type.createTrigger('The squire\'s mentor is targeted by a strike while adjacent to the squire', { qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'The squire\'s mentor', sections: [ FactoryLogic.createAbilitySectionText('The squire swaps places with the mentor and becomes the new target of the strike, provided the squire is a valid target.') ] }) }),
+				level7: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'ironbound-squire-7', name: 'Fortress Mode', type: FactoryLogic.type.createManeuver({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Until the squire moves, strikes made against allies adjacent to the squire take a bane.') ] }) }),
+				level10: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'ironbound-squire-10', name: 'Overdrive Slam', type: FactoryLogic.type.createMain({ qualifiers: [ 'Encounter' ] }), keywords: [ AbilityKeyword.Area, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createSpecial('1 burst') ], target: 'Each enemy in the area', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '8 damage; push 1', tier2: '12 damage; push 2', tier3: '16 damage; push 3 and prone' })), FactoryLogic.createAbilitySectionText('After using this ability, the squire is dazed until the end of their next turn.') ] }) })
+			},
+			characteristics: FactoryLogic.createCharacteristics(2, 0, 0, 1, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'squire-immunity', name: 'Immunity & Weakness', description: 'The squire has poison immunity 1, and lightning weakness 5.' }),
+				FactoryLogic.feature.create({ id: 'squire-iron-body', name: 'Iron Body', description: 'The squire can\'t suffocate, and they don\'t need to eat or drink to stay alive.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'squire-anchor-bash', name: 'Anchor Bash', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Strike, AbilityKeyword.Weapon ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature or object', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '3 damage', tier2: '5 damage; push 1', tier3: '7 damage; push 2' })), FactoryLogic.createAbilitySectionText('If the squire is adjacent to their mentor, this ability gains an edge.') ] }) })
+			]
+		})
+	],
+	addOns: []
+};
+
+const orian: MonsterGroup = {
+	id: 'monster-group-aos-orian',
+	name: 'Orian',
+	description: 'The heroes will never fight the orians, any more than they fight the humans. They will fight a family - one particular hunt-family in its own particular water, which has concluded that they are prey that hasn\'t been dealt with yet. Something went into the water, and somebody came to take it back out: a wreck is not lost property, it is a windfall in someone\'s water, claimed the moment it strikes the surface. The water\'s law is older than mercy - but it is a law, and that is the difference between this family and a monster: you can talk to it.',
+	picture: null,
+	information: [],
+	malice: [
+		FactoryLogic.feature.createMalice({ id: 'orian-malice-undertow', name: 'Undertow', cost: 3, icon: StatBlockIcon.Self, sections: [ 'The water remembers whose it is. Until the end of the round, each enemy that starts or ends a move in water, or on a wet or listing surface, must succeed on a Might test or be pulled 2 squares in a direction of the Director\'s choosing.' ] }),
+		FactoryLogic.feature.createMalice({ id: 'orian-malice-cast-the-nets', name: 'Cast the Nets', cost: 5, icon: StatBlockIcon.SpecialArea, sections: [ 'Weighted nets fly from the water. Choose a 3 cube; each enemy in the area must succeed on an Agility test or be restrained (save ends). Until the end of the round, orian strikes against a restrained creature gain an edge.' ] }),
+		FactoryLogic.feature.createMalice({ id: 'orian-malice-sea-takes-it-back', name: 'The Sea Takes It Back', cost: 7, icon: StatBlockIcon.AuraBurst, sections: [ 'A swell breaks across the encounter map. Each enemy in water or within 2 squares of it slides 3 squares toward the deepest water, and each unsecured object slides with them. An enemy that ends this movement submerged can\'t breathe until the end of its next turn.' ] })
+	],
+	monsters: [
+		FactoryLogic.createMonster({
+			id: 'orian-tide-hunter',
+			name: 'Orian Tide-Hunter',
+			description: 'Young hunters of the claim, fast and half-seen, who make a wreck\'s rigging and rails into a reef.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Minion, MonsterRoleType.Harrier),
+			keywords: [ 'Humanoid', 'Orian' ],
+			encounterValue: 2,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5, 'swim'),
+			stamina: 4,
+			stability: 0,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Damage,
+			characteristics: FactoryLogic.createCharacteristics(1, 2, 0, 0, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'tidehunter-depths-born', name: 'Depths-Born', description: 'Water is home: full Speed while swimming, clear sight in murk and darkness, and deep, cold, or turbulent water never slows the tide-hunter.' }),
+				FactoryLogic.feature.create({ id: 'tidehunter-hunts', name: 'Hunts in Company', description: 'The tide-hunter gains an edge on strikes while another orian is within 2 squares of its target.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'tidehunter-barbed-line', name: 'Barbed Line', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Ranged, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(1), FactoryLogic.distance.createRanged(5) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '2 damage', tier2: '3 damage; pull 1', tier3: '4 damage; pull 2' })), FactoryLogic.createAbilitySectionText('If the target is pulled into water, the tide-hunter can shift up to 2 squares.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'orian-harpooner',
+			name: 'Orian Harpooner',
+			description: 'They surface only from the shoulders, take their aim without hurry, and the line does the rest.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Horde, MonsterRoleType.Artillery),
+			keywords: [ 'Humanoid', 'Orian' ],
+			encounterValue: 3,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5, 'swim'),
+			stamina: 15,
+			stability: 0,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Damage,
+			characteristics: FactoryLogic.createCharacteristics(2, 2, 0, 1, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'harpooner-depths-born', name: 'Depths-Born', description: 'Water is home: full Speed while swimming, clear sight in murk and darkness, and deep, cold, or turbulent water never slows the harpooner.' }),
+				FactoryLogic.feature.create({ id: 'harpooner-current-sense', name: 'Current-Sense', description: 'While in water, the harpooner knows the location of every creature in the same body of water within 10 squares, and concealment offers no benefit against it there.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'harpooner-harpoon', name: 'Harpoon and Reel', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Ranged, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createRanged(8) ], target: 'One creature', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '3 damage', tier2: '4 damage; pull 2', tier3: '5 damage; pull 3; M<1 grabbed' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'harpooner-brace', name: 'Brace the Line', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Pull a grabbed creature up to 3 squares.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'orian-current-caller',
+			name: 'Orian Current-Caller',
+			description: 'The family\'s water-speaker. No writ ever reached her; no pyre ever will.',
+			level: 2,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Horde, MonsterRoleType.Hexer),
+			keywords: [ 'Humanoid', 'Orian' ],
+			encounterValue: 4,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5, 'swim'),
+			stamina: 20,
+			stability: 0,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Damage,
+			characteristics: FactoryLogic.createCharacteristics(0, 1, 2, 1, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'caller-depths-born', name: 'Depths-Born', description: 'Water is home: full Speed while swimming, clear sight in murk and darkness, and deep, cold, or turbulent water never slows the current-caller.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'caller-water-turns', name: 'The Water Turns', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One or two creatures', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '3 damage', tier2: '4 damage; A<1 slowed (save ends)', tier3: '5 damage; A<2 slowed (save ends) and pulled 3' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'caller-water-turns-malice', name: 'The Water Turns (Malice)', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(10) ], target: 'One creature', cost: 3, sections: [ FactoryLogic.createAbilitySectionText('The target must succeed on a Might test or take 4 damage and be dazed (save ends) as seawater finds its throat.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'orian-shelf-breaker',
+			name: 'Orian Shelf-Breaker',
+			description: 'Pure-lineage and pressure-built - more shark than kin, the families say, and say it with pride.',
+			level: 3,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Brute),
+			keywords: [ 'Humanoid', 'Orian' ],
+			encounterValue: 9,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(5, 'swim'),
+			stamina: 57,
+			stability: 2,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Damage,
+			characteristics: FactoryLogic.createCharacteristics(3, 1, 0, 0, 1),
+			features: [
+				FactoryLogic.feature.create({ id: 'shelfbreaker-depths-born', name: 'Depths-Born', description: 'Water is home: full Speed while swimming, clear sight in murk and darkness, and deep, cold, or turbulent water never slows the shelf-breaker.' }),
+				FactoryLogic.feature.create({ id: 'shelfbreaker-drowning-grip', name: 'Drowning Grip', description: 'A creature grabbed by the shelf-breaker can\'t breathe, and takes 3 damage at the start of each of its turns until the grab ends. The shelf-breaker can drag a grabbed creature at full Speed while swimming.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'shelfbreaker-breaching-slam', name: 'Breaching Slam', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One or two creatures', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '5 damage', tier2: '8 damage; push 2', tier3: '9 damage; push 3; M<2 prone' })), FactoryLogic.createAbilitySectionText('If the shelf-breaker came out of the water this turn, this ability gains an edge.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'shelfbreaker-take-hold', name: 'Take Hold', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One creature', sections: [ FactoryLogic.createAbilitySectionText('The target is M<2 grabbed.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'orian-hunt-mother',
+			name: 'Orian Hunt-Mother',
+			description: 'The water\'s law, standing up out of it. She has drowned better-armed visitors than you, and buried kin for less.',
+			level: 4,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Leader, MonsterRoleType.Controller),
+			keywords: [ 'Humanoid', 'Orian' ],
+			encounterValue: 14,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(6, 'swim'),
+			stamina: 80,
+			stability: 1,
+			freeStrikeDamage: 4, freeStrikeType: DamageType.Damage,
+			characteristics: FactoryLogic.createCharacteristics(2, 3, 1, 2, 2),
+			features: [
+				FactoryLogic.feature.create({ id: 'huntmother-depths-born', name: 'Depths-Born', description: 'Water is home: full Speed while swimming, clear sight in murk and darkness, and deep, cold, or turbulent water never slows the hunt-mother.' }),
+				FactoryLogic.feature.create({ id: 'huntmother-current-sense', name: 'Current-Sense', description: 'While in water, the hunt-mother knows the location of every creature in the same body of water within 10 squares, and concealment offers no benefit against it there.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'huntmother-mothers-spear', name: 'Mother\'s Spear', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Melee, AbilityKeyword.Ranged, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createMelee(2), FactoryLogic.distance.createRanged(8) ], target: 'Two creatures', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '5 damage', tier2: '8 damage; pull 1', tier3: '9 damage; pull 2; one ally within 5 of the target can make a free strike against it' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'huntmother-family-answers', name: 'The Family Answers', type: FactoryLogic.type.createTrigger('An enemy damages the hunt-mother'), keywords: [ AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One ally', sections: [ FactoryLogic.createAbilitySectionText('The target can make a free strike against the triggering creature.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'huntmother-va1', name: 'Blood in the Water', type: FactoryLogic.type.createVillainAction(1), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Each orian in the encounter shifts up to its Speed. Until the end of the round, orians gain an edge on strikes against winded creatures.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'huntmother-va2', name: 'The Water Remembers', type: FactoryLogic.type.createVillainAction(2), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Each orian in the encounter shifts up to its Speed toward water. Until the end of the encounter, orians in water, or adjacent to the hunt-mother, have damage immunity 2.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'huntmother-va3', name: 'Nothing Leaves the Water', type: FactoryLogic.type.createVillainAction(3), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('Up to four targets') ], target: 'Up to four creatures', sections: [ FactoryLogic.createAbilitySectionText('The hunt-mother shifts up to 10 squares, swimming freely. During or after this movement, she uses Mother\'s Spear against up to four targets; each target she damages is also pulled 3 squares toward the nearest water.') ] }) })
+			]
+		})
+	],
+	addOns: []
+};
+
+const mount: MonsterGroup = {
+	id: 'monster-group-aos-mounts',
+	name: 'Mount',
+	description: 'The steeds of Vara\'s far corners - the running-bird of Dejim, the silent owlfalcon of Svelland, the darting dragonfly above the Jhazren canopy, and the half-wild monitor of the Dry Sea. Each carries a rider of size 1M or smaller, and each brings its own trick to a chase or a charge.',
+	picture: null,
+	information: [],
+	malice: [],
+	monsters: [
+		FactoryLogic.createMonster({
+			id: 'mount-mantilla',
+			name: 'Mantilla',
+			description: 'The great flightless running-bird of Dejim - long-legged, sharp-beaked, and faster than any horse over broken ground.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Mount),
+			keywords: [ 'Beast' ],
+			encounterValue: 4,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(9),
+			stamina: 30,
+			stability: 1,
+			freeStrikeDamage: 4, freeStrikeType: DamageType.Damage,
+			characteristics: FactoryLogic.createCharacteristics(2, 2, -3, 1, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'mantilla-mount', name: 'Mount (1M)', description: 'A creature of size 1M or smaller can ride the mantilla.' }),
+				FactoryLogic.feature.create({ id: 'mantilla-sure-footed', name: 'Sure-Footed', description: 'The mantilla ignores difficult terrain made of rubble, scree, stairs, or rough ground, and doesn\'t take damage from falls of 3 squares or less.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'mantilla-raking-stride', name: 'Raking Stride', type: FactoryLogic.type.createMove(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The mantilla moves up to its speed. If it moves at least 4 squares in a straight line and ends adjacent to an enemy, that enemy takes 4 damage and is knocked prone (M<1).') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'mount-owlfalcon',
+			name: 'Owlfalcon',
+			description: 'Svelland\'s silent hunter, broad enough at the wing to carry an Einherjar rider. It makes no sound in flight at all - the first you know of it is the shadow.',
+			level: 2,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Mount),
+			keywords: [ 'Beast' ],
+			encounterValue: 6,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(10, 'fly'),
+			stamina: 35,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Damage,
+			characteristics: FactoryLogic.createCharacteristics(1, 3, -2, 2, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'owlfalcon-mount', name: 'Mount (1M)', description: 'A creature of size 1M or smaller can ride the owlfalcon.' }),
+				FactoryLogic.feature.create({ id: 'owlfalcon-silent-wings', name: 'Silent Wings', description: 'The owlfalcon can\'t be detected by hearing alone, and gains an edge on tests to avoid notice while flying. Enemies take a bane on opportunity attacks against it.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'owlfalcon-stoop', name: 'Stoop', type: FactoryLogic.type.createMove(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The owlfalcon flies up to its speed. If it descends at least 3 squares and ends adjacent to an enemy, the rider\'s next strike this turn against that enemy gains an edge and deals 3 additional damage.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'mount-giant-dragonfly',
+			name: 'Giant Dragonfly',
+			description: 'Iridescent, two feet of wingspan to a side, and impossible to corner - the favoured mount above the canopies of Jhazren.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Mount),
+			keywords: [ 'Beast' ],
+			encounterValue: 4,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(10, 'fly, hover'),
+			stamina: 24,
+			stability: 0,
+			freeStrikeDamage: 4, freeStrikeType: DamageType.Damage,
+			characteristics: FactoryLogic.createCharacteristics(0, 3, -3, 1, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'dragonfly-mount', name: 'Mount (1M)', description: 'A creature of size 1M or smaller can ride the dragonfly.' }),
+				FactoryLogic.feature.create({ id: 'dragonfly-untouchable', name: 'Untouchable', description: 'The dragonfly ignores difficult terrain while flying and never provokes opportunity attacks. When an enemy misses it or its rider with a strike, the dragonfly can shift 1.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'dragonfly-darting-flight', name: 'Darting Flight', type: FactoryLogic.type.createMove(), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The dragonfly shifts up to half its speed, then the rider may take a main action, then the dragonfly shifts up to half its speed again.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'mount-giant-lizard',
+			name: 'Giant Lizard',
+			description: 'The partly-tamed monitor of the Dry Sea, ridden by the Bhawarans - patient in heat that kills, but never quite domesticated. It tolerates a rider. It does not obey one.',
+			level: 1,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Mount),
+			keywords: [ 'Beast' ],
+			encounterValue: 4,
+			size: FactoryLogic.createSize(1, 'L'),
+			speed: FactoryLogic.createSpeed(7, 'climb'),
+			stamina: 32,
+			stability: 2,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Damage,
+			characteristics: FactoryLogic.createCharacteristics(2, 1, -4, 0, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'lizard-mount', name: 'Mount (1M)', description: 'A creature of size 1M or smaller can ride the lizard.' }),
+				FactoryLogic.feature.create({ id: 'lizard-desert-hardy', name: 'Desert-Hardy', description: 'The lizard has fire immunity 3, ignores difficult terrain made of sand or rock, and can go without food or water for weeks.' }),
+				FactoryLogic.feature.create({ id: 'lizard-half-wild', name: 'Half-Wild', description: 'The first time each encounter the lizard is reduced to winded, or its rider is reduced to winded, the rider must succeed on a Presence or Might test or the lizard acts on its own next turn.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'lizard-seizing-bite', name: 'Seizing Bite', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The lizard bites: 5 damage, and M<1 the target is grabbed. While the lizard has a creature grabbed this way, its rider gains an edge on strikes against that creature.') ] }) })
+			]
+		})
+	],
+	addOns: []
+};
+
+const siabhra: MonsterGroup = {
+	id: 'monster-group-aos-siabhra',
+	name: 'Síabhra',
+	description: 'The síabhra have no homeland, no cities, and no songs that are their own. They are called changelings and hollowfolk by people who do not mean it kindly, and they are held responsible by the entire world for the worst atrocity in living memory - on the strength of a lie the Synarchy never even had to tell, because the síabhra wear the fey\'s heritage, and for everybody that was enough. In combat they wear their enemies\' faces, and it can be difficult to keep track of an opponent that looks like an ally.',
+	picture: null,
+	information: [],
+	malice: [
+		FactoryLogic.feature.createMalice({ id: 'siabhra-malice-borrowed-cadence', name: 'Borrowed Cadence', cost: 3, icon: StatBlockIcon.Self, sections: [ 'The síabhra perfectly mimic the movements of their enemies. Each síabhra acting this turn gains an edge on all strikes until the start of their next turn.' ] }),
+		FactoryLogic.feature.createMalice({ id: 'siabhra-malice-sow-doubt', name: 'Sow Doubt', cost: 5, icon: StatBlockIcon.Self, sections: [ 'The síabhra quickly switch appearance, making it difficult to determine who is who. Choose one ally; each enemy takes a bane on strikes targeting that ally until the end of their next turn.' ] }),
+		FactoryLogic.feature.createMalice({ id: 'siabhra-malice-vitality-drain', name: 'Vitality Drain', cost: 7, icon: StatBlockIcon.Self, sections: [ 'Each síabhra on the encounter map uses Siphon Vitality immediately.' ] })
+	],
+	monsters: [
+		FactoryLogic.createMonster({
+			id: 'siabhra-reflector',
+			name: 'Síabhra Reflector',
+			description: 'One of many identical faces in a crowd of changelings - and any of them might be wearing yours.',
+			level: 2,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Minion, MonsterRoleType.Hexer),
+			keywords: [ 'Fey', 'Humanoid', 'Síabhra' ],
+			encounterValue: 4,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 4,
+			stability: 0,
+			freeStrikeDamage: 2, freeStrikeType: DamageType.Psychic,
+			withCaptain: 'Strike damage +1',
+			characteristics: FactoryLogic.createCharacteristics(0, 2, 0, 2, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'reflector-flickering', name: 'Flickering Visages', description: 'If the reflector is adjacent to a síabhra ally, attacks against it take a bane.' }),
+				FactoryLogic.feature.create({ id: 'reflector-lightweight', name: 'Lightweight', description: 'The reflector is considered to be size 1S for the purposes of forced movement.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'reflector-confusing', name: 'Confusing Reflection', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One enemy per minion', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '2 psychic damage', tier2: '3 psychic damage; R<1 dazed (EoT)', tier3: '5 psychic damage; R<2 dazed (EoT)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'reflector-echo', name: 'Echo', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The reflector copies the target\'s physical appearance and size (to a minimum of 1S and a maximum of 1L). Until the start of its next turn, the target takes a bane on any strike targeting the reflector.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'siabhra-infiltrator',
+			name: 'Síabhra Infiltrator',
+			description: 'It has been in the room for some time. It has been agreeing with you.',
+			level: 2,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Platoon, MonsterRoleType.Ambusher),
+			keywords: [ 'Fey', 'Humanoid', 'Síabhra' ],
+			encounterValue: 10,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 30,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Psychic,
+			characteristics: FactoryLogic.createCharacteristics(0, 2, 0, 2, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'infiltrator-flickering', name: 'Flickering Visages', description: 'If the infiltrator is adjacent to a síabhra ally, attacks against it take a bane.' }),
+				FactoryLogic.feature.create({ id: 'infiltrator-lightweight', name: 'Lightweight', description: 'The infiltrator is considered to be size 1S for the purposes of forced movement.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'infiltrator-psychic-mirror', name: 'Psychic Mirror', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One enemy', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 2, tier1: '4 psychic damage; R<0 frightened (save ends)', tier2: '7 psychic damage; R<1 frightened (save ends)', tier3: '10 psychic damage; R<2 frightened (save ends)' })), FactoryLogic.createAbilitySectionText('The infiltrator deals an additional 2 psychic damage for each surge the target has; the target then loses those surges.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'infiltrator-echo', name: 'Echo', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The infiltrator copies the target\'s physical appearance and size (to a minimum of 1S and a maximum of 1L). Until the start of its next turn, the target takes a bane on any strike targeting the infiltrator.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'infiltrator-siphon', name: 'Siphon Vitality', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The target loses one Recovery (or 10 Stamina if they have no Recoveries remaining) and the infiltrator regains 10 Stamina.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'infiltrator-reflected-pain', name: 'Reflected Pain', type: FactoryLogic.type.createTrigger('A creature deals damage to the infiltrator'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('The infiltrator creates an unstable psychic link between itself and the attacker. The infiltrator and the attacker both take half damage from this attack.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'siabhra-masklord',
+			name: 'Síabhra Masklord',
+			description: 'The one whose face you will never find, because it has never worn its own.',
+			level: 3,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Leader, MonsterRoleType.Hexer),
+			keywords: [ 'Fey', 'Humanoid', 'Síabhra' ],
+			encounterValue: 20,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(6),
+			stamina: 120,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Psychic,
+			characteristics: FactoryLogic.createCharacteristics(0, 2, 0, 3, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'masklord-flickering', name: 'Flickering Visages', description: 'If the masklord is adjacent to a síabhra ally, attacks against it take a bane.' }),
+				FactoryLogic.feature.create({ id: 'masklord-lightweight', name: 'Lightweight', description: 'The masklord is considered to be size 1S for the purposes of forced movement.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'masklord-dissolve', name: 'Dissolve Identity', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each enemy in the area', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '4 psychic damage; R<1 the target cannot treat allies as allies (save ends)', tier2: '7 psychic damage; R<2 the target cannot treat allies as allies (save ends)', tier3: '10 psychic damage; R<3 the target cannot treat allies as allies (save ends)' })) ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'masklord-echo', name: 'Echo', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The masklord copies the target\'s physical appearance and size (to a minimum of 1S and a maximum of 1L). Until the start of its next turn, the target takes a bane on any strike targeting the masklord.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'masklord-siphon', name: 'Siphon Vitality', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The target loses one Recovery (or 10 Stamina if they have no Recoveries remaining) and the masklord regains 10 Stamina.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'masklord-no-over-there', name: 'No, Over There', type: FactoryLogic.type.createTrigger('A creature targets the masklord'), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', cost: 1, sections: [ FactoryLogic.createAbilitySectionText('The masklord selects a creature within 1 square; the attack targets that creature rather than the masklord.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'masklord-va1', name: 'Borrowed Command', type: FactoryLogic.type.createVillainAction(1), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('One enemy') ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The masklord mimics the voice of a hero to shout a false order; one enemy must use a triggered action to shift up to 2 squares, then make a signature attack against a target of the masklord\'s choice.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'masklord-va2', name: 'Identity Transference', type: FactoryLogic.type.createVillainAction(2), keywords: [ AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSelf() ], target: 'Self', sections: [ FactoryLogic.createAbilitySectionText('Each síabhra on the encounter map can teleport and swap places with another síabhra.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'masklord-va3', name: 'Identity Crisis', type: FactoryLogic.type.createVillainAction(3), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic ], distance: [ FactoryLogic.distance.createSpecial('5 burst around each síabhra') ], target: 'Each enemy within 5 of a síabhra', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ bonus: 3, tier1: '10 psychic damage; dazed (save ends)', tier2: '6 psychic damage; dazed (EoT)', tier3: 'no effect' })), FactoryLogic.createAbilitySectionText('Each enemy within 5 squares of a síabhra makes a Reason test.') ] }) })
+			]
+		}),
+		FactoryLogic.createMonster({
+			id: 'siabhra-changeling',
+			name: 'Síabhra Changeling',
+			description: 'A retainer who has chosen a face and a person to stand beside - and will wear either as the moment demands.',
+			level: 2,
+			role: FactoryLogic.createMonsterRole(MonsterOrganizationType.Elite, MonsterRoleType.Hexer),
+			keywords: [ 'Fey', 'Humanoid', 'Síabhra' ],
+			encounterValue: 0,
+			size: FactoryLogic.createSize(1, 'M'),
+			speed: FactoryLogic.createSpeed(5),
+			stamina: 30,
+			stability: 0,
+			freeStrikeDamage: 5, freeStrikeType: DamageType.Psychic,
+			retainer: {
+				level4: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'siabhra-changeling-4', name: 'Pattern Redirection', type: FactoryLogic.type.createTrigger('A creature imposes a condition on the changeling or its mentor'), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'The triggering creature', sections: [ FactoryLogic.createAbilitySectionText('The condition is applied to the triggering creature rather than to the changeling or its mentor.') ] }) }),
+				level7: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'siabhra-changeling-7', name: 'Go Get \'Em, Tiger', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: 'The target must use the Charge action against one creature of the changeling\'s choice', tier2: 'The target must use the Charge action against one creature of the changeling\'s choice', tier3: 'The target must use the Charge action against one creature of the changeling\'s choice' })) ] }) }),
+				level10: FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'siabhra-changeling-10', name: 'Shatter the Mirror', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Area, AbilityKeyword.Magic, AbilityKeyword.Strike ], distance: [ FactoryLogic.distance.createSpecial('5 burst') ], target: 'Each enemy in the area', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '8 psychic damage', tier2: '12 psychic damage', tier3: '16 psychic damage' })), FactoryLogic.createAbilitySectionText('The changeling can end one condition currently affecting them and impose the same condition on each enemy in the area.') ] }) })
+			},
+			characteristics: FactoryLogic.createCharacteristics(0, 2, 0, 2, 0),
+			features: [
+				FactoryLogic.feature.create({ id: 'changeling-flickering', name: 'Flickering Visages', description: 'If the changeling is adjacent to a síabhra ally, attacks against it take a bane.' }),
+				FactoryLogic.feature.create({ id: 'changeling-lightweight', name: 'Lightweight', description: 'The changeling is considered to be size 1S for the purposes of forced movement.' }),
+				FactoryLogic.feature.create({ id: 'changeling-social-parasite', name: 'Social Parasite', description: 'The changeling is proficient in the Disguise and Read Person skills.' }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'changeling-mental-fugue', name: 'Mental Fugue', type: FactoryLogic.type.createMain(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Ranged ], distance: [ FactoryLogic.distance.createRanged(5) ], target: 'One enemy', cost: 'signature', sections: [ FactoryLogic.createAbilitySectionRoll(FactoryLogic.createPowerRoll({ characteristic: [ Characteristic.Might, Characteristic.Agility, Characteristic.Reason, Characteristic.Intuition, Characteristic.Presence ], tier1: '4 psychic damage; R<0 taunted (save ends)', tier2: '5 psychic damage; R<1 taunted (save ends)', tier3: '7 psychic damage; R<2 taunted (save ends)' })), FactoryLogic.createAbilitySectionText('If the target attacks the changeling while taunted, the changeling can nominate another creature within range of the attack; the changeling and this creature swap locations, and both take half damage from the attack.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'changeling-echo', name: 'Echo', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The changeling copies the target\'s physical appearance and size (to a minimum of 1S and a maximum of 1L). Until the start of its next turn, the target takes a bane on any strike targeting the changeling.') ] }) }),
+				FactoryLogic.feature.createAbility({ ability: FactoryLogic.createAbility({ id: 'changeling-siphon', name: 'Siphon Vitality', type: FactoryLogic.type.createManeuver(), keywords: [ AbilityKeyword.Magic, AbilityKeyword.Melee ], distance: [ FactoryLogic.distance.createMelee(1) ], target: 'One enemy', sections: [ FactoryLogic.createAbilitySectionText('The target loses 10 Stamina and either the changeling or its mentor regains 10 Stamina.') ] }) })
+			]
+		})
+	],
+	addOns: []
+};
+
 export const ageOfSecrets: Sourcebook = {
 	id: 'community-age-of-secrets',
 	name: 'Age of Secrets',
@@ -3792,12 +4846,13 @@ The area becomes burning terrain until the end of your next turn. Creatures that
 		}
 	],
 	monsterGroups: [
-		// TODO: Beastfolk
-		// TODO: Celestials
-		// TODO: Devas
-		// TODO: Ironbound
-		// TODO: Orians
-		// TODO: Siabhra
+		beastfolk,
+		celestial,
+		deva,
+		ironbound,
+		orian,
+		siabhra,
+		mount
 	],
 	montages: [],
 	negotiations: [],

@@ -17,6 +17,7 @@ import { ItemType } from '@/enums/item-type';
 import { Kit } from '@/models/kit';
 import { KitArmor } from '@/enums/kit-armor';
 import { KitWeapon } from '@/enums/kit-weapon';
+import { LanguageType } from '@/enums/language-type';
 import { Monster } from '@/models/monster';
 import { Perk } from '@/models/perk';
 import { PerkList } from '@/enums/perk-list';
@@ -204,6 +205,7 @@ export type FeatureLanguage = FeatureOf<FeatureType.Language, FeatureLanguageDat
 
 export interface FeatureLanguageChoiceData extends _FeatureData {
 	options: string[];
+	allowedTypes: LanguageType[];
 	count: number;
 	selectAt: 'build' | 'respite' | 'play';
 	selected: string[];
