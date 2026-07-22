@@ -175,6 +175,7 @@ export const HeroListPage = (props: Props) => {
 				</ErrorBoundary>
 				<AppFooter
 					page='heroes'
+					hero={null}
 					params={props.params}
 				/>
 			</div>

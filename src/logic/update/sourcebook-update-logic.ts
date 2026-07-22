@@ -154,6 +154,7 @@ export class SourcebookUpdateLogic {
 				if (sc.abilities === undefined) {
 					sc.abilities = [];
 				}
+				sc.abilities.forEach(AbilityUpdateLogic.updateAbility);
 			});
 
 			c.abilities.forEach(AbilityUpdateLogic.updateAbility);
@@ -363,6 +364,7 @@ ${e.objective.victories}`
 			if (sc.abilities === undefined) {
 				sc.abilities = [];
 			}
+			sc.abilities.forEach(AbilityUpdateLogic.updateAbility);
 		});
 
 		sourcebook.tacticalMaps.forEach(tm => {

@@ -397,15 +397,23 @@ export class FactoryFeatureLogic {
 	};
 
 	createLanguageChoice = (data: { id: string, name?: string, description?: string, options?: string[], allowedTypes?: LanguageType[], count?: number, selectAt?: 'build' | 'respite' | 'play', selected?: string[] }): FeatureLanguageChoice => {
+		const allowedTypes = data.allowedTypes || [ LanguageType.Common, LanguageType.Regional, LanguageType.Cultural, LanguageType.Dead ];
 		const count = data.count || 1;
+
+		const source = (allowedTypes.length === 4) ? '' : allowedTypes.join(', ');
+		const description = data.description || count > 1 ?
+			`Choose ${count} {source} languages.`
+			:
+			`Choose a ${source} language.`;
+
 		return {
 			id: data.id,
 			name: data.name || (count === 1 ? 'Language' : 'Languages'),
-			description: data.description || '',
+			description: description,
 			type: FeatureType.LanguageChoice,
 			data: {
 				options: data.options || [],
-				allowedTypes: data.allowedTypes || [ LanguageType.Common, LanguageType.Regional, LanguageType.Cultural, LanguageType.Dead ],
+				allowedTypes: allowedTypes,
 				count: count,
 				selectAt: data.selectAt || 'build',
 				selected: data.selected || []
@@ -573,10 +581,19 @@ export class FactoryFeatureLogic {
 			listOptions = [ SkillList.Crafting, SkillList.Exploration, SkillList.Interpersonal, SkillList.Intrigue, SkillList.Lore ];
 		}
 
+		const source = [
+			...options,
+			...(listOptions.length === 5) ? [ 'any list' ] : listOptions.map(list => `${list} skills`)
+		].join(', ');
+		const description = data.description || count > 1 ?
+			`Choose ${count} from ${source}.`
+			:
+			`Choose a skill from ${source}.`;
+
 		return {
 			id: data.id,
 			name: data.name || (count === 1 ? `${prefix}Skill` : `${prefix}Skills`),
-			description: data.description || '',
+			description: description,
 			type: FeatureType.SkillChoice,
 			data: {
 				options: data.options || [],

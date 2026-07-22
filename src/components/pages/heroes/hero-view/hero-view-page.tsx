@@ -98,6 +98,7 @@ export const HeroViewPage = (props: Props) => {
 				</ErrorBoundary>
 				<AppFooter
 					page='heroes'
+					hero={null}
 					params={props.params}
 				/>
 			</div>
@@ -212,6 +213,7 @@ export const HeroViewPage = (props: Props) => {
 				</ErrorBoundary>
 				<AppFooter
 					page='heroes'
+					hero={hero}
 					params={props.params}
 				/>
 			</div>

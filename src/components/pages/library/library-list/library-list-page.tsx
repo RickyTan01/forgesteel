@@ -955,6 +955,7 @@ export const LibraryListPage = (props: Props) => {
 				</ErrorBoundary>
 				<AppFooter
 					page='library'
+					hero={null}
 					params={props.params}
 				/>
 			</div>

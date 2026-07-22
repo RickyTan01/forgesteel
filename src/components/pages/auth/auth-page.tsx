@@ -140,6 +140,7 @@ export const AuthPage = (props: Props) => {
 				</div>
 				<AppFooter
 					page='welcome'
+					hero={null}
 					params={props.params}
 				/>
 			</div>

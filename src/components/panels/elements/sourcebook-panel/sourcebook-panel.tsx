@@ -327,16 +327,30 @@ export const SourcebookPanel = (props: Props) => {
 								<HeaderText>
 									{Format.capitalize(type.split('-').join(' '))}
 								</HeaderText>
-								{
-									elements.map(x => (
-										<div key={x.element.id} className='ds-text'>
-											{x.element.name}
-										</div>
-									))
-								}
+								{Collections.sort(elements, e => e.element.name).map(x => <Field key={x.element.id} label={x.element.name} value={<Markdown text={x.element.description} useSpan={true} />} />)}
 							</div>
 						);
 					})
+				}
+				{
+					sourcebook.languages.length > 0 ?
+						<>
+							<HeaderText>
+								Languages
+							</HeaderText>
+							{Collections.sort(sourcebook.languages, l => l.name).map((l, n) => <Field key={`lang-${n}`} label={l.name} value={<Markdown text={l.description} useSpan={true} />} />)}
+						</>
+						: null
+				}
+				{
+					sourcebook.skills.length > 0 ?
+						<>
+							<HeaderText>
+								Skills
+							</HeaderText>
+							{Collections.sort(sourcebook.skills, s => s.name).map((s, n) => <Field key={`skill-${n}`} label={s.name} value={<Markdown text={s.description} useSpan={true} />} />)}
+						</>
+						: null
 				}
 			</div>
 		);
