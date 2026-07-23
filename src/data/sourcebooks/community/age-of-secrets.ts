@@ -3011,7 +3011,7 @@ const orian: MonsterGroup = {
 			encounterValue: 14,
 			size: FactoryLogic.createSize(1, 'M'),
 			speed: FactoryLogic.createSpeed(6, 'swim'),
-			stamina: 80,
+			stamina: 155,
 			stability: 1,
 			freeStrikeDamage: 4, freeStrikeType: DamageType.Damage,
 			characteristics: FactoryLogic.createCharacteristics(2, 3, 1, 2, 2),
@@ -3519,29 +3519,29 @@ Regardless of your apparent ancestry, you are a síabhra underneath – one who 
 		}
 	],
 	cultures: [
-		FactoryLogic.createCulture('Serne', 'Urban / Bureaucratic / Martial.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.martial, 'Serne'),
-		FactoryLogic.createCulture('Eravian Imperium', 'Urban / Bureaucratic / Noble.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.noble, 'Eravian'),
-		FactoryLogic.createCulture('Sirovya', 'Rural / Bureaucratic / Martial.', CultureType.Ancestral, EnvironmentData.rural, OrganizationData.bureaucratic, UpbringingData.martial, 'Sirovy'),
-		FactoryLogic.createCulture('Svelland', 'Wilderness / Communal / Martial.', CultureType.Ancestral, EnvironmentData.wilderness, OrganizationData.communal, UpbringingData.martial, 'Svellese'),
-		FactoryLogic.createCulture('Telos', 'Urban / Bureaucratic / Creative.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.creative, 'Telosi'),
-		FactoryLogic.createCulture('Valedier', 'Urban / Bureaucratic / Noble.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.noble, 'Valedien'),
-		FactoryLogic.createCulture('Free State of Miris', 'Urban / Communal / Academic.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.communal, UpbringingData.academic, 'Valedien'),
-		FactoryLogic.createCulture('The Dwarfholds', 'Secluded / Bureaucratic / Labor.', CultureType.Ancestral, EnvironmentData.secluded, OrganizationData.bureaucratic, UpbringingData.labor, 'Khezdath'),
-		FactoryLogic.createCulture('Ithyr', 'Secluded / Bureaucratic / Noble.', CultureType.Ancestral, EnvironmentData.secluded, OrganizationData.bureaucratic, UpbringingData.noble, 'Eladrith'),
-		FactoryLogic.createCulture('Icewell', 'Urban / Bureaucratic / (any upbringing).', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, undefined, 'Serne'),
-		FactoryLogic.createCulture('Dejim', 'Rural / Communal / Martial.', CultureType.Ancestral, EnvironmentData.rural, OrganizationData.communal, UpbringingData.martial, 'Dejiman'),
-		FactoryLogic.createCulture('Jhazren', 'Wilderness / Communal / Creative.', CultureType.Ancestral, EnvironmentData.wilderness, OrganizationData.communal, UpbringingData.creative, 'Jhazrendish'),
-		FactoryLogic.createCulture('Ryvos', 'Nomadic / Bureaucratic / Martial.', CultureType.Ancestral, EnvironmentData.nomadic, OrganizationData.bureaucratic, UpbringingData.martial, 'Ryvian'),
-		FactoryLogic.createCulture('Kalai', 'Rural / Bureaucratic / Martial.', CultureType.Ancestral, EnvironmentData.rural, OrganizationData.bureaucratic, UpbringingData.martial, 'Kalish'),
-		FactoryLogic.createCulture('Gauthek', 'Urban / Bureaucratic / Martial.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.martial, 'Gaureth'),
-		FactoryLogic.createCulture('The Rookery', 'Urban / Anarchic / Illegal.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.communal, UpbringingData.lawless, 'Serne'),
-		FactoryLogic.createCulture('The Mistrunners', 'Wilderness / Anarchic / Labor.', CultureType.Ancestral, EnvironmentData.wilderness, OrganizationData.communal, UpbringingData.labor, 'Lirian'),
-		FactoryLogic.createCulture('The Water Folk', 'Nomadic / Communal / Labor.', CultureType.Ancestral, EnvironmentData.nomadic, OrganizationData.communal, UpbringingData.labor, 'Serne'),
-		FactoryLogic.createCulture('Bhawarans', 'Nomadic / Communal / Martial.', CultureType.Ancestral, EnvironmentData.nomadic, OrganizationData.communal, UpbringingData.martial, 'Bhawaran'),
-		FactoryLogic.createCulture('The Kaza', 'Nomadic / Communal / Martial.', CultureType.Ancestral, EnvironmentData.nomadic, OrganizationData.communal, UpbringingData.martial, 'Azhari'),
-		FactoryLogic.createCulture('Lowai Pora (Polders)', 'Secluded / Communal / Labor.', CultureType.Ancestral, EnvironmentData.secluded, OrganizationData.communal, UpbringingData.labor, 'Lowai'),
-		FactoryLogic.createCulture('Stormwrack', 'Urban / Anarchic / (any upbringing).', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.communal, undefined, 'Serne'),
-		FactoryLogic.createCulture('Wolkenritter', 'Urban / Anarchic / Martial.', CultureType.Ancestral, EnvironmentData.urban, OrganizationData.communal, UpbringingData.martial)
+		FactoryLogic.createCulture('Serne', 'Urban / Bureaucratic / Martial.', CultureType.Regional, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.martial, 'Serne'),
+		FactoryLogic.createCulture('Eravian Imperium', 'Urban / Bureaucratic / Noble.', CultureType.Regional, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.noble, 'Eravian'),
+		FactoryLogic.createCulture('Sirovya', 'Rural / Bureaucratic / Martial.', CultureType.Regional, EnvironmentData.rural, OrganizationData.bureaucratic, UpbringingData.martial, 'Sirovy'),
+		FactoryLogic.createCulture('Svelland', 'Wilderness / Communal / Martial.', CultureType.Regional, EnvironmentData.wilderness, OrganizationData.communal, UpbringingData.martial, 'Svellese'),
+		FactoryLogic.createCulture('Telos', 'Urban / Bureaucratic / Creative.', CultureType.Regional, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.creative, 'Telosi'),
+		FactoryLogic.createCulture('Valedier', 'Urban / Bureaucratic / Noble.', CultureType.Regional, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.noble, 'Valedien'),
+		FactoryLogic.createCulture('Miris', 'Urban / Communal / Academic.', CultureType.Regional, EnvironmentData.urban, OrganizationData.communal, UpbringingData.academic, 'Valedien'),
+		FactoryLogic.createCulture('Dwarfholds', 'Secluded / Bureaucratic / Labor.', CultureType.Regional, EnvironmentData.secluded, OrganizationData.bureaucratic, UpbringingData.labor, 'Khezdath'),
+		FactoryLogic.createCulture('Ithyr', 'Secluded / Bureaucratic / Noble.', CultureType.Regional, EnvironmentData.secluded, OrganizationData.bureaucratic, UpbringingData.noble, 'Eladrith'),
+		FactoryLogic.createCulture('Icewell', 'Urban / Bureaucratic / (any upbringing).', CultureType.Regional, EnvironmentData.urban, OrganizationData.bureaucratic, undefined, 'Serne'),
+		FactoryLogic.createCulture('Dejim', 'Rural / Communal / Martial.', CultureType.Regional, EnvironmentData.rural, OrganizationData.communal, UpbringingData.martial, 'Dejiman'),
+		FactoryLogic.createCulture('Jhazren', 'Wilderness / Communal / Creative.', CultureType.Regional, EnvironmentData.wilderness, OrganizationData.communal, UpbringingData.creative, 'Jhazrendish'),
+		FactoryLogic.createCulture('Ryvos', 'Nomadic / Bureaucratic / Martial.', CultureType.Regional, EnvironmentData.nomadic, OrganizationData.bureaucratic, UpbringingData.martial, 'Ryvian'),
+		FactoryLogic.createCulture('Kalai', 'Rural / Bureaucratic / Martial.', CultureType.Regional, EnvironmentData.rural, OrganizationData.bureaucratic, UpbringingData.martial, 'Kalish'),
+		FactoryLogic.createCulture('Gauthek', 'Urban / Bureaucratic / Martial.', CultureType.Regional, EnvironmentData.urban, OrganizationData.bureaucratic, UpbringingData.martial, 'Gaureth'),
+		FactoryLogic.createCulture('Rookery', 'Urban / Anarchic / Illegal.', CultureType.Regional, EnvironmentData.urban, OrganizationData.communal, UpbringingData.lawless, 'Serne'),
+		FactoryLogic.createCulture('Mistrunner', 'Wilderness / Anarchic / Labor.', CultureType.Regional, EnvironmentData.wilderness, OrganizationData.communal, UpbringingData.labor, 'Lirian'),
+		FactoryLogic.createCulture('Water Folk', 'Nomadic / Communal / Labor.', CultureType.Regional, EnvironmentData.nomadic, OrganizationData.communal, UpbringingData.labor, 'Serne'),
+		FactoryLogic.createCulture('Bhawaran', 'Nomadic / Communal / Martial.', CultureType.Regional, EnvironmentData.nomadic, OrganizationData.communal, UpbringingData.martial, 'Bhawaran'),
+		FactoryLogic.createCulture('Kaza', 'Nomadic / Communal / Martial.', CultureType.Regional, EnvironmentData.nomadic, OrganizationData.communal, UpbringingData.martial, 'Azhari'),
+		FactoryLogic.createCulture('Lowai Pora', 'Secluded / Communal / Labor.', CultureType.Regional, EnvironmentData.secluded, OrganizationData.communal, UpbringingData.labor, 'Lowai'),
+		FactoryLogic.createCulture('Stormwrack', 'Urban / Anarchic / (any upbringing).', CultureType.Regional, EnvironmentData.urban, OrganizationData.communal, undefined, 'Serne'),
+		FactoryLogic.createCulture('Wolkenritter', 'Urban / Anarchic / Martial.', CultureType.Regional, EnvironmentData.urban, OrganizationData.communal, UpbringingData.martial)
 	],
 	domains: [],
 	encounters: [],
@@ -5616,7 +5616,13 @@ You are a member of the Hospitallers, and are trained in the field medicine of T
 			name: 'Eladrith',
 			description: 'Spoken in Ithyr; spoken by most elves. Script: Eladric.',
 			type: LanguageType.Regional,
-			related: []
+			related: [ 'Old Eladrith' ]
+		},
+		{
+			name: 'Old Eladrith',
+			description: 'Ancient language of the elves. Script: Eladric.',
+			type: LanguageType.Regional,
+			related: [ 'Eladrith' ]
 		},
 		{
 			name: 'Eravian',
@@ -5634,7 +5640,7 @@ You are a member of the Hospitallers, and are trained in the field medicine of T
 			name: 'Lirian',
 			description: 'Language of the old Lirian Empire; now the language of academia. Script: Lirian.',
 			type: LanguageType.Dead,
-			related: []
+			related: [ 'Telosi' ]
 		},
 		{
 			name: 'Serne',
@@ -5658,7 +5664,7 @@ You are a member of the Hospitallers, and are trained in the field medicine of T
 			name: 'Telosi',
 			description: 'Spoken in Telos. Script: Lirian.',
 			type: LanguageType.Regional,
-			related: []
+			related: [ 'Lirian' ]
 		},
 		{
 			name: 'Valedien',
@@ -5710,9 +5716,15 @@ You are a member of the Hospitallers, and are trained in the field medicine of T
 		},
 		{
 			name: 'Azhari',
-			description: 'Language of the empire of Azharad; trade language throughout Aetius; spoken by most devils. Script: Bushaic.',
+			description: 'Trade language throughout Aetius; spoken by most devils. Script: Bushaic.',
 			type: LanguageType.Common,
-			related: []
+			related: [ 'Classical Azhari' ]
+		},
+		{
+			name: 'Classical Azhari',
+			description: 'Language of the empire of Azharad. Script: Bushaic.',
+			type: LanguageType.Dead,
+			related: [ 'Azhari' ]
 		},
 		{
 			name: 'Vraxalian',

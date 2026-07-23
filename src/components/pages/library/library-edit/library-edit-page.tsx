@@ -381,6 +381,7 @@ export const LibraryEditPage = (props: Props) => {
 				</div>
 				<AppFooter
 					page='library'
+					hero={null}
 					params={props.params}
 				/>
 			</div>

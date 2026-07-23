@@ -5,6 +5,7 @@ import { CulturePanel } from '@/components/panels/elements/culture-panel/culture
 import { CultureType } from '@/enums/culture-type';
 import { ErrorBoundary } from '@/components/controls/error-boundary/error-boundary';
 import { Field } from '@/components/controls/field/field';
+import { HeaderText } from '@/components/controls/header-text/header-text';
 import { NameDescEditPanel } from '@/components/panels/edit/name-desc-edit/name-desc-edit-panel';
 import { PanelMode } from '@/enums/panel-mode';
 import { SelectablePanel } from '@/components/controls/selectable-panel/selectable-panel';
@@ -45,9 +46,10 @@ export const CultureEditPanel = (props: Props) => {
 	const getDetailsEditSection = () => {
 		return (
 			<Space orientation='vertical' style={{ width: '100%' }}>
+				<HeaderText>Type</HeaderText>
 				<Segmented
 					block={true}
-					options={[ CultureType.Ancestral, CultureType.Professional ]}
+					options={[ CultureType.Ancestral, CultureType.Professional, CultureType.Regional ]}
 					value={culture.type}
 					onChange={value => {
 						const copy = Utils.copy(culture);
@@ -56,6 +58,7 @@ export const CultureEditPanel = (props: Props) => {
 						props.onChange(copy);
 					}}
 				/>
+				<HeaderText>Language</HeaderText>
 				<Select
 					style={{ width: '100%' }}
 					allowClear={true}
@@ -70,6 +73,7 @@ export const CultureEditPanel = (props: Props) => {
 						props.onChange(copy);
 					}}
 				/>
+				<HeaderText>Environment</HeaderText>
 				<Select
 					style={{ width: '100%' }}
 					status={culture.environment === null ? 'warning' : ''}
@@ -86,6 +90,7 @@ export const CultureEditPanel = (props: Props) => {
 						props.onChange(copy);
 					}}
 				/>
+				<HeaderText>Organization</HeaderText>
 				<Select
 					style={{ width: '100%' }}
 					status={culture.organization === null ? 'warning' : ''}
@@ -102,6 +107,7 @@ export const CultureEditPanel = (props: Props) => {
 						props.onChange(copy);
 					}}
 				/>
+				<HeaderText>Upbringing</HeaderText>
 				<Select
 					style={{ width: '100%' }}
 					status={culture.upbringing === null ? 'warning' : ''}

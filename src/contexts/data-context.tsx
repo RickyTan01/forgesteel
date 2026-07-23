@@ -234,6 +234,7 @@ export function DataManagerProvider(props: PropsWithChildren<DataManagerProps>) 
 }
 
 export const DataManagerContext = createContext<DataManager | null>(null);
+
 export function useDataManager() {
 	const context = useContext(DataManagerContext);
 	if (!context) {

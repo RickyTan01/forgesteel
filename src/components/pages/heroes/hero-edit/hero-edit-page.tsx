@@ -622,6 +622,7 @@ export const HeroEditPage = (props: Props) => {
 				</ErrorBoundary>
 				<AppFooter
 					page='heroes'
+					hero={hero}
 					params={props.params}
 				/>
 			</div>

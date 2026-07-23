@@ -29,9 +29,7 @@ export const InfoLanguageChoice = (props: InfoProps) => {
 		);
 	}
 
-	return (
-		<div className='ds-text'>Choose {props.data.count > 1 ? props.data.count : 'a'} {props.data.count > 1 ? 'languages' : 'language'}.</div>
-	);
+	return null;
 };
 
 interface EditProps {
@@ -150,18 +148,8 @@ export const ConfigLanguageChoice = (props: ConfigProps) => {
 	const distinctLanguages = Collections.distinct(languages, l => l.name);
 	const sortedLanguages = Collections.sort(distinctLanguages, l => l.name);
 
-	const getAddButton = () => {
-		// We can always add a custom language, so we always show the Add button
-		return (
-			<Button className='status-warning' block={true} onClick={() => setLanguageSelectorOpen(true)}>
-				Choose a language
-			</Button>
-		);
-	};
-
 	return (
 		<Space orientation='vertical' style={{ width: '100%' }}>
-			{props.data.count > 1 ? <div className='ds-text'>Choose {props.data.count}:</div> : null}
 			{
 				props.data.selected.map((language, n) => {
 					const lang = SourcebookLogic.getLanguage(language, props.sourcebooks!);
@@ -183,7 +171,13 @@ export const ConfigLanguageChoice = (props: ConfigProps) => {
 					);
 				})
 			}
-			{(props.data.selected.length < props.data.count) || (props.data.count === -1) ? getAddButton() : null}
+			{
+				(props.data.selected.length < props.data.count) || (props.data.count === -1) ?
+					<Button className='status-warning' block={true} onClick={() => setLanguageSelectorOpen(true)}>
+						Choose a language
+					</Button>
+					: null
+			}
 			<Drawer open={languageSelectorOpen} onClose={() => setLanguageSelectorOpen(false)} closeIcon={null} size={500}>
 				<LanguageSelectModal
 					languages={sortedLanguages}

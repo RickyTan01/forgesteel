@@ -1791,7 +1791,7 @@ export const Main = (props: Props) => {
 
 	const footerParams: FooterParams = {
 		errorsExist: errors.length > 0,
-		showReference: () => onShowReference(null, RulesPage.Rules),
+		showReference: hero => onShowReference(hero, RulesPage.Rules),
 		showAbout: showAbout,
 		showSettings: showSettings,
 		showErrors: showErrors,

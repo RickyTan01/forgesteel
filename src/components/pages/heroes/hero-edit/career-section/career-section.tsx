@@ -76,7 +76,7 @@ export const CareerSection = (props: Props) => {
 									value={<Markdown text={props.hero.career.incitingIncidents.selected.description} useSpan={true} />}
 								/>
 							}
-							onSelect={() => props.selectIncitingIncident(null)}
+							onRemove={() => props.selectIncitingIncident(null)}
 						/>
 						:
 						<Button block={true} className='status-warning' onClick={() => setShowIncitingIncidents(true)}>

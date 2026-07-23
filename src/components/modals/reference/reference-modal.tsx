@@ -37,6 +37,8 @@ export const ReferenceModal = (props: Props) => {
 	const [ searchTerm, setSearchTerm ] = useState<string>('');
 	const [ selectedRule, setSelectedRule ] = useState<string>('');
 
+	const sourcebooks = props.hero ? props.sourcebooks.filter(sb => props.hero!.sourcebookIDs.includes(sb.id)) : props.sourcebooks;
+
 	const getRulesSection = () => {
 		const rules = [
 			RulesData.abilityDistance,
@@ -145,7 +147,6 @@ export const ReferenceModal = (props: Props) => {
 	};
 
 	const getSkillsSection = () => {
-		const sourcebooks = props.hero ? props.hero.sourcebookIDs.map(id => props.sourcebooks.find(s => s.id === id)).filter(s => !!s) : props.sourcebooks;
 		const allSkills = SourcebookLogic.getSkills(sourcebooks);
 		const skillNames = props.hero ? HeroLogic.getSkills(props.hero, sourcebooks).map(s => s.name) : [];
 
@@ -183,7 +184,6 @@ export const ReferenceModal = (props: Props) => {
 	};
 
 	const getLanguagesSection = () => {
-		const sourcebooks = props.hero ? props.hero.sourcebookIDs.map(id => props.sourcebooks.find(s => s.id === id)).filter(s => !!s) : props.sourcebooks;
 		const allLanguages = SourcebookLogic.getLanguages(sourcebooks);
 		const languageNames = props.hero ? HeroLogic.getLanguages(props.hero, sourcebooks).map(l => l.name) : [];
 
