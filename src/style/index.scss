@@ -1,51 +1,53 @@
+@use 'tokens.scss';
+
 @font-face {
 	font-family: 'PT Sans';
-	src: url('../src/assets/fonts/pt/regular.ttf') format('truetype');
+	src: url('../assets/fonts/pt/regular.ttf') format('truetype');
 	font-weight: 400;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'PT Sans';
-	src: url('../src/assets/fonts/pt/bold.ttf') format('truetype');
+	src: url('../assets/fonts/pt/bold.ttf') format('truetype');
 	font-weight: 700;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'PT Sans';
-	src: url('../src/assets/fonts/pt/italic.ttf') format('truetype');
+	src: url('../assets/fonts/pt/italic.ttf') format('truetype');
 	font-weight: 400;
 	font-style: italic;
 }
 @font-face {
 	font-family: 'PT Sans';
-	src: url('../src/assets/fonts/pt/bold-italic.ttf') format('truetype');
+	src: url('../assets/fonts/pt/bold-italic.ttf') format('truetype');
 	font-weight: 700;
 	font-style: italic;
 }
 @font-face {
 	font-family: 'Merriweather';
-	src: url('../src/assets/fonts/merriweather/Merriweather-Variable.ttf') format('truetype-variations');
+	src: url('../assets/fonts/merriweather/Merriweather-Variable.ttf') format('truetype-variations');
 	font-weight: 300 900;
 	font-style: normal;
 	font-display: swap;
 }
 @font-face {
 	font-family: 'Merriweather';
-	src: url('../src/assets/fonts/merriweather/Merriweather-Italic-Variable.ttf') format('truetype-variations');
+	src: url('../assets/fonts/merriweather/Merriweather-Italic-Variable.ttf') format('truetype-variations');
 	font-weight: 300 900;
 	font-style: italic;
 	font-display: swap;
 }
 @font-face {
 	font-family: 'Draw Steel Glyphs';
-	src: url('../src/assets/fonts/ds-glyphs/DrawSteelGlyphs-Regular.otf') format('truetype');
+	src: url('../assets/fonts/ds-glyphs/DrawSteelGlyphs-Regular.otf') format('truetype');
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
 }
 @font-face {
 	font-family: 'Roboto Slab';
-	src: url('../src/assets/fonts/roboto-slab/RobotoSlab-Variable.ttf') format('truetype-variations');
+	src: url('../assets/fonts/roboto-slab/RobotoSlab-Variable.ttf') format('truetype-variations');
 	font-weight: 100 900;
 	font-style: normal;
 	font-display: swap;
@@ -89,7 +91,7 @@ h1 {
 	letter-spacing: 2px;
 	text-transform: uppercase;
 	margin: 15px 0;
-	border-bottom: 5px solid rgba(5, 5, 5, 0.06);
+	border-bottom: 5px solid var(--fs-border);
 	padding-bottom: 10px;
 }
 
@@ -98,7 +100,7 @@ h2 {
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	margin: 15px 0;
-	border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+	border-bottom: 1px solid var(--fs-border);
 	padding-bottom: 10px;
 }
 
@@ -111,7 +113,7 @@ h3 {
 p,
 .ds-text {
 	margin: 10px 0;
-	color: rgba(0, 0, 0, 0.88);
+	color: var(--fs-text);
 
 	&.bold-text {
 		font-weight: 600;
@@ -189,8 +191,10 @@ td {
 .ant-alert {
 	padding: 4px 8px;
 
+	// Alert text follows the alert's own colour rather than the global
+	// paragraph colour, so it stays legible in either theme.
 	p {
-		color: rgba(0, 0, 0, 0.88) !important;
+		color: inherit !important;
 	}
 }
 
@@ -264,7 +268,7 @@ td {
 
 .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child {
 	font-weight: 600;
-	background-color: rgb(230, 244, 255);
+	background-color: var(--fs-accent-wash);
 }
 
 .ant-segmented {
@@ -325,7 +329,7 @@ td {
 	&.ant-tabs-bottom >.ant-tabs-nav::before,
 	&.ant-tabs-top >div>.ant-tabs-nav::before,
 	&.ant-tabs-bottom >div>.ant-tabs-nav::before {
-		border-color: rgba(5, 5, 5, 0.06);
+		border-color: var(--fs-border);
 	}
 
 	.ant-tabs-tab+.ant-tabs-tab {
@@ -354,12 +358,9 @@ html[data-theme="dark"] {
 	h3,
 	h4,
 	h5 {
-		border-bottom-color: rgba(250, 250, 250, 0.6);
 		color: rgba(255, 255, 255, 0.88);
 	}
 
-	p,
-	.ds-text,
 	ul {
 		color: rgba(255, 255, 255, 0.88);
 	}
@@ -370,112 +371,13 @@ html[data-theme="dark"] {
 		color: rgba(255, 255, 255, 0.88);
 	}
 
-	.ant-alert {
-		.ant-alert-content {
-			.ant-alert-message {
-				p, .ds-text {
-					color: rgba(0, 0, 0, 0.88);
-				}
-			}
-		}
-	}
-
-	.ant-btn {
-		&.ant-btn-text {
-			color: rgba(255, 255, 255, 0.88);
-		}
-
-		&.status-warning {
-			color: rgba(255, 255, 255, 0.88);
-		}
-	}
-
-	.ant-divider {
-		border-block-start: 1px solid rgba(250, 250, 250, 0.6);
-
-		.ant-divider-inner-text {
-			color: rgba(255, 255, 255, 0.88);
-		}
-	}
-
-	.ant-drawer-content {
-		color: rgba(255, 255, 255, 0.88);
-		background-color: rgb(55, 55, 55) !important;
-	}
-
-	.ant-dropdown-menu {
-		.ds-text {
-			color: rgba(0, 0, 0, 0.88);
-		}
-	}
-
-	.ant-popover {
-		.ant-popover-arrow:after,
-		.ant-popover-inner,
-		.ant-popover-container {
-			background-color: rgb(80, 80, 80);
-		}
-	}
-
-	.ant-statistic {
-		.ant-statistic-title,
-		.ant-statistic-content {
-			color: rgba(255, 255, 255, 0.88);
-		}
-	}
-
-	.ant-select-content {
-		.ds-text {
-			color: rgba(0, 0, 0, 0.88);
-		}
-	}
-
-	.ant-select-dropdown {
-		background-color: rgb(30, 30, 30);
-
-		.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
-			.ds-text,
-			.field .field-label,
-			.field .field-value {
-				color: rgba(0, 0, 0, 0.88);
-			}
-		}
-		.ant-select-item {
-			color: rgba(255, 255, 255, 0.88);
-		}
-	}
-
-	.ant-select-show-search.ant-select-multiple .ant-select-selector {
-		.ant-select-selection-item {
-			.ds-text {
-				color: rgba(0, 0, 0, 0.88);
-			}
-		}
-	}
-
-	.ant-select-single .ant-select-input {
-		color: rgba(0, 0, 0, 0.88);
-	}
-
-	.ant-slider .ant-slider-rail {
-		background-color: rgba(250, 250, 250, 0.6);
-	}
+	// Ant Design's own dark surfaces - drawers, dropdowns, popovers, select
+	// menus, tabs, sliders, statistics - used to be repainted here because it
+	// was rendering in light mode. `darkAlgorithm` derives them now, so the
+	// only rules left are the ones about the app's own markup.
 
 	.ant-space-item>div:not([class^='ant-']) {
 		color: rgba(255, 255, 255, 0.88);
-	}
-
-	.ant-tabs {
-		&.ant-tabs-top >.ant-tabs-nav::before,
-		&.ant-tabs-bottom >.ant-tabs-nav::before,
-		&.ant-tabs-top >div>.ant-tabs-nav::before,
-		&.ant-tabs-bottom >div>.ant-tabs-nav::before {
-			border-color: rgba(250, 250, 250, 0.6);
-		}
-	
-		.ant-tabs-tab {
-			color: rgba(255, 255, 255, 0.88);
-		}
 	}
 
 	.patreon-logo {

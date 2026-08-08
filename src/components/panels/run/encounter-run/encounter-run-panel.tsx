@@ -262,6 +262,18 @@ export const EncounterRunPanel = (props: Props) => {
 				props.onChange(copy);
 			};
 
+			const setHidden = (monster: Monster, value: boolean) => {
+				const copy = Utils.copy(encounter);
+				copy.groups
+					.filter(g => g.id === group.id)
+					.flatMap(g => g.slots)
+					.flatMap(s => s.monsters)
+					.filter(m => m.id === monster.id)
+					.forEach(m => m.state.hidden = value);
+				setEncounter(copy);
+				props.onChange(copy);
+			};
+
 			const moveSlot = (slot: EncounterSlot, toGroupID: string) => {
 				const copy = Utils.copy(encounter);
 
@@ -326,6 +338,7 @@ export const EncounterRunPanel = (props: Props) => {
 					onDuplicate={duplicateGroup}
 					onDelete={deleteGroup}
 					onSetDefeated={setDefeated}
+					onSetHidden={setHidden}
 					onMoveSlot={moveSlot}
 					onCopySlot={copySlot}
 				/>
@@ -412,6 +425,17 @@ export const EncounterRunPanel = (props: Props) => {
 				setEncounter(copy);
 			};
 
+			const setMonsterHidden = (monster: Monster, value: boolean) => {
+				const copy = Utils.copy(encounter);
+				copy.heroes
+					.filter(h => h.id === hero.id)
+					.flatMap(h => h.state.controlledSlots)
+					.flatMap(s => s.monsters)
+					.filter(m => m.id === monster.id)
+					.forEach(m => m.state.hidden = value);
+				setEncounter(copy);
+			};
+
 			return (
 				<EncounterGroupHero
 					key={hero.id}
@@ -429,6 +453,7 @@ export const EncounterRunPanel = (props: Props) => {
 					onAddMonsterToSquad={addMonsterToSquad}
 					onRemoveSquad={removeSquad}
 					onSetMonsterDefeated={setMonsterDefeated}
+					onSetMonsterHidden={setMonsterHidden}
 					onDelete={deleteHero}
 				/>
 			);
@@ -1038,7 +1063,7 @@ const NotePanel = (props: NotePanelProps) => {
 	const editBtn = (
 		<Button
 			type='text'
-			icon={editing ? <EditFilled style={{ color: 'rgb(64, 150, 255)' }} /> : <EditOutlined />}
+			icon={editing ? <EditFilled style={{ color: 'var(--fs-accent-light)' }} /> : <EditOutlined />}
 			onClick={() => setEditing(!editing)}
 		/>
 	);
