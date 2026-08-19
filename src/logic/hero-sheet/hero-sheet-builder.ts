@@ -50,6 +50,7 @@ export class HeroSheetBuilder {
 			projects: [],
 			followers: [],
 			summons: [],
+			fixtures: [],
 			featuresReferenceOther: [],
 			extraReferenceItems: [],
 
@@ -398,12 +399,14 @@ export class HeroSheetBuilder {
 			.map(f => f.feature.id));
 		// #endregion
 
-		const retinue = allFeatures.filter(f => [ FeatureType.Follower, FeatureType.Retainer, FeatureType.Companion, FeatureType.Summon, FeatureType.SummonChoice ].includes(f.feature.type))
+		const retinue = allFeatures.filter(f => [ FeatureType.Follower, FeatureType.Retainer, FeatureType.Companion, FeatureType.Summon, FeatureType.SummonChoice, FeatureType.Fixture ].includes(f.feature.type))
 			.map(f => f.feature);
 		sheet.followers = retinue.flatMap(f => this.buildFollowerCompanionSheet(f, hero)).filter(s => !!s);
 
 		sheet.summons = HeroLogic.getSummons(hero).filter(f => CreatureLogic.isSummon(f))
 			.map(f => this.buildSummonSheet(f, hero)).filter(s => !!s);
+
+		sheet.fixtures = HeroLogic.getFixtures(hero).map(f => ClassicSheetBuilder.buildFixtureSheet(f, hero));
 
 		coveredFeatureIds.push(...retinue.map(f => f.id));
 
@@ -578,19 +581,19 @@ export class HeroSheetBuilder {
 		sheet.abilities = abilities.map(a => ClassicSheetBuilder.buildAbilitySheet(a, follower));
 
 		const advancement = [];
-		if ((!heroLevel || heroLevel >= 4) && follower.retainer?.level4?.type === FeatureType.Ability) {
+		if ((!heroLevel || heroLevel < 4) && follower.retainer?.level4?.type === FeatureType.Ability) {
 			advancement.push({
 				level: 4,
 				ability: ClassicSheetBuilder.buildAbilitySheet(follower.retainer.level4.data.ability, follower)
 			});
 		}
-		if ((!heroLevel || heroLevel >= 7) && follower.retainer?.level7?.type === FeatureType.Ability) {
+		if ((!heroLevel || heroLevel < 7) && follower.retainer?.level7?.type === FeatureType.Ability) {
 			advancement.push({
 				level: 7,
 				ability: ClassicSheetBuilder.buildAbilitySheet(follower.retainer.level7.data.ability, follower)
 			});
 		}
-		if ((!heroLevel || heroLevel >= 10) && follower.retainer?.level10?.type === FeatureType.Ability) {
+		if ((!heroLevel || heroLevel < 10) && follower.retainer?.level10?.type === FeatureType.Ability) {
 			advancement.push({
 				level: 10,
 				ability: ClassicSheetBuilder.buildAbilitySheet(follower.retainer.level10.data.ability, follower)
