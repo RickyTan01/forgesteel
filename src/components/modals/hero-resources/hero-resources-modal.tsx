@@ -136,6 +136,7 @@ export const HeroResourcesModal = (props: Props) => {
 									value={hr.value}
 									min={hr.canBeNegative ? undefined : 0}
 									onChange={value => setHeroicResource(hr.id, value)}
+									style={{ backgroundColor: 'var(--fs-vital-resource)' }}
 								/>
 								{
 									hr.gains.length > 0 ?
@@ -343,6 +344,7 @@ export const HeroResourcesModal = (props: Props) => {
 					value={hero.state.surges}
 					min={0}
 					onChange={setSurges}
+					style={{ backgroundColor: 'var(--fs-vital-surges)' }}
 				/>
 				{
 					hero.state.surges > 0 ?
