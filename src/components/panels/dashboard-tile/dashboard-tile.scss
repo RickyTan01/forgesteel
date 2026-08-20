@@ -59,4 +59,32 @@
 		color: rgb(255, 255, 255);
 		white-space: nowrap;
 	}
+
+	.dashboard-tile-conditions {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		width: 100%;
+	}
+
+	.dashboard-tile-condition {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 10px;
+		padding: 3px 8px;
+		border-radius: 6px;
+		background-color: var(--fs-hover-fill);
+		font-size: 12px;
+
+		.dashboard-tile-condition-name {
+			font-weight: 600;
+		}
+
+		.dashboard-tile-condition-ends {
+			opacity: 0.7;
+			font-size: 11px;
+			white-space: nowrap;
+		}
+	}
 }

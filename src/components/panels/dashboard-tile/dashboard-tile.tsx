@@ -1,3 +1,4 @@
+import { ConditionType } from '@/enums/condition-type';
 import { HealthGauge } from '@/components/panels/health-gauge/health-gauge';
 import { Hero } from '@/models/hero';
 import { HeroLogic } from '@/logic/hero-logic';
@@ -70,6 +71,22 @@ export const DashboardTile = (props: Props) => {
 					Surges: {hero.state.surges}
 				</div>
 			</div>
+			{
+				hero.state.conditions.length > 0 ?
+					<div className='dashboard-tile-conditions'>
+						{
+							hero.state.conditions.map(c => (
+								<div key={c.id} className='dashboard-tile-condition'>
+									<div className='dashboard-tile-condition-name'>
+										{(c.type === ConditionType.Custom) || (c.type === ConditionType.Quick) ? c.text : c.type}
+									</div>
+									<div className='dashboard-tile-condition-ends'>{c.ends}</div>
+								</div>
+							))
+						}
+					</div>
+					: null
+			}
 		</div>
 	);
 };
