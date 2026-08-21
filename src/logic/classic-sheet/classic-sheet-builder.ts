@@ -72,7 +72,7 @@ export class ClassicSheetBuilder {
 	};
 
 	// #region Monster Sheet
-	static buildMonsterSheet = (monster: Monster): MonsterSheet => {
+	static buildMonsterSheet = (monster: Monster, summoning?: { summon: Summon, summoner: Hero }): MonsterSheet => {
 		const level = MonsterLogic.getMonsterLevel(monster);
 		let monsterType = `Lvl ${level} ${monster.role.organization}`;
 		if (monster.role.type !== MonsterRoleType.NoRole) {
@@ -110,7 +110,8 @@ export class ClassicSheetBuilder {
 		const abilities = MonsterLogic.getFeatures(monster)
 			.filter(f => f.type === FeatureType.Ability)
 			.map(f => f.data.ability);
-		sheet.abilities = abilities.map(a => ClassicSheetBuilder.buildAbilitySheet(a, monster));
+		// A summoned creature's abilities belong to the summoner: they're paid for and powered by them
+		sheet.abilities = abilities.map(a => ClassicSheetBuilder.buildAbilitySheet(a, summoning?.summon ?? monster, summoning?.summoner));
 
 		if (monster.retainer) {
 			const advancement = [];
@@ -333,7 +334,7 @@ export class ClassicSheetBuilder {
 			if (ability.cost === 'signature') {
 				sheet.abilityType = 'Signature Ability';
 			} else if (ability.cost > 0) {
-				sheet.abilityType = `${ability.cost} Malice`;
+				sheet.abilityType = `${ability.cost} ${isSummon ? 'Essence' : 'Malice'}`;
 			} else if (isMonster && creature.retainer?.level) {
 				sheet.abilityType = 'Encounter';
 			} else if (ability.type.usage === AbilityUsage.VillainAction) {
@@ -379,7 +380,12 @@ export class ClassicSheetBuilder {
 					rollBonuses: undefined
 				} as PowerRollSection;
 
-				const rollAutoCalc = options?.showPowerRollCalculation ?? true;
+				// Heroes, retainers, and a summoner's minions all roll off characteristics we know. When any
+				// other creature's ability names characteristics it's the target who makes the test, so show
+				// what they'll be rolling instead of a number taken from the wrong creature
+				const rollsOwnCharacteristics = isHero || isSummon || (isMonster && !!creature.retainer);
+				const rolledByTarget = !rollsOwnCharacteristics && AbilityLogic.getPowerRollCharacteristics(ability, refCreature).length > 0;
+				const rollAutoCalc = (options?.showPowerRollCalculation ?? true) && !rolledByTarget;
 
 				if (rollAutoCalc) {
 					if (isSummon) {
