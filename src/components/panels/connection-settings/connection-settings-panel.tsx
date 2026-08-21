@@ -59,9 +59,12 @@ export const ConnectionSettingsPanel = (props: Props) => {
 	};
 
 	useEffect(() => {
+		// Only check the connection that was already saved when this panel first mounts -
+		// setWarehouseUrl/setWarehouseToken/testConnection already handle it on every later change.
 		if (connectionSettings.useManualWarehouse && connectionSettings.warehouseHost && connectionSettings.warehouseToken) {
 			fetchConnectedAs(connectionSettings.warehouseHost, connectionSettings.warehouseToken);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const persistProfiles = (value: ConnectionProfile[]) => {
