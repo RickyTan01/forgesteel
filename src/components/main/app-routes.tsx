@@ -14,6 +14,7 @@ import { useSessionActions } from '@/hooks/use-session-actions';
 const AuthPage = lazy(() => import('@/components/pages/auth/auth-page').then(m => ({ default: m.AuthPage })));
 const BackupPage = lazy(() => import('@/components/pages/backup/backup-page').then(m => ({ default: m.BackupPage })));
 const ClocktowerPage = lazy(() => import('@/components/pages/clocktower/clocktower-page').then(m => ({ default: m.ClocktowerPage })));
+const DashboardPage = lazy(() => import('@/components/pages/dashboard/dashboard-page').then(m => ({ default: m.DashboardPage })));
 const HeroEditPage = lazy(() => import('@/components/pages/heroes/hero-edit/hero-edit-page').then(m => ({ default: m.HeroEditPage })));
 const HeroListPage = lazy(() => import('@/components/pages/heroes/hero-list/hero-list-page').then(m => ({ default: m.HeroListPage })));
 const HeroSheetPreviewPage = lazy(() => import('@/components/pages/heroes/hero-sheet/hero-sheet-preview-page').then(m => ({ default: m.HeroSheetPreviewPage })));
@@ -307,6 +308,10 @@ export const AppRoutes = (props: Props) => {
 					<Route
 						path='clocktower'
 						element={<ClocktowerPage params={footerParams} />}
+					/>
+					<Route
+						path='dashboard'
+						element={<DashboardPage params={footerParams} />}
 					/>
 				</Route>
 				<Route
